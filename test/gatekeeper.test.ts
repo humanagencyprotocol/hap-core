@@ -1,8 +1,13 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import { verify } from '../src/gatekeeper';
 import { registerProfile } from '../src/profiles';
-import { SPEND_PROFILE } from './fixtures';
-import { generateTestKeyPair, createTestAttestation, type TestKeyPair } from './helpers';
+import { SPEND_PROFILE, SPEND_PROFILE_V4 } from './fixtures';
+import {
+  generateTestKeyPair,
+  createTestAttestation,
+  createTestAttestationV4,
+  type TestKeyPair,
+} from './helpers';
 import type { AgentFrameParams } from '../src/types';
 
 describe('gatekeeper', () => {
@@ -27,9 +32,12 @@ describe('gatekeeper', () => {
 
   beforeAll(async () => {
     registerProfile('spend@0.3', SPEND_PROFILE);
+    registerProfile('spend@0.4', SPEND_PROFILE_V4);
     keyPair = await generateTestKeyPair();
     wrongKeyPair = await generateTestKeyPair();
   });
+
+  // ─── v0.3 Tests ─────────────────────────────────────────────────────────────
 
   describe('within bounds → approved', () => {
     it('approves payment within max amount', async () => {
@@ -286,6 +294,174 @@ describe('gatekeeper', () => {
         // Should NOT contain BOUND_EXCEEDED since auth failed first
         expect(result.errors.some(e => e.code === 'BOUND_EXCEEDED')).toBe(false);
       }
+    });
+  });
+
+  // ─── v0.4 Tests ─────────────────────────────────────────────────────────────
+
+  describe('v0.4 — bounds_hash + context_hash', () => {
+    const routineBounds: AgentFrameParams = {
+      profile: 'spend@0.4',
+      path: 'spend-routine',
+      amount_max: 80,
+      amount_daily_max: 500,
+      amount_monthly_max: 5000,
+      transaction_count_daily_max: 10,
+    };
+
+    const routineContext = {
+      currency: 'EUR',
+      action_type: 'charge',
+    };
+
+    it('approves v0.4 payment within bounds', async () => {
+      const blob = await createTestAttestationV4({
+        keyPair,
+        bounds: routineBounds,
+        context: routineContext,
+        profile: SPEND_PROFILE_V4,
+        domain: 'finance',
+      });
+
+      const result = await verify(
+        {
+          frame: routineBounds,
+          context: routineContext,
+          attestations: [blob],
+          execution: { amount: 50, currency: 'EUR', action_type: 'charge' },
+        },
+        keyPair.publicKeyHex
+      );
+
+      expect(result.approved).toBe(true);
+    });
+
+    it('rejects v0.4 payment exceeding amount_max', async () => {
+      const blob = await createTestAttestationV4({
+        keyPair,
+        bounds: routineBounds,
+        context: routineContext,
+        profile: SPEND_PROFILE_V4,
+        domain: 'finance',
+      });
+
+      const result = await verify(
+        {
+          frame: routineBounds,
+          context: routineContext,
+          attestations: [blob],
+          execution: { amount: 120, currency: 'EUR', action_type: 'charge' },
+        },
+        keyPair.publicKeyHex
+      );
+
+      expect(result.approved).toBe(false);
+      if (!result.approved) {
+        expect(result.errors.some(e => e.code === 'BOUND_EXCEEDED' && e.field === 'amount')).toBe(true);
+      }
+    });
+
+    it('rejects v0.4 when bounds_hash does not match', async () => {
+      const differentBounds: AgentFrameParams = {
+        ...routineBounds,
+        amount_max: 200, // attested for 200 but verifying with 80
+      };
+
+      const blob = await createTestAttestationV4({
+        keyPair,
+        bounds: differentBounds,
+        context: routineContext,
+        profile: SPEND_PROFILE_V4,
+        domain: 'finance',
+      });
+
+      const result = await verify(
+        {
+          frame: routineBounds, // 80 — mismatch with attested 200
+          context: routineContext,
+          attestations: [blob],
+          execution: { amount: 50, currency: 'EUR', action_type: 'charge' },
+        },
+        keyPair.publicKeyHex
+      );
+
+      expect(result.approved).toBe(false);
+      if (!result.approved) {
+        expect(result.errors.some(e => e.code === 'BOUNDS_MISMATCH')).toBe(true);
+      }
+    });
+
+    it('rejects v0.4 when context_hash does not match', async () => {
+      const differentContext = { currency: 'USD', action_type: 'charge' };
+
+      const blob = await createTestAttestationV4({
+        keyPair,
+        bounds: routineBounds,
+        context: differentContext, // attested for USD
+        profile: SPEND_PROFILE_V4,
+        domain: 'finance',
+      });
+
+      const result = await verify(
+        {
+          frame: routineBounds,
+          context: routineContext, // EUR — mismatch with attested USD
+          attestations: [blob],
+          execution: { amount: 50, currency: 'EUR', action_type: 'charge' },
+        },
+        keyPair.publicKeyHex
+      );
+
+      expect(result.approved).toBe(false);
+      if (!result.approved) {
+        expect(result.errors.some(e => e.code === 'CONTEXT_MISMATCH')).toBe(true);
+      }
+    });
+
+    it('rejects v0.4 when context field value does not match execution', async () => {
+      const blob = await createTestAttestationV4({
+        keyPair,
+        bounds: routineBounds,
+        context: routineContext, // EUR
+        profile: SPEND_PROFILE_V4,
+        domain: 'finance',
+      });
+
+      const result = await verify(
+        {
+          frame: routineBounds,
+          context: routineContext, // EUR
+          attestations: [blob],
+          execution: { amount: 50, currency: 'USD', action_type: 'charge' }, // USD — not in context
+        },
+        keyPair.publicKeyHex
+      );
+
+      expect(result.approved).toBe(false);
+      if (!result.approved) {
+        expect(result.errors.some(e => e.code === 'BOUND_EXCEEDED' && e.field === 'currency')).toBe(true);
+      }
+    });
+
+    it('v0.3 backward compat — frame_hash attestation still works on v0.3 profile', async () => {
+      // Existing v0.3 path should be unaffected
+      const blob = await createTestAttestation({
+        keyPair,
+        frame: routineFrame,
+        profile: SPEND_PROFILE,
+        domain: 'finance',
+      });
+
+      const result = await verify(
+        {
+          frame: routineFrame,
+          attestations: [blob],
+          execution: { amount: 5, currency: 'EUR', action_type: 'charge' },
+        },
+        keyPair.publicKeyHex
+      );
+
+      expect(result.approved).toBe(true);
     });
   });
 });

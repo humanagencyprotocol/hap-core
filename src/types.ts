@@ -19,9 +19,14 @@ export interface ResolvedDomain {
 
 export interface AttestationPayload {
   attestation_id: string;
-  version: '0.3';
+  version: '0.3' | '0.4';
   profile_id: string;
-  frame_hash: string;
+  /** v0.3 (deprecated) — hash of the authorization frame */
+  frame_hash?: string;
+  /** v0.4 — hash of the bounds parameters */
+  bounds_hash?: string;
+  /** v0.4 — hash of the context parameters */
+  context_hash?: string;
   execution_context_hash: string;
   resolved_domains: ResolvedDomain[];
   gate_content_hashes: Record<string, string>;
@@ -51,6 +56,26 @@ export interface FieldConstraint {
  * Frame field definition within a profile.
  */
 export interface ProfileFrameField {
+  type: 'string' | 'number';
+  required: boolean;
+  description?: string;
+  constraint?: FieldConstraint;
+}
+
+/**
+ * Bounds field definition within a v0.4 profile.
+ */
+export interface ProfileBoundsField {
+  type: 'string' | 'number';
+  required: boolean;
+  description?: string;
+  constraint?: FieldConstraint;
+}
+
+/**
+ * Context field definition within a v0.4 profile.
+ */
+export interface ProfileContextField {
   type: 'string' | 'number';
   required: boolean;
   description?: string;
@@ -114,16 +139,39 @@ export interface ExecutionPath {
 
 /**
  * Agent Profile — defines constraint types, execution paths, gate questions,
- * and the frame schema for bounded execution.
+ * and the frame/bounds/context schemas for bounded execution.
+ *
+ * Supports both v0.3 (frameSchema) and v0.4 (boundsSchema + contextSchema).
  */
 export interface AgentProfile {
   id: string;
   version: string;
   description: string;
 
-  frameSchema: {
+  /**
+   * v0.3 frame schema (deprecated, kept for backward compat).
+   * Used when boundsSchema is not present.
+   */
+  frameSchema?: {
     keyOrder: string[];
     fields: Record<string, ProfileFrameField>;
+  };
+
+  /**
+   * v0.4 bounds schema — defines the authorization bounds parameters.
+   */
+  boundsSchema?: {
+    keyOrder: string[];
+    fields: Record<string, ProfileBoundsField>;
+  };
+
+  /**
+   * v0.4 context schema — defines the execution context parameters (e.g., currency, action_type).
+   * May be absent or empty for profiles with no static context.
+   */
+  contextSchema?: {
+    keyOrder: string[];
+    fields: Record<string, ProfileContextField>;
   };
 
   executionContextSchema: {
@@ -205,25 +253,39 @@ export interface ExecutionLogQuery {
  */
 export type AgentFrameParams = Record<string, string | number>;
 
+/**
+ * Agent bounds parameters — mixed types (strings and numbers).
+ * Keys and values come from the profile's boundsSchema (v0.4).
+ */
+export type AgentBoundsParams = Record<string, string | number>;
+
+/**
+ * Agent context parameters — mixed types (strings and numbers).
+ * Keys and values come from the profile's contextSchema (v0.4).
+ */
+export type AgentContextParams = Record<string, string | number>;
+
 // ─── Gatekeeper Types ────────────────────────────────────────────────────────
 
 /**
  * Request to the Gatekeeper for bounded execution verification.
  */
 export interface GatekeeperRequest {
-  /** The authorization frame (what was attested to) */
+  /** The authorization frame (what was attested to) — v0.3 */
   frame: AgentFrameParams;
   /** Attestation blobs (base64url) for each domain */
   attestations: string[];
   /** The agent's execution values for this specific action */
   execution: Record<string, string | number>;
+  /** v0.4: context parameters (currency, action_type, etc.) */
+  context?: AgentContextParams;
 }
 
 /**
  * Structured error from Gatekeeper verification.
  */
 export interface GatekeeperError {
-  code: 'BOUND_EXCEEDED' | 'CUMULATIVE_LIMIT_EXCEEDED' | 'INVALID_SIGNATURE' | 'TTL_EXPIRED' | 'FRAME_MISMATCH' | 'DOMAIN_NOT_COVERED' | 'INVALID_PROFILE' | 'MALFORMED_ATTESTATION';
+  code: 'BOUND_EXCEEDED' | 'CUMULATIVE_LIMIT_EXCEEDED' | 'INVALID_SIGNATURE' | 'TTL_EXPIRED' | 'FRAME_MISMATCH' | 'BOUNDS_MISMATCH' | 'CONTEXT_MISMATCH' | 'DOMAIN_NOT_COVERED' | 'INVALID_PROFILE' | 'MALFORMED_ATTESTATION';
   field?: string;
   message: string;
   bound?: string | number;

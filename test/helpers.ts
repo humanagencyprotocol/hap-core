@@ -3,9 +3,16 @@
  */
 
 import * as ed from '@noble/ed25519';
-import { computeFrameHash } from '../src/frame';
+import { computeFrameHash, computeBoundsHash, computeContextHash } from '../src/frame';
 import { encodeAttestationBlob } from '../src/attestation';
-import type { AgentFrameParams, AgentProfile, Attestation, AttestationPayload } from '../src/types';
+import type {
+  AgentFrameParams,
+  AgentBoundsParams,
+  AgentContextParams,
+  AgentProfile,
+  Attestation,
+  AttestationPayload,
+} from '../src/types';
 
 export interface TestKeyPair {
   privateKey: Uint8Array;
@@ -27,7 +34,7 @@ export async function generateTestKeyPair(): Promise<TestKeyPair> {
 }
 
 /**
- * Create a signed attestation blob for testing.
+ * Create a signed v0.3 attestation blob for testing.
  */
 export async function createTestAttestation(opts: {
   keyPair: TestKeyPair;
@@ -45,6 +52,54 @@ export async function createTestAttestation(opts: {
     version: '0.3',
     profile_id: opts.profile.id,
     frame_hash: frameHashValue,
+    execution_context_hash: 'sha256:test-context',
+    resolved_domains: [{ domain: opts.domain, did: opts.did ?? 'did:key:test' }],
+    gate_content_hashes: {
+      problem: 'sha256:test-problem',
+      objective: 'sha256:test-objective',
+      tradeoffs: 'sha256:test-tradeoffs',
+    },
+    issued_at: now,
+    expires_at: opts.expiresAt ?? now + 3600,
+  };
+
+  const payloadJson = JSON.stringify(payload);
+  const payloadBytes = new TextEncoder().encode(payloadJson);
+  const signature = await ed.signAsync(payloadBytes, opts.keyPair.privateKey);
+  const signatureBase64 = Buffer.from(signature).toString('base64');
+
+  const attestation: Attestation = {
+    header: { typ: 'HAP-attestation', alg: 'EdDSA' },
+    payload,
+    signature: signatureBase64,
+  };
+
+  return encodeAttestationBlob(attestation);
+}
+
+/**
+ * Create a signed v0.4 attestation blob for testing.
+ * Uses bounds_hash + context_hash instead of frame_hash.
+ */
+export async function createTestAttestationV4(opts: {
+  keyPair: TestKeyPair;
+  bounds: AgentBoundsParams;
+  context: AgentContextParams;
+  profile: AgentProfile;
+  domain: string;
+  expiresAt?: number;
+  did?: string;
+}): Promise<string> {
+  const now = Math.floor(Date.now() / 1000);
+  const boundsHashValue = computeBoundsHash(opts.bounds, opts.profile);
+  const contextHashValue = computeContextHash(opts.context, opts.profile);
+
+  const payload: AttestationPayload = {
+    attestation_id: `sha256:test-v4-${Date.now()}`,
+    version: '0.4',
+    profile_id: opts.profile.id,
+    bounds_hash: boundsHashValue,
+    context_hash: contextHashValue,
     execution_context_hash: 'sha256:test-context',
     resolved_domains: [{ domain: opts.domain, did: opts.did ?? 'did:key:test' }],
     gate_content_hashes: {

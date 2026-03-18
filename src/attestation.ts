@@ -1,5 +1,7 @@
 /**
  * Attestation Encoding, Decoding, and Verification
+ *
+ * Supports both v0.3 (frame_hash) and v0.4 (bounds_hash + context_hash).
  */
 
 import { createHash } from 'crypto';
@@ -81,7 +83,7 @@ export function checkAttestationExpiry(
 }
 
 /**
- * Verifies that the frame hash in the attestation matches the expected hash.
+ * Verifies that the frame hash in the attestation matches the expected hash (v0.3).
  *
  * @throws Error if frame hash doesn't match
  */
@@ -92,7 +94,41 @@ export function verifyFrameHash(attestation: Attestation, expectedFrameHash: str
 }
 
 /**
- * Full attestation verification (signature + expiry + frame hash).
+ * Detects whether an attestation is v0.4 (has bounds_hash + context_hash)
+ * or v0.3 (has frame_hash).
+ *
+ * Migration rule: if attestation has frame_hash but not bounds_hash, it is v0.3.
+ */
+export function isV4Attestation(attestation: Attestation): boolean {
+  return attestation.payload.bounds_hash !== undefined;
+}
+
+/**
+ * Verifies that the bounds hash in the attestation matches the expected hash (v0.4).
+ *
+ * @throws Error if bounds hash doesn't match
+ */
+export function verifyBoundsHash(attestation: Attestation, expectedBoundsHash: string): void {
+  // Migration: if attestation has frame_hash but not bounds_hash, treat frame_hash as bounds_hash
+  const attestedHash = attestation.payload.bounds_hash ?? attestation.payload.frame_hash;
+  if (attestedHash !== expectedBoundsHash) {
+    throw new Error('BOUNDS_MISMATCH: Bounds hash mismatch');
+  }
+}
+
+/**
+ * Verifies that the context hash in the attestation matches the expected hash (v0.4).
+ *
+ * @throws Error if context hash doesn't match
+ */
+export function verifyContextHash(attestation: Attestation, expectedContextHash: string): void {
+  if (attestation.payload.context_hash !== expectedContextHash) {
+    throw new Error('CONTEXT_MISMATCH: Context hash mismatch');
+  }
+}
+
+/**
+ * Full attestation verification (signature + expiry + frame hash) — v0.3.
  *
  * @returns The decoded attestation payload
  * @throws Error on any validation failure
@@ -107,6 +143,28 @@ export async function verifyAttestation(
   await verifyAttestationSignature(attestation, publicKeyHex);
   checkAttestationExpiry(attestation.payload);
   verifyFrameHash(attestation, expectedFrameHash);
+
+  return attestation.payload;
+}
+
+/**
+ * Full attestation verification for v0.4 (signature + expiry + bounds_hash + context_hash).
+ *
+ * @returns The decoded attestation payload
+ * @throws Error on any validation failure
+ */
+export async function verifyAttestationV4(
+  blob: string,
+  publicKeyHex: string,
+  expectedBoundsHash: string,
+  expectedContextHash: string
+): Promise<AttestationPayload> {
+  const attestation = decodeAttestationBlob(blob);
+
+  await verifyAttestationSignature(attestation, publicKeyHex);
+  checkAttestationExpiry(attestation.payload);
+  verifyBoundsHash(attestation, expectedBoundsHash);
+  verifyContextHash(attestation, expectedContextHash);
 
   return attestation.payload;
 }
