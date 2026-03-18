@@ -112,7 +112,7 @@ async function verifyV3(
   }
 
   // Verify attestations
-  const requiredDomains = executionPath.requiredDomains;
+  const requiredDomains = executionPath.requiredDomains ?? [];
   const coveredDomains = new Set<string>();
 
   for (const blob of request.attestations) {
@@ -219,8 +219,8 @@ async function verifyV4(
     return { approved: false, errors: [{ code: 'CONTEXT_MISMATCH', message: `Context hash computation failed: ${err}` }] };
   }
 
-  // Verify attestations
-  const requiredDomains = executionPath.requiredDomains;
+  // Verify attestations (requiredDomains may be undefined in v0.4 — domains come from SP group config)
+  const requiredDomains = executionPath.requiredDomains ?? [];
   const coveredDomains = new Set<string>();
 
   for (const blob of request.attestations) {

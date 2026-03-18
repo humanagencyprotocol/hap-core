@@ -136,7 +136,7 @@ export interface GateQuestion {
  */
 export interface ExecutionPath {
   description: string;
-  requiredDomains: string[];
+  requiredDomains?: string[];  // v0.3: defined in profile. v0.4: moved to SP group config.
   ttl?: { default: number; max: number };
 }
 
