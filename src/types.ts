@@ -60,6 +60,7 @@ export interface ProfileFrameField {
   required: boolean;
   description?: string;
   constraint?: FieldConstraint;
+  enum?: string[];
 }
 
 /**
@@ -70,6 +71,7 @@ export interface ProfileBoundsField {
   required: boolean;
   description?: string;
   constraint?: FieldConstraint;
+  enum?: string[];
 }
 
 /**
@@ -80,6 +82,7 @@ export interface ProfileContextField {
   required: boolean;
   description?: string;
   constraint?: FieldConstraint;
+  enum?: string[];
 }
 
 /**
