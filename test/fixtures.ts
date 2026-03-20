@@ -86,91 +86,85 @@ export const SPEND_PROFILE: AgentProfile = {
   retention_minimum: 7776000,
 };
 
-export const PUBLISH_PROFILE: AgentProfile = {
-  id: 'publish@0.3',
+export const EMAIL_PROFILE: AgentProfile = {
+  id: 'email@0.3',
   version: '0.3',
-  name: 'External Communication',
-  description: 'External communication authority — governs sending anything externally as the company',
+  name: 'Email',
+  description: 'Email authority — governs sending, drafting, and reading email via Gmail',
 
   frameSchema: {
-    keyOrder: ['profile', 'path', 'channel', 'audience', 'recipient_max', 'scope'],
+    keyOrder: ['profile', 'path', 'recipient_max', 'send_daily_max', 'read_max_age_days', 'read_daily_max'],
     fields: {
       profile: { type: 'string', required: true },
       path: { type: 'string', required: true },
-      channel: {
-        type: 'string',
-        required: true,
-        description: 'Communication channel (email, webhook, notification)',
-        constraint: { type: 'string', enforceable: ['enum'] },
-      },
-      audience: {
-        type: 'string',
-        required: true,
-        description: 'Audience scope (individual, segment, all)',
-        constraint: { type: 'string', enforceable: ['enum'] },
-      },
       recipient_max: {
         type: 'number',
-        required: true,
-        description: 'Maximum recipients per send operation',
+        required: false,
+        description: 'Maximum recipients per email (send/draft paths)',
         constraint: { type: 'number', enforceable: ['max'] },
       },
-      scope: {
-        type: 'string',
-        required: true,
-        description: 'Impact scope (external = real customers, internal = test accounts)',
-        constraint: { type: 'string', enforceable: ['enum'] },
+      send_daily_max: {
+        type: 'number',
+        required: false,
+        description: 'Maximum emails sent or drafted per day',
+        constraint: { type: 'number', enforceable: ['max'] },
+      },
+      read_max_age_days: {
+        type: 'number',
+        required: false,
+        description: 'Maximum age in days for email search (read path)',
+        constraint: { type: 'number', enforceable: ['max'] },
+      },
+      read_daily_max: {
+        type: 'number',
+        required: false,
+        description: 'Maximum emails read per day (read path)',
+        constraint: { type: 'number', enforceable: ['max'] },
       },
     },
   },
 
   executionContextSchema: {
     fields: {
-      channel: {
-        source: 'declared',
-        description: 'Communication channel being used',
-        required: true,
-        constraint: { type: 'string', enforceable: ['enum'] },
-      },
-      audience: {
-        source: 'declared',
-        description: 'Audience scope for this send',
-        required: true,
-        constraint: { type: 'string', enforceable: ['enum'] },
-      },
       recipient_count: {
         source: 'declared',
-        description: 'Number of recipients in this send',
+        description: 'Number of recipients in this email',
         required: true,
         constraint: { type: 'number', enforceable: ['max'] },
       },
-      scope: {
-        source: 'declared',
-        description: 'Impact scope of this send',
+      send_count_daily: {
+        source: 'cumulative',
+        cumulativeField: '_count',
+        window: 'daily',
+        description: 'Running daily send/draft count (resolved from execution log)',
         required: true,
-        constraint: { type: 'string', enforceable: ['enum'] },
+        constraint: { type: 'number', enforceable: ['max'] },
       },
     },
   },
 
   executionPaths: {
-    'publish-transactional': {
-      description: 'System emails — password resets, receipts, notifications',
-      requiredDomains: ['engineering'],
+    'email-draft': {
+      description: 'Create email drafts for human review before sending',
+      requiredDomains: ['communications'],
     },
-    'publish-marketing': {
-      description: 'Campaigns and announcements to segments',
-      requiredDomains: ['marketing', 'product'],
-      ttl: { default: 7200, max: 86400 },
+    'email-send': {
+      description: 'Send emails directly within authorized bounds',
+      requiredDomains: ['communications'],
+      ttl: { default: 14400, max: 86400 },
+    },
+    'email-read': {
+      description: 'Read and search inbox within time and volume bounds',
+      requiredDomains: ['communications'],
     },
   },
 
   requiredGates: ['frame', 'problem', 'objective', 'tradeoff', 'commitment', 'decision_owner'],
 
   gateQuestions: {
-    problem: { question: 'What problem does this communication authority address?', required: true },
-    objective: { question: 'What outcome should this communication authority enable?', required: true },
-    tradeoffs: { question: 'What communication risks do you accept with this authority?', required: true },
+    problem: { question: 'What problem does this email authority address?', required: true },
+    objective: { question: 'What outcome should this email authority enable?', required: true },
+    tradeoffs: { question: 'What risks do you accept with this email authority?', required: true },
   },
 
   ttl: { default: 86400, max: 86400 },

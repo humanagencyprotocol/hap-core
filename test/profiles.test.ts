@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import { getProfile, listProfiles, getAllProfiles, registerProfile } from '../src/profiles';
-import { SPEND_PROFILE, PUBLISH_PROFILE } from './fixtures';
+import { SPEND_PROFILE, EMAIL_PROFILE } from './fixtures';
 
 beforeAll(() => {
   registerProfile('spend@0.3', SPEND_PROFILE);
-  registerProfile('publish@0.3', PUBLISH_PROFILE);
+  registerProfile('email@0.3', EMAIL_PROFILE);
 });
 
 describe('profiles', () => {
@@ -15,10 +15,10 @@ describe('profiles', () => {
       expect(profile!.id).toBe('spend@0.3');
     });
 
-    it('returns publish profile', () => {
-      const profile = getProfile('publish@0.3');
+    it('returns email profile', () => {
+      const profile = getProfile('email@0.3');
       expect(profile).toBeDefined();
-      expect(profile!.id).toBe('publish@0.3');
+      expect(profile!.id).toBe('email@0.3');
     });
 
     it('returns undefined for unknown profile', () => {
@@ -30,7 +30,7 @@ describe('profiles', () => {
     it('lists all profile IDs', () => {
       const ids = listProfiles();
       expect(ids).toContain('spend@0.3');
-      expect(ids).toContain('publish@0.3');
+      expect(ids).toContain('email@0.3');
     });
   });
 
@@ -75,23 +75,24 @@ describe('profiles', () => {
     });
   });
 
-  describe('publish@0.3', () => {
+  describe('email@0.3', () => {
     it('has correct execution paths', () => {
-      expect(PUBLISH_PROFILE.executionPaths['publish-transactional']).toBeDefined();
-      expect(PUBLISH_PROFILE.executionPaths['publish-transactional'].requiredDomains).toEqual(['engineering']);
-      expect(PUBLISH_PROFILE.executionPaths['publish-marketing'].requiredDomains).toEqual(['marketing', 'product']);
+      expect(EMAIL_PROFILE.executionPaths['email-draft']).toBeDefined();
+      expect(EMAIL_PROFILE.executionPaths['email-send']).toBeDefined();
+      expect(EMAIL_PROFILE.executionPaths['email-read']).toBeDefined();
+      expect(EMAIL_PROFILE.executionPaths['email-draft'].requiredDomains).toEqual(['communications']);
     });
 
     it('has constraint types on recipient_max', () => {
-      const field = PUBLISH_PROFILE.frameSchema.fields['recipient_max'];
+      const field = EMAIL_PROFILE.frameSchema!.fields['recipient_max'];
       expect(field.constraint).toBeDefined();
       expect(field.constraint!.enforceable).toContain('max');
     });
 
-    it('has constraint types on channel', () => {
-      const field = PUBLISH_PROFILE.frameSchema.fields['channel'];
+    it('has constraint types on send_daily_max', () => {
+      const field = EMAIL_PROFILE.frameSchema!.fields['send_daily_max'];
       expect(field.constraint).toBeDefined();
-      expect(field.constraint!.enforceable).toContain('enum');
+      expect(field.constraint!.enforceable).toContain('max');
     });
   });
 });

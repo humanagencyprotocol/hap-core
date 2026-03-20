@@ -10,7 +10,7 @@ import {
   validateBoundsParams,
   validateContextParams,
 } from '../src/frame';
-import { SPEND_PROFILE, PUBLISH_PROFILE, SPEND_PROFILE_V4 } from './fixtures';
+import { SPEND_PROFILE, EMAIL_PROFILE, SPEND_PROFILE_V4 } from './fixtures';
 
 describe('frame', () => {
   describe('canonicalFrame', () => {
@@ -42,19 +42,19 @@ describe('frame', () => {
       expect(result).toContain('amount_max=100.5');
     });
 
-    it('works with publish profile', () => {
+    it('works with email profile', () => {
       const frame = {
-        profile: 'publish@0.3',
-        path: 'publish-transactional',
-        channel: 'email',
-        audience: 'individual',
+        profile: 'email@0.3',
+        path: 'email-send',
         recipient_max: 5,
-        scope: 'external',
+        send_daily_max: 20,
+        read_max_age_days: 30,
+        read_daily_max: 50,
       };
 
-      const result = canonicalFrame(frame, PUBLISH_PROFILE);
+      const result = canonicalFrame(frame, EMAIL_PROFILE);
       expect(result).toBe(
-        'profile=publish@0.3\npath=publish-transactional\nchannel=email\naudience=individual\nrecipient_max=5\nscope=external'
+        'profile=email@0.3\npath=email-send\nrecipient_max=5\nsend_daily_max=20\nread_max_age_days=30\nread_daily_max=50'
       );
     });
 
