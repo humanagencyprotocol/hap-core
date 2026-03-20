@@ -10,6 +10,7 @@ import type { AgentProfile } from '../src/types';
 export const SPEND_PROFILE: AgentProfile = {
   id: 'spend@0.3',
   version: '0.3',
+  name: 'Financial Transactions',
   description: 'Financial authority — governs committing company money: charges, refunds, subscriptions, payouts',
 
   frameSchema: {
@@ -88,6 +89,7 @@ export const SPEND_PROFILE: AgentProfile = {
 export const PUBLISH_PROFILE: AgentProfile = {
   id: 'publish@0.3',
   version: '0.3',
+  name: 'External Communication',
   description: 'External communication authority — governs sending anything externally as the company',
 
   frameSchema: {
@@ -182,6 +184,7 @@ export const PUBLISH_PROFILE: AgentProfile = {
 export const SPEND_PROFILE_V4: AgentProfile = {
   id: 'spend@0.4',
   version: '0.4',
+  name: 'Financial Transactions',
   description: 'Financial authority — governs committing company money: charges, refunds, subscriptions, payouts',
 
   boundsSchema: {

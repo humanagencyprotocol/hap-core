@@ -149,6 +149,7 @@ export interface ExecutionPath {
 export interface AgentProfile {
   id: string;
   version: string;
+  name: string;
   description: string;
 
   /**
