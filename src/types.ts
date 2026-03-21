@@ -46,10 +46,11 @@ export interface Attestation {
  * Field constraint type — what kind of bound a field supports.
  * - max: numeric upper bound (actual <= bound)
  * - enum: value must be in the allowed set
+ * - subset: every item in actual must appear in bound (comma-separated, case-insensitive)
  */
 export interface FieldConstraint {
   type: 'number' | 'string';
-  enforceable: Array<'max' | 'enum'>;
+  enforceable: Array<'max' | 'enum' | 'subset'>;
 }
 
 /**
@@ -202,10 +203,25 @@ export interface AgentProfile {
 // ─── Tool Gating Types ───────────────────────────────────────────────────
 
 /**
- * Execution mapping value — either a direct field name or a field with a divisor
- * for unit conversion (e.g., Stripe cents → EUR units).
+ * Available transforms for array-aware execution mappings.
+ * - length: array length → number
+ * - join: array items joined by comma → string
+ * - join_domains: extract email domains, deduplicate, sort, join → string
  */
-export type ExecutionMappingValue = string | { field: string; divisor: number };
+export type ExecutionMappingTransform = 'join' | 'join_domains' | 'length';
+
+/**
+ * Execution mapping value — how a tool argument maps to execution context field(s).
+ * - string: direct copy (argName → fieldName)
+ * - { field, divisor }: numeric division (e.g., cents ÷ 100 → EUR)
+ * - { field, transform }: array transform (e.g., join_domains)
+ * - Array form: one argument maps to multiple execution fields
+ */
+export type ExecutionMappingValue =
+  | string
+  | { field: string; divisor: number }
+  | { field: string; transform: ExecutionMappingTransform }
+  | Array<{ field: string; divisor?: number; transform?: ExecutionMappingTransform }>;
 
 /**
  * Tool gating entry — how a tool's calls map to execution context fields.

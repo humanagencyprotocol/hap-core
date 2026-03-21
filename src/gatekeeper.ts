@@ -470,6 +470,28 @@ function checkContextConstraints(
           });
         }
       }
+
+      if (enforceType === 'subset') {
+        const boundValue = context[fieldName];
+        const actualValue = execution[fieldName];
+
+        if (boundValue === undefined || boundValue === '') continue;
+        if (actualValue === undefined || actualValue === '') continue;
+
+        const allowed = String(boundValue).split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+        const actuals = String(actualValue).split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+
+        const disallowed = actuals.filter(v => !allowed.includes(v));
+        if (disallowed.length > 0) {
+          errors.push({
+            code: 'BOUND_EXCEEDED',
+            field: fieldName,
+            message: `Values [${disallowed.join(', ')}] not in authorized set [${allowed.join(', ')}]`,
+            bound: boundValue,
+            actual: actualValue,
+          });
+        }
+      }
     }
   }
 

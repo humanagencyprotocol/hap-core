@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import { verify } from '../src/gatekeeper';
 import { registerProfile } from '../src/profiles';
-import { SPEND_PROFILE, SPEND_PROFILE_V4 } from './fixtures';
+import { SPEND_PROFILE, SPEND_PROFILE_V4, EMAIL_PROFILE_V4 } from './fixtures';
 import {
   generateTestKeyPair,
   createTestAttestation,
@@ -33,6 +33,7 @@ describe('gatekeeper', () => {
   beforeAll(async () => {
     registerProfile('spend@0.3', SPEND_PROFILE);
     registerProfile('spend@0.4', SPEND_PROFILE_V4);
+    registerProfile('email@0.4', EMAIL_PROFILE_V4);
     keyPair = await generateTestKeyPair();
     wrongKeyPair = await generateTestKeyPair();
   });
@@ -462,6 +463,172 @@ describe('gatekeeper', () => {
       );
 
       expect(result.approved).toBe(true);
+    });
+  });
+
+  // ─── v0.4 subset constraint tests ──────────────────────────────────────────
+
+  describe('v0.4 — subset constraint enforcement', () => {
+    const emailBounds: AgentFrameParams = {
+      profile: 'email@0.4',
+      path: 'email-send',
+      recipient_max: 5,
+      send_daily_max: 20,
+    };
+
+    const emailContext = {
+      allowed_domains: 'gmail.com,acme.com',
+      allowed_recipients: 'alice@gmail.com,bob@acme.com',
+    };
+
+    it('approves when actual domains are a subset of allowed', async () => {
+      const blob = await createTestAttestationV4({
+        keyPair,
+        bounds: emailBounds,
+        context: emailContext,
+        profile: EMAIL_PROFILE_V4,
+        domain: 'communications',
+      });
+
+      const result = await verify(
+        {
+          frame: emailBounds,
+          context: emailContext,
+          attestations: [blob],
+          execution: { recipient_count: 1, allowed_domains: 'gmail.com', allowed_recipients: 'alice@gmail.com' },
+        },
+        keyPair.publicKeyHex
+      );
+
+      expect(result.approved).toBe(true);
+    });
+
+    it('rejects when actual domain is not in allowed set', async () => {
+      const blob = await createTestAttestationV4({
+        keyPair,
+        bounds: emailBounds,
+        context: emailContext,
+        profile: EMAIL_PROFILE_V4,
+        domain: 'communications',
+      });
+
+      const result = await verify(
+        {
+          frame: emailBounds,
+          context: emailContext,
+          attestations: [blob],
+          execution: { recipient_count: 1, allowed_domains: 'sublin.app', allowed_recipients: 'andreas@sublin.app' },
+        },
+        keyPair.publicKeyHex
+      );
+
+      expect(result.approved).toBe(false);
+      if (!result.approved) {
+        expect(result.errors.some(e =>
+          e.code === 'BOUND_EXCEEDED' &&
+          e.field === 'allowed_domains' &&
+          e.message.includes('sublin.app'),
+        )).toBe(true);
+      }
+    });
+
+    it('skips subset check when bound is empty', async () => {
+      const openContext = { allowed_domains: '', allowed_recipients: '' };
+
+      const blob = await createTestAttestationV4({
+        keyPair,
+        bounds: emailBounds,
+        context: openContext,
+        profile: EMAIL_PROFILE_V4,
+        domain: 'communications',
+      });
+
+      const result = await verify(
+        {
+          frame: emailBounds,
+          context: openContext,
+          attestations: [blob],
+          execution: { recipient_count: 1, allowed_domains: 'any-domain.com', allowed_recipients: 'anyone@any-domain.com' },
+        },
+        keyPair.publicKeyHex
+      );
+
+      expect(result.approved).toBe(true);
+    });
+
+    it('subset check is case-insensitive', async () => {
+      const blob = await createTestAttestationV4({
+        keyPair,
+        bounds: emailBounds,
+        context: emailContext,
+        profile: EMAIL_PROFILE_V4,
+        domain: 'communications',
+      });
+
+      const result = await verify(
+        {
+          frame: emailBounds,
+          context: emailContext,
+          attestations: [blob],
+          execution: { recipient_count: 1, allowed_domains: 'Gmail.COM', allowed_recipients: 'Alice@Gmail.COM' },
+        },
+        keyPair.publicKeyHex
+      );
+
+      expect(result.approved).toBe(true);
+    });
+
+    it('subset with single value in both bound and actual', async () => {
+      const singleContext = { allowed_domains: 'gmail.com', allowed_recipients: '' };
+
+      const blob = await createTestAttestationV4({
+        keyPair,
+        bounds: emailBounds,
+        context: singleContext,
+        profile: EMAIL_PROFILE_V4,
+        domain: 'communications',
+      });
+
+      const result = await verify(
+        {
+          frame: emailBounds,
+          context: singleContext,
+          attestations: [blob],
+          execution: { recipient_count: 1, allowed_domains: 'gmail.com' },
+        },
+        keyPair.publicKeyHex
+      );
+
+      expect(result.approved).toBe(true);
+    });
+
+    it('rejects when one of multiple domains is not allowed', async () => {
+      const blob = await createTestAttestationV4({
+        keyPair,
+        bounds: emailBounds,
+        context: emailContext,
+        profile: EMAIL_PROFILE_V4,
+        domain: 'communications',
+      });
+
+      const result = await verify(
+        {
+          frame: emailBounds,
+          context: emailContext,
+          attestations: [blob],
+          execution: { recipient_count: 2, allowed_domains: 'gmail.com,evil.com', allowed_recipients: 'a@gmail.com,b@evil.com' },
+        },
+        keyPair.publicKeyHex
+      );
+
+      expect(result.approved).toBe(false);
+      if (!result.approved) {
+        expect(result.errors.some(e =>
+          e.code === 'BOUND_EXCEEDED' &&
+          e.field === 'allowed_domains' &&
+          e.message.includes('evil.com'),
+        )).toBe(true);
+      }
     });
   });
 });

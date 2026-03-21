@@ -172,6 +172,108 @@ export const EMAIL_PROFILE: AgentProfile = {
 };
 
 /**
+ * v0.4 email profile fixture — uses boundsSchema + contextSchema with subset constraints.
+ */
+export const EMAIL_PROFILE_V4: AgentProfile = {
+  id: 'email@0.4',
+  version: '0.4',
+  name: 'Email',
+  description: 'Email authority — governs sending, drafting, and reading email via Gmail',
+
+  boundsSchema: {
+    keyOrder: ['profile', 'path', 'recipient_max', 'send_daily_max'],
+    fields: {
+      profile: { type: 'string', required: true },
+      path: { type: 'string', required: true },
+      recipient_max: {
+        type: 'number',
+        required: false,
+        description: 'Maximum recipients per email',
+        constraint: { type: 'number', enforceable: ['max'] },
+      },
+      send_daily_max: {
+        type: 'number',
+        required: false,
+        description: 'Maximum emails sent or drafted per day',
+        constraint: { type: 'number', enforceable: ['max'] },
+      },
+    },
+  },
+
+  contextSchema: {
+    keyOrder: ['allowed_recipients', 'allowed_domains'],
+    fields: {
+      allowed_recipients: {
+        type: 'string',
+        required: false,
+        description: 'Comma-separated list of allowed email addresses',
+        constraint: { type: 'string', enforceable: ['subset'] },
+      },
+      allowed_domains: {
+        type: 'string',
+        required: false,
+        description: 'Comma-separated list of allowed recipient domains',
+        constraint: { type: 'string', enforceable: ['subset'] },
+      },
+    },
+  },
+
+  executionContextSchema: {
+    fields: {
+      recipient_count: {
+        source: 'declared',
+        description: 'Number of recipients in this email',
+        required: true,
+        constraint: { type: 'number', enforceable: ['max'] },
+      },
+      allowed_recipients: {
+        source: 'declared',
+        description: 'Comma-separated recipient addresses from this call (checked against context)',
+        required: false,
+        constraint: { type: 'string', enforceable: ['subset'] },
+      },
+      allowed_domains: {
+        source: 'declared',
+        description: 'Comma-separated unique recipient domains from this call (checked against context)',
+        required: false,
+        constraint: { type: 'string', enforceable: ['subset'] },
+      },
+      send_count_daily: {
+        source: 'cumulative',
+        cumulativeField: '_count',
+        window: 'daily',
+        description: 'Running daily send/draft count',
+        required: true,
+        constraint: { type: 'number', enforceable: ['max'] },
+      },
+    },
+  },
+
+  executionPaths: {
+    'email-send': {
+      description: 'Send emails directly within authorized bounds',
+      requiredDomains: ['communications'],
+      ttl: { default: 14400, max: 86400 },
+    },
+    'email-draft': {
+      description: 'Create email drafts for human review before sending',
+      requiredDomains: ['communications'],
+    },
+  },
+
+  requiredGates: ['bounds', 'problem', 'objective', 'tradeoff', 'commitment', 'decision_owner'],
+
+  gateQuestions: {
+    problem: { question: 'What problem does this email authority address?', required: true },
+    objective: { question: 'What outcome should this email authority enable?', required: true },
+    tradeoffs: { question: 'What risks do you accept with this email authority?', required: true },
+  },
+
+  ttl: { default: 86400, max: 86400 },
+  retention_minimum: 7776000,
+};
+
+/**
  * v0.4 spend profile fixture — uses boundsSchema + contextSchema instead of frameSchema.
  * Mirrors /hap-profiles/spend/profile.json at v0.4.
  */
