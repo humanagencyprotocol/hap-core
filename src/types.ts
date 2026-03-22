@@ -71,6 +71,8 @@ export interface ProfileBoundsField {
   type: 'string' | 'number';
   required: boolean;
   description?: string;
+  displayName?: string;
+  format?: 'email' | 'domain' | 'url' | 'currency';
   constraint?: FieldConstraint;
   enum?: string[];
 }
@@ -82,6 +84,8 @@ export interface ProfileContextField {
   type: 'string' | 'number';
   required: boolean;
   description?: string;
+  displayName?: string;
+  format?: 'email' | 'domain' | 'url' | 'currency';
   constraint?: FieldConstraint;
   enum?: string[];
 }
@@ -149,8 +153,8 @@ export interface ExecutionPath {
  */
 export interface AgentProfile {
   id: string;
+  name?: string;
   version: string;
-  name: string;
   description: string;
 
   /**
@@ -196,7 +200,11 @@ export interface AgentProfile {
   ttl: { default: number; max: number };
   retention_minimum: number;
 
-  /** Tool gating configuration — how MCP tools map to execution context. */
+  /**
+   * Tool gating configuration — how MCP tools map to execution context.
+   * @deprecated Tool gating now lives in integration manifests (content/integrations/*.json).
+   * Kept for backward compatibility with profiles that still include it.
+   */
   toolGating?: ProfileToolGating;
 }
 
@@ -225,16 +233,21 @@ export type ExecutionMappingValue =
 
 /**
  * Tool gating entry — how a tool's calls map to execution context fields.
+ * Read-only tools use { category: "read" } — they require authorization
+ * but skip execution context verification.
  */
 export interface ProfileToolGatingEntry {
   executionMapping: Record<string, ExecutionMappingValue>;
   staticExecution?: Record<string, string | number>;
+  /** Read-only tools: require authorization but no execution context checks */
+  category?: 'read';
 }
 
 /**
  * Profile-level tool gating configuration.
  * - default: applied to all tools not listed in overrides
- * - overrides: per-tool configs keyed by original MCP tool name (null = exempt)
+ * - overrides: per-tool configs keyed by original MCP tool name
+ *   Use { category: "read" } for read-only tools (null is deprecated)
  */
 export interface ProfileToolGating {
   default: ProfileToolGatingEntry;
