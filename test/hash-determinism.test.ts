@@ -7,13 +7,13 @@
 
 import { describe, it, expect } from 'vitest';
 import { computeBoundsHash, computeContextHash } from '../src/frame';
-import { SPEND_PROFILE_V4, SPEND_PROFILE } from './fixtures';
+import { CHARGE_PROFILE_V4, CHARGE_PROFILE } from './fixtures';
 
 // ── Shared fixtures ───────────────────────────────────────────────────────────
 
 const BOUNDS = {
-  profile: 'spend@0.4',
-  path: 'spend-routine',
+  profile: 'charge@0.4',
+  path: 'charge-routine',
   amount_max: 100,
   amount_daily_max: 500,
   amount_monthly_max: 5000,
@@ -30,9 +30,9 @@ const CONTEXT = {
 describe('hash determinism', () => {
   describe('bounds hash', () => {
     it('same bounds produce same hash across multiple calls', () => {
-      const hash1 = computeBoundsHash(BOUNDS, SPEND_PROFILE_V4);
-      const hash2 = computeBoundsHash(BOUNDS, SPEND_PROFILE_V4);
-      const hash3 = computeBoundsHash(BOUNDS, SPEND_PROFILE_V4);
+      const hash1 = computeBoundsHash(BOUNDS, CHARGE_PROFILE_V4);
+      const hash2 = computeBoundsHash(BOUNDS, CHARGE_PROFILE_V4);
+      const hash3 = computeBoundsHash(BOUNDS, CHARGE_PROFILE_V4);
 
       expect(hash1).toBe(hash2);
       expect(hash2).toBe(hash3);
@@ -43,8 +43,8 @@ describe('hash determinism', () => {
       // The profile's boundsSchema.keyOrder controls canonical ordering,
       // so inserting keys in a different order must not affect the hash
       const boundsForwardOrder = {
-        profile: 'spend@0.4',
-        path: 'spend-routine',
+        profile: 'charge@0.4',
+        path: 'charge-routine',
         amount_max: 100,
         amount_daily_max: 500,
         amount_monthly_max: 5000,
@@ -56,12 +56,12 @@ describe('hash determinism', () => {
         amount_monthly_max: 5000,
         amount_daily_max: 500,
         amount_max: 100,
-        path: 'spend-routine',
-        profile: 'spend@0.4',
+        path: 'charge-routine',
+        profile: 'charge@0.4',
       };
 
-      const hash1 = computeBoundsHash(boundsForwardOrder, SPEND_PROFILE_V4);
-      const hash2 = computeBoundsHash(boundsReverseOrder, SPEND_PROFILE_V4);
+      const hash1 = computeBoundsHash(boundsForwardOrder, CHARGE_PROFILE_V4);
+      const hash2 = computeBoundsHash(boundsReverseOrder, CHARGE_PROFILE_V4);
 
       expect(hash1).toBe(hash2);
     });
@@ -70,8 +70,8 @@ describe('hash determinism', () => {
       const boundsA = { ...BOUNDS, amount_max: 100 };
       const boundsB = { ...BOUNDS, amount_max: 200 };
 
-      expect(computeBoundsHash(boundsA, SPEND_PROFILE_V4)).not.toBe(
-        computeBoundsHash(boundsB, SPEND_PROFILE_V4),
+      expect(computeBoundsHash(boundsA, CHARGE_PROFILE_V4)).not.toBe(
+        computeBoundsHash(boundsB, CHARGE_PROFILE_V4),
       );
     });
 
@@ -82,15 +82,15 @@ describe('hash determinism', () => {
       const boundsWithNumber = { ...BOUNDS, amount_max: 100 };
       // TypeScript won't allow string here for a number field, but the canonical
       // form is identical. We verify the hash is stable for the numeric case.
-      const hash1 = computeBoundsHash(boundsWithNumber, SPEND_PROFILE_V4);
-      const hash2 = computeBoundsHash(boundsWithNumber, SPEND_PROFILE_V4);
+      const hash1 = computeBoundsHash(boundsWithNumber, CHARGE_PROFILE_V4);
+      const hash2 = computeBoundsHash(boundsWithNumber, CHARGE_PROFILE_V4);
       expect(hash1).toBe(hash2);
 
       // The canonical string contains "amount_max=100", not "amount_max=100.0"
       // We verify by checking a known hash derivation
       const expectedCanonical = [
-        'profile=spend@0.4',
-        'path=spend-routine',
+        'profile=charge@0.4',
+        'path=charge-routine',
         'amount_max=100',
         'amount_daily_max=500',
         'amount_monthly_max=5000',
@@ -105,9 +105,9 @@ describe('hash determinism', () => {
 
   describe('context hash', () => {
     it('same context produces same hash across multiple calls', () => {
-      const hash1 = computeContextHash(CONTEXT, SPEND_PROFILE_V4);
-      const hash2 = computeContextHash(CONTEXT, SPEND_PROFILE_V4);
-      const hash3 = computeContextHash(CONTEXT, SPEND_PROFILE_V4);
+      const hash1 = computeContextHash(CONTEXT, CHARGE_PROFILE_V4);
+      const hash2 = computeContextHash(CONTEXT, CHARGE_PROFILE_V4);
+      const hash3 = computeContextHash(CONTEXT, CHARGE_PROFILE_V4);
 
       expect(hash1).toBe(hash2);
       expect(hash2).toBe(hash3);
@@ -120,8 +120,8 @@ describe('hash determinism', () => {
       const contextForwardOrder = { currency: 'USD', action_type: 'charge' };
       const contextReverseOrder = { action_type: 'charge', currency: 'USD' };
 
-      const hash1 = computeContextHash(contextForwardOrder, SPEND_PROFILE_V4);
-      const hash2 = computeContextHash(contextReverseOrder, SPEND_PROFILE_V4);
+      const hash1 = computeContextHash(contextForwardOrder, CHARGE_PROFILE_V4);
+      const hash2 = computeContextHash(contextReverseOrder, CHARGE_PROFILE_V4);
 
       expect(hash1).toBe(hash2);
     });
@@ -130,8 +130,8 @@ describe('hash determinism', () => {
       const contextA = { currency: 'USD', action_type: 'charge' };
       const contextB = { currency: 'EUR', action_type: 'charge' };
 
-      expect(computeContextHash(contextA, SPEND_PROFILE_V4)).not.toBe(
-        computeContextHash(contextB, SPEND_PROFILE_V4),
+      expect(computeContextHash(contextA, CHARGE_PROFILE_V4)).not.toBe(
+        computeContextHash(contextB, CHARGE_PROFILE_V4),
       );
     });
   });
@@ -142,8 +142,8 @@ describe('hash determinism', () => {
       const EMPTY_SHA256 = 'sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
 
       // Profile with no contextSchema → canonicalContext returns "" → hash of ""
-      const hash1 = computeContextHash({}, SPEND_PROFILE);
-      const hash2 = computeContextHash({}, SPEND_PROFILE);
+      const hash1 = computeContextHash({}, CHARGE_PROFILE);
+      const hash2 = computeContextHash({}, CHARGE_PROFILE);
 
       expect(hash1).toBe(EMPTY_SHA256);
       expect(hash2).toBe(EMPTY_SHA256);
@@ -151,7 +151,7 @@ describe('hash determinism', () => {
 
     it('empty context hash is stable across multiple calls', () => {
       const hashes = Array.from({ length: 5 }, () =>
-        computeContextHash({}, SPEND_PROFILE),
+        computeContextHash({}, CHARGE_PROFILE),
       );
       expect(new Set(hashes).size).toBe(1);
     });
@@ -166,8 +166,8 @@ describe('hash determinism', () => {
       // Construct a degenerate case: a single-field bounds with value matching context
       // This is necessarily cross-profile, but illustrates the canonical difference.
 
-      const boundsHash = computeBoundsHash(BOUNDS, SPEND_PROFILE_V4);
-      const contextHash = computeContextHash(CONTEXT, SPEND_PROFILE_V4);
+      const boundsHash = computeBoundsHash(BOUNDS, CHARGE_PROFILE_V4);
+      const contextHash = computeContextHash(CONTEXT, CHARGE_PROFILE_V4);
 
       // They must be different — different canonical key=value lines
       expect(boundsHash).not.toBe(contextHash);
@@ -179,20 +179,20 @@ describe('hash determinism', () => {
 
     it('bounds hash is sha256 of bounds canonical form, not context canonical form', () => {
       // The bounds canonical form is:
-      //   profile=spend@0.4\npath=spend-routine\namount_max=100\n...
+      //   profile=charge@0.4\npath=charge-routine\namount_max=100\n...
       // The context canonical form is:
       //   currency=USD\naction_type=charge
       // These are fundamentally different strings, so the hashes must differ.
 
-      const boundsHash = computeBoundsHash(BOUNDS, SPEND_PROFILE_V4);
-      const contextHash = computeContextHash(CONTEXT, SPEND_PROFILE_V4);
+      const boundsHash = computeBoundsHash(BOUNDS, CHARGE_PROFILE_V4);
+      const contextHash = computeContextHash(CONTEXT, CHARGE_PROFILE_V4);
 
       // Confirm they are non-equal
       expect(boundsHash).not.toBe(contextHash);
 
       // Confirm they are both stable (calling again gives same result)
-      expect(computeBoundsHash(BOUNDS, SPEND_PROFILE_V4)).toBe(boundsHash);
-      expect(computeContextHash(CONTEXT, SPEND_PROFILE_V4)).toBe(contextHash);
+      expect(computeBoundsHash(BOUNDS, CHARGE_PROFILE_V4)).toBe(boundsHash);
+      expect(computeContextHash(CONTEXT, CHARGE_PROFILE_V4)).toBe(contextHash);
     });
   });
 });

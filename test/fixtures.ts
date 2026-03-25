@@ -7,8 +7,8 @@
 
 import type { AgentProfile } from '../src/types';
 
-export const SPEND_PROFILE: AgentProfile = {
-  id: 'spend@0.3',
+export const CHARGE_PROFILE: AgentProfile = {
+  id: 'charge@0.3',
   version: '0.3',
   name: 'Financial Transactions',
   description: 'Financial authority — governs committing company money: charges, refunds, subscriptions, payouts',
@@ -63,11 +63,11 @@ export const SPEND_PROFILE: AgentProfile = {
   },
 
   executionPaths: {
-    'spend-routine': {
+    'charge-routine': {
       description: 'Day-to-day financial transactions within authorized bounds',
       requiredDomains: ['finance'],
     },
-    'spend-reviewed': {
+    'charge-reviewed': {
       description: 'Large or unusual transactions requiring dual authorization',
       requiredDomains: ['finance', 'compliance'],
       ttl: { default: 14400, max: 86400 },
@@ -78,7 +78,7 @@ export const SPEND_PROFILE: AgentProfile = {
 
   gateQuestions: {
     problem: { question: 'What problem does this financial authority address?', required: true },
-    objective: { question: 'What outcome should this spending authority enable?', required: true },
+    objective: { question: 'What outcome should this charge authority enable?', required: true },
     tradeoffs: { question: 'What financial risks do you accept with this authority?', required: true },
   },
 
@@ -274,11 +274,11 @@ export const EMAIL_PROFILE_V4: AgentProfile = {
 };
 
 /**
- * v0.4 spend profile fixture — uses boundsSchema + contextSchema instead of frameSchema.
- * Mirrors /hap-profiles/spend/profile.json at v0.4.
+ * v0.4 charge profile fixture — uses boundsSchema + contextSchema instead of frameSchema.
+ * Mirrors /hap-profiles/charge/profile.json at v0.4.
  */
-export const SPEND_PROFILE_V4: AgentProfile = {
-  id: 'spend@0.4',
+export const CHARGE_PROFILE_V4: AgentProfile = {
+  id: 'charge@0.4',
   version: '0.4',
   name: 'Financial Transactions',
   description: 'Financial authority — governs committing company money: charges, refunds, subscriptions, payouts',
@@ -297,13 +297,13 @@ export const SPEND_PROFILE_V4: AgentProfile = {
       amount_daily_max: {
         type: 'number',
         required: true,
-        description: 'Maximum cumulative spend per day in currency units',
+        description: 'Maximum cumulative charges per day in currency units',
         constraint: { type: 'number', enforceable: ['max'] },
       },
       amount_monthly_max: {
         type: 'number',
         required: true,
-        description: 'Maximum cumulative spend per month in currency units',
+        description: 'Maximum cumulative charges per month in currency units',
         constraint: { type: 'number', enforceable: ['max'] },
       },
       transaction_count_daily_max: {
@@ -357,7 +357,7 @@ export const SPEND_PROFILE_V4: AgentProfile = {
         source: 'cumulative',
         cumulativeField: 'amount',
         window: 'daily',
-        description: 'Running daily spend total (resolved from execution log)',
+        description: 'Running daily charge total (resolved from execution log)',
         required: true,
         constraint: { type: 'number', enforceable: ['max'] },
       },
@@ -365,7 +365,7 @@ export const SPEND_PROFILE_V4: AgentProfile = {
         source: 'cumulative',
         cumulativeField: 'amount',
         window: 'monthly',
-        description: 'Running monthly spend total (resolved from execution log)',
+        description: 'Running monthly charge total (resolved from execution log)',
         required: true,
         constraint: { type: 'number', enforceable: ['max'] },
       },
@@ -381,12 +381,12 @@ export const SPEND_PROFILE_V4: AgentProfile = {
   },
 
   executionPaths: {
-    'spend-routine': {
+    'charge-routine': {
       description: 'Day-to-day financial transactions within authorized bounds',
       requiredDomains: ['finance'],
       ttl: { default: 86400, max: 86400 },
     },
-    'spend-reviewed': {
+    'charge-reviewed': {
       description: 'Large or unusual transactions requiring dual authorization',
       requiredDomains: ['finance', 'compliance'],
       ttl: { default: 14400, max: 86400 },
@@ -397,7 +397,7 @@ export const SPEND_PROFILE_V4: AgentProfile = {
 
   gateQuestions: {
     problem: { question: 'What problem does this financial authority address?', required: true },
-    objective: { question: 'What outcome should this spending authority enable?', required: true },
+    objective: { question: 'What outcome should this charge authority enable?', required: true },
     tradeoffs: { question: 'What financial risks do you accept with this authority?', required: true },
   },
 

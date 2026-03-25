@@ -1,18 +1,18 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import { getProfile, listProfiles, getAllProfiles, registerProfile } from '../src/profiles';
-import { SPEND_PROFILE, EMAIL_PROFILE } from './fixtures';
+import { CHARGE_PROFILE, EMAIL_PROFILE } from './fixtures';
 
 beforeAll(() => {
-  registerProfile('spend@0.3', SPEND_PROFILE);
+  registerProfile('charge@0.3', CHARGE_PROFILE);
   registerProfile('email@0.3', EMAIL_PROFILE);
 });
 
 describe('profiles', () => {
   describe('getProfile', () => {
-    it('returns spend profile', () => {
-      const profile = getProfile('spend@0.3');
+    it('returns charge profile', () => {
+      const profile = getProfile('charge@0.3');
       expect(profile).toBeDefined();
-      expect(profile!.id).toBe('spend@0.3');
+      expect(profile!.id).toBe('charge@0.3');
     });
 
     it('returns email profile', () => {
@@ -29,7 +29,7 @@ describe('profiles', () => {
   describe('listProfiles', () => {
     it('lists all profile IDs', () => {
       const ids = listProfiles();
-      expect(ids).toContain('spend@0.3');
+      expect(ids).toContain('charge@0.3');
       expect(ids).toContain('email@0.3');
     });
   });
@@ -41,37 +41,37 @@ describe('profiles', () => {
     });
   });
 
-  describe('spend@0.3', () => {
+  describe('charge@0.3', () => {
     it('has correct execution paths', () => {
-      expect(SPEND_PROFILE.executionPaths['spend-routine']).toBeDefined();
-      expect(SPEND_PROFILE.executionPaths['spend-routine'].requiredDomains).toEqual(['finance']);
-      expect(SPEND_PROFILE.executionPaths['spend-reviewed'].requiredDomains).toEqual(['finance', 'compliance']);
+      expect(CHARGE_PROFILE.executionPaths['charge-routine']).toBeDefined();
+      expect(CHARGE_PROFILE.executionPaths['charge-routine'].requiredDomains).toEqual(['finance']);
+      expect(CHARGE_PROFILE.executionPaths['charge-reviewed'].requiredDomains).toEqual(['finance', 'compliance']);
     });
 
     it('has constraint types on amount_max', () => {
-      const field = SPEND_PROFILE.frameSchema.fields['amount_max'];
+      const field = CHARGE_PROFILE.frameSchema.fields['amount_max'];
       expect(field.constraint).toBeDefined();
       expect(field.constraint!.enforceable).toContain('max');
     });
 
     it('has constraint types on currency', () => {
-      const field = SPEND_PROFILE.frameSchema.fields['currency'];
+      const field = CHARGE_PROFILE.frameSchema.fields['currency'];
       expect(field.constraint).toBeDefined();
       expect(field.constraint!.enforceable).toContain('enum');
     });
 
     it('has all 6 required gates', () => {
-      expect(SPEND_PROFILE.requiredGates).toHaveLength(6);
-      expect(SPEND_PROFILE.requiredGates).toContain('frame');
-      expect(SPEND_PROFILE.requiredGates).toContain('problem');
-      expect(SPEND_PROFILE.requiredGates).toContain('commitment');
-      expect(SPEND_PROFILE.requiredGates).toContain('decision_owner');
+      expect(CHARGE_PROFILE.requiredGates).toHaveLength(6);
+      expect(CHARGE_PROFILE.requiredGates).toContain('frame');
+      expect(CHARGE_PROFILE.requiredGates).toContain('problem');
+      expect(CHARGE_PROFILE.requiredGates).toContain('commitment');
+      expect(CHARGE_PROFILE.requiredGates).toContain('decision_owner');
     });
 
     it('has gate questions', () => {
-      expect(SPEND_PROFILE.gateQuestions.problem.question).toBeDefined();
-      expect(SPEND_PROFILE.gateQuestions.objective.question).toBeDefined();
-      expect(SPEND_PROFILE.gateQuestions.tradeoffs.question).toBeDefined();
+      expect(CHARGE_PROFILE.gateQuestions.problem.question).toBeDefined();
+      expect(CHARGE_PROFILE.gateQuestions.objective.question).toBeDefined();
+      expect(CHARGE_PROFILE.gateQuestions.tradeoffs.question).toBeDefined();
     });
   });
 

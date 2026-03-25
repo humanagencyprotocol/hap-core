@@ -12,15 +12,15 @@ import { registerProfile, getProfile } from '../src/profiles';
 import { computeBoundsHash, computeContextHash } from '../src/frame';
 import type { AgentProfile } from '../src/types';
 
-// ── Load the real v0.4 spend profile from hap-profiles ───────────────────────
+// ── Load the real v0.4 charge profile from hap-profiles ───────────────────────
 
 const PROFILE_PATH = join(
   import.meta.dirname,
-  '../../hap-profiles/spend/profile.json',
+  '../../hap-profiles/charge/profile.json',
 );
 
 const RAW_PROFILE = JSON.parse(readFileSync(PROFILE_PATH, 'utf-8')) as AgentProfile;
-const PROFILE_ID = 'github.com/humanagencyprotocol/hap-profiles/spend@0.4';
+const PROFILE_ID = 'github.com/humanagencyprotocol/hap-profiles/charge@0.4';
 
 beforeAll(() => {
   registerProfile(PROFILE_ID, RAW_PROFILE);
@@ -29,7 +29,7 @@ beforeAll(() => {
 // ── Tests ─────────────────────────────────────────────────────────────────────
 
 describe('v0.4 profiles', () => {
-  it('registers and retrieves v0.4 spend profile', () => {
+  it('registers and retrieves v0.4 charge profile', () => {
     const profile = getProfile(PROFILE_ID);
     expect(profile).toBeDefined();
     expect(profile!.id).toBe(PROFILE_ID);
@@ -57,7 +57,7 @@ describe('v0.4 profiles', () => {
     expect(profile.frameSchema).toBeUndefined();
   });
 
-  it('v0.4 spend boundsSchema has amount_max, amount_daily_max, amount_monthly_max, transaction_count_daily_max', () => {
+  it('v0.4 charge boundsSchema has amount_max, amount_daily_max, amount_monthly_max, transaction_count_daily_max', () => {
     const profile = getProfile(PROFILE_ID)!;
     const fields = profile.boundsSchema!.fields;
     expect(fields['amount_max']).toBeDefined();
@@ -66,7 +66,7 @@ describe('v0.4 profiles', () => {
     expect(fields['transaction_count_daily_max']).toBeDefined();
   });
 
-  it('v0.4 spend contextSchema has currency, action_type', () => {
+  it('v0.4 charge contextSchema has currency, action_type', () => {
     const profile = getProfile(PROFILE_ID)!;
     const fields = profile.contextSchema!.fields;
     expect(fields['currency']).toBeDefined();
@@ -83,7 +83,7 @@ describe('v0.4 profiles', () => {
     const profile = getProfile(PROFILE_ID)!;
     const bounds = {
       profile: PROFILE_ID,
-      path: 'spend-routine',
+      path: 'charge-routine',
       amount_max: 100,
       amount_daily_max: 500,
       amount_monthly_max: 5000,
@@ -109,7 +109,7 @@ describe('v0.4 profiles', () => {
     const profile = getProfile(PROFILE_ID)!;
     const bounds = {
       profile: PROFILE_ID,
-      path: 'spend-routine',
+      path: 'charge-routine',
       amount_max: 50,
       amount_daily_max: 200,
       amount_monthly_max: 2000,
@@ -134,7 +134,7 @@ describe('v0.4 profiles', () => {
     const profile = getProfile(PROFILE_ID)!;
     const base = {
       profile: PROFILE_ID,
-      path: 'spend-routine',
+      path: 'charge-routine',
       amount_max: 100,
       amount_daily_max: 500,
       amount_monthly_max: 5000,
@@ -154,12 +154,12 @@ describe('v0.4 profiles', () => {
   });
 
   it('short name lookup works for v0.4 profile', () => {
-    // The profile ID contains "spend" — callers resolve it by matching short name
+    // The profile ID contains "charge" — callers resolve it by matching short name
     // This test verifies the profile is findable via the registry after registerProfile
     const profile = getProfile(PROFILE_ID);
     expect(profile).toBeDefined();
-    // Confirm the full ID embeds the short name "spend"
-    expect(PROFILE_ID).toContain('spend');
+    // Confirm the full ID embeds the short name "charge"
+    expect(PROFILE_ID).toContain('charge');
     expect(PROFILE_ID).toContain('@0.4');
   });
 });

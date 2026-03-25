@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import { verify } from '../src/gatekeeper';
 import { registerProfile } from '../src/profiles';
-import { SPEND_PROFILE, SPEND_PROFILE_V4, EMAIL_PROFILE_V4 } from './fixtures';
+import { CHARGE_PROFILE, CHARGE_PROFILE_V4, EMAIL_PROFILE_V4 } from './fixtures';
 import {
   generateTestKeyPair,
   createTestAttestation,
@@ -15,24 +15,24 @@ describe('gatekeeper', () => {
   let wrongKeyPair: TestKeyPair;
 
   const routineFrame: AgentFrameParams = {
-    profile: 'spend@0.3',
-    path: 'spend-routine',
+    profile: 'charge@0.3',
+    path: 'charge-routine',
     amount_max: 80,
     currency: 'EUR',
     action_type: 'charge',
   };
 
   const reviewedFrame: AgentFrameParams = {
-    profile: 'spend@0.3',
-    path: 'spend-reviewed',
+    profile: 'charge@0.3',
+    path: 'charge-reviewed',
     amount_max: 5000,
     currency: 'EUR',
     action_type: 'charge',
   };
 
   beforeAll(async () => {
-    registerProfile('spend@0.3', SPEND_PROFILE);
-    registerProfile('spend@0.4', SPEND_PROFILE_V4);
+    registerProfile('charge@0.3', CHARGE_PROFILE);
+    registerProfile('charge@0.4', CHARGE_PROFILE_V4);
     registerProfile('email@0.4', EMAIL_PROFILE_V4);
     keyPair = await generateTestKeyPair();
     wrongKeyPair = await generateTestKeyPair();
@@ -45,7 +45,7 @@ describe('gatekeeper', () => {
       const blob = await createTestAttestation({
         keyPair,
         frame: routineFrame,
-        profile: SPEND_PROFILE,
+        profile: CHARGE_PROFILE,
         domain: 'finance',
       });
 
@@ -65,7 +65,7 @@ describe('gatekeeper', () => {
       const blob = await createTestAttestation({
         keyPair,
         frame: routineFrame,
-        profile: SPEND_PROFILE,
+        profile: CHARGE_PROFILE,
         domain: 'finance',
       });
 
@@ -87,7 +87,7 @@ describe('gatekeeper', () => {
       const blob = await createTestAttestation({
         keyPair,
         frame: routineFrame,
-        profile: SPEND_PROFILE,
+        profile: CHARGE_PROFILE,
         domain: 'finance',
       });
 
@@ -116,7 +116,7 @@ describe('gatekeeper', () => {
       const blob = await createTestAttestation({
         keyPair,
         frame: routineFrame,
-        profile: SPEND_PROFILE,
+        profile: CHARGE_PROFILE,
         domain: 'finance',
       });
 
@@ -142,7 +142,7 @@ describe('gatekeeper', () => {
       const blob = await createTestAttestation({
         keyPair,
         frame: routineFrame,
-        profile: SPEND_PROFILE,
+        profile: CHARGE_PROFILE,
         domain: 'finance',
         expiresAt: pastExpiry,
       });
@@ -168,7 +168,7 @@ describe('gatekeeper', () => {
       const blob = await createTestAttestation({
         keyPair: wrongKeyPair,
         frame: routineFrame,
-        profile: SPEND_PROFILE,
+        profile: CHARGE_PROFILE,
         domain: 'finance',
       });
 
@@ -190,11 +190,11 @@ describe('gatekeeper', () => {
 
   describe('missing domain → DOMAIN_NOT_COVERED', () => {
     it('rejects when required domain is missing (multi-owner)', async () => {
-      // spend-reviewed requires finance + compliance
+      // charge-reviewed requires finance + compliance
       const financeBlob = await createTestAttestation({
         keyPair,
         frame: reviewedFrame,
-        profile: SPEND_PROFILE,
+        profile: CHARGE_PROFILE,
         domain: 'finance',
       });
 
@@ -218,13 +218,13 @@ describe('gatekeeper', () => {
       const financeBlob = await createTestAttestation({
         keyPair,
         frame: reviewedFrame,
-        profile: SPEND_PROFILE,
+        profile: CHARGE_PROFILE,
         domain: 'finance',
       });
       const complianceBlob = await createTestAttestation({
         keyPair,
         frame: reviewedFrame,
-        profile: SPEND_PROFILE,
+        profile: CHARGE_PROFILE,
         domain: 'compliance',
       });
 
@@ -263,7 +263,7 @@ describe('gatekeeper', () => {
     it('rejects unknown path', async () => {
       const result = await verify(
         {
-          frame: { profile: 'spend@0.3', path: 'nonexistent-path', amount_max: 80, currency: 'EUR', action_type: 'charge'},
+          frame: { profile: 'charge@0.3', path: 'nonexistent-path', amount_max: 80, currency: 'EUR', action_type: 'charge'},
           attestations: [],
           execution: {},
         },
@@ -302,8 +302,8 @@ describe('gatekeeper', () => {
 
   describe('v0.4 — bounds_hash + context_hash', () => {
     const routineBounds: AgentFrameParams = {
-      profile: 'spend@0.4',
-      path: 'spend-routine',
+      profile: 'charge@0.4',
+      path: 'charge-routine',
       amount_max: 80,
       amount_daily_max: 500,
       amount_monthly_max: 5000,
@@ -320,7 +320,7 @@ describe('gatekeeper', () => {
         keyPair,
         bounds: routineBounds,
         context: routineContext,
-        profile: SPEND_PROFILE_V4,
+        profile: CHARGE_PROFILE_V4,
         domain: 'finance',
       });
 
@@ -342,7 +342,7 @@ describe('gatekeeper', () => {
         keyPair,
         bounds: routineBounds,
         context: routineContext,
-        profile: SPEND_PROFILE_V4,
+        profile: CHARGE_PROFILE_V4,
         domain: 'finance',
       });
 
@@ -372,7 +372,7 @@ describe('gatekeeper', () => {
         keyPair,
         bounds: differentBounds,
         context: routineContext,
-        profile: SPEND_PROFILE_V4,
+        profile: CHARGE_PROFILE_V4,
         domain: 'finance',
       });
 
@@ -399,7 +399,7 @@ describe('gatekeeper', () => {
         keyPair,
         bounds: routineBounds,
         context: differentContext, // attested for USD
-        profile: SPEND_PROFILE_V4,
+        profile: CHARGE_PROFILE_V4,
         domain: 'finance',
       });
 
@@ -424,7 +424,7 @@ describe('gatekeeper', () => {
         keyPair,
         bounds: routineBounds,
         context: routineContext, // EUR
-        profile: SPEND_PROFILE_V4,
+        profile: CHARGE_PROFILE_V4,
         domain: 'finance',
       });
 
@@ -449,7 +449,7 @@ describe('gatekeeper', () => {
       const blob = await createTestAttestation({
         keyPair,
         frame: routineFrame,
-        profile: SPEND_PROFILE,
+        profile: CHARGE_PROFILE,
         domain: 'finance',
       });
 
