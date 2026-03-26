@@ -21,3 +21,9 @@ export function listProfiles(): string[] {
 export function getAllProfiles(): AgentProfile[] {
   return Object.values(PROFILES);
 }
+
+export function clearProfiles(): void {
+  for (const key of Object.keys(PROFILES)) {
+    delete PROFILES[key];
+  }
+}
