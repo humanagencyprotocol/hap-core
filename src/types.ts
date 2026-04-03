@@ -137,11 +137,11 @@ export interface GateQuestion {
 }
 
 /**
- * Execution path definition within a profile.
+ * @deprecated Execution paths removed in v0.4. Kept for backward compatibility.
  */
 export interface ExecutionPath {
   description: string;
-  requiredDomains?: string[];  // v0.3: defined in profile. v0.4: moved to SP group config.
+  requiredDomains?: string[];
   ttl?: { default: number; max: number };
 }
 
@@ -187,7 +187,8 @@ export interface AgentProfile {
     fields: Record<string, ExecutionContextFieldDef>;
   };
 
-  executionPaths: Record<string, ExecutionPath>;
+  /** @deprecated Execution paths removed in v0.4. Kept for backward compatibility. */
+  executionPaths?: Record<string, ExecutionPath>;
 
   requiredGates: string[];
 

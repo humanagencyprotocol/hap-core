@@ -94,16 +94,6 @@ async function verifyV3(
   executionLog: ExecutionLogQuery | undefined,
   errors: GatekeeperError[],
 ): Promise<GatekeeperResult> {
-  const pathId = request.frame.path;
-  if (typeof pathId !== 'string') {
-    return { approved: false, errors: [{ code: 'INVALID_PROFILE', message: 'Missing path in frame' }] };
-  }
-
-  const executionPath = profile.executionPaths[pathId];
-  if (!executionPath) {
-    return { approved: false, errors: [{ code: 'INVALID_PROFILE', message: `Unknown execution path: ${pathId}` }] };
-  }
-
   let expectedFrameHash: string;
   try {
     expectedFrameHash = computeFrameHash(request.frame, profile);
@@ -111,8 +101,8 @@ async function verifyV3(
     return { approved: false, errors: [{ code: 'FRAME_MISMATCH', message: `Frame hash computation failed: ${err}` }] };
   }
 
-  // Verify attestations
-  const requiredDomains = executionPath.requiredDomains ?? [];
+  // Verify attestations (domains come from SP group config in v0.4, not from profile)
+  const requiredDomains: string[] = [];
   const coveredDomains = new Set<string>();
 
   for (const blob of request.attestations) {
@@ -193,16 +183,6 @@ async function verifyV4(
   const bounds = request.frame as AgentBoundsParams;
   const context: AgentContextParams = request.context ?? {};
 
-  const pathId = bounds.path;
-  if (typeof pathId !== 'string') {
-    return { approved: false, errors: [{ code: 'INVALID_PROFILE', message: 'Missing path in bounds' }] };
-  }
-
-  const executionPath = profile.executionPaths[pathId];
-  if (!executionPath) {
-    return { approved: false, errors: [{ code: 'INVALID_PROFILE', message: `Unknown execution path: ${pathId}` }] };
-  }
-
   // Compute expected hashes
   let expectedBoundsHash: string;
   let expectedContextHash: string;
@@ -219,8 +199,8 @@ async function verifyV4(
     return { approved: false, errors: [{ code: 'CONTEXT_MISMATCH', message: `Context hash computation failed: ${err}` }] };
   }
 
-  // Verify attestations (requiredDomains may be undefined in v0.4 — domains come from SP group config)
-  const requiredDomains = executionPath.requiredDomains ?? [];
+  // Verify attestations (domains come from SP group config, not profile)
+  const requiredDomains: string[] = [];
   const coveredDomains = new Set<string>();
 
   for (const blob of request.attestations) {
@@ -517,9 +497,8 @@ function resolveCumulativeFields(
 ): GatekeeperError[] {
   const errors: GatekeeperError[] = [];
 
-  // Profile ID and path come from bounds (v0.4) or frame (v0.3)
+  // Profile ID comes from bounds (v0.4) or frame (v0.3)
   const profileId = String(request.frame.profile);
-  const path = String(request.frame.path);
 
   // For v0.4, the bounds source (request.frame) holds the cumulative max fields
   const boundsOrFrame = request.frame;
@@ -530,6 +509,7 @@ function resolveCumulativeFields(
     const cumDef = fieldDef as CumulativeFieldDef;
     const { cumulativeField, window: windowType } = cumDef;
 
+    const path = request.frame.path ? String(request.frame.path) : '';
     const runningTotal = executionLog.sumByWindow(profileId, path, cumulativeField, windowType, now);
 
     let currentContribution: number;
