@@ -130,6 +130,7 @@ export type ExecutionContextFieldDef = DeclaredFieldDef | CumulativeFieldDef;
 
 /**
  * Gate question definition.
+ * @deprecated v0.4 uses a single intent gate with no profile-specific questions.
  */
 export interface GateQuestion {
   question: string;
@@ -192,10 +193,14 @@ export interface AgentProfile {
 
   requiredGates: string[];
 
-  gateQuestions: {
-    problem: GateQuestion;
-    objective: GateQuestion;
-    tradeoffs: GateQuestion;
+  /**
+   * v0.4: no gateQuestions — intent prompt is universal, defined in the gateway UI.
+   * v0.3: profile-specific gate questions (deprecated).
+   */
+  gateQuestions?: {
+    problem?: GateQuestion;
+    objective?: GateQuestion;
+    tradeoffs?: GateQuestion;
   };
 
   ttl: { default: number; max: number };
