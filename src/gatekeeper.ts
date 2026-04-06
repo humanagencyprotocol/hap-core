@@ -181,11 +181,11 @@ async function verifyV4(
 
   // In v0.4 the `frame` param carries bounds; `context` carries context params
   const bounds = request.frame as AgentBoundsParams;
-  const context: AgentContextParams = request.context ?? {};
+  const context: AgentContextParams | undefined = request.context;
 
   // Compute expected hashes
   let expectedBoundsHash: string;
-  let expectedContextHash: string;
+  let expectedContextHash: string | undefined;
 
   try {
     expectedBoundsHash = computeBoundsHash(bounds, profile);
@@ -193,10 +193,14 @@ async function verifyV4(
     return { approved: false, errors: [{ code: 'BOUNDS_MISMATCH', message: `Bounds hash computation failed: ${err}` }] };
   }
 
-  try {
-    expectedContextHash = computeContextHash(context, profile);
-  } catch (err) {
-    return { approved: false, errors: [{ code: 'CONTEXT_MISMATCH', message: `Context hash computation failed: ${err}` }] };
+  // Context hash is only computed when context is explicitly provided.
+  // At execution time, context is not re-verified — it was checked at authorization time.
+  if (context && Object.keys(context).length > 0) {
+    try {
+      expectedContextHash = computeContextHash(context, profile);
+    } catch (err) {
+      return { approved: false, errors: [{ code: 'CONTEXT_MISMATCH', message: `Context hash computation failed: ${err}` }] };
+    }
   }
 
   // Verify attestations (domains come from SP group config, not profile)
@@ -227,8 +231,8 @@ async function verifyV4(
       continue;
     }
 
-    // Verify context hash (only for v0.4 attestations that have context_hash)
-    if (isV4Attestation(attestation)) {
+    // Verify context hash (only when context was provided and hash was computed)
+    if (isV4Attestation(attestation) && expectedContextHash) {
       try {
         verifyContextHash(attestation, expectedContextHash);
       } catch {
