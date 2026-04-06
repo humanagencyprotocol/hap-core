@@ -279,7 +279,7 @@ async function verifyV4(
   }
 
   // Check context constraints using contextSchema
-  if (profile.contextSchema && Object.keys(profile.contextSchema.fields).length > 0) {
+  if (context && profile.contextSchema && Object.keys(profile.contextSchema.fields).length > 0) {
     const contextErrors = checkContextConstraints(context, request.execution, profile);
     if (contextErrors.length > 0) {
       return { approved: false, errors: contextErrors };
