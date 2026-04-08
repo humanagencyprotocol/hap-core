@@ -1,26 +1,17 @@
 /**
  * v0.4 Profile Loading Tests
  *
- * Verifies that a v0.4 profile loaded from the hap-profiles repo registers
- * correctly and that its schema structure and hash functions work as expected.
+ * Verifies that a v0.4 profile registers correctly and that its schema
+ * structure and hash functions work as expected.
  */
 
 import { describe, it, expect, beforeAll } from 'vitest';
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { registerProfile, getProfile } from '../src/profiles';
 import { computeBoundsHash, computeContextHash } from '../src/frame';
-import type { AgentProfile } from '../src/types';
+import { CHARGE_PROFILE_V4 } from './fixtures';
 
-// ── Load the real v0.4 charge profile from hap-profiles ───────────────────────
-
-const PROFILE_PATH = join(
-  import.meta.dirname,
-  '../../hap-profiles/charge/profile.json',
-);
-
-const RAW_PROFILE = JSON.parse(readFileSync(PROFILE_PATH, 'utf-8')) as AgentProfile;
-const PROFILE_ID = 'github.com/humanagencyprotocol/hap-profiles/charge@0.4';
+const RAW_PROFILE = CHARGE_PROFILE_V4;
+const PROFILE_ID = CHARGE_PROFILE_V4.id;
 
 beforeAll(() => {
   registerProfile(PROFILE_ID, RAW_PROFILE);

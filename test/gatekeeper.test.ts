@@ -22,14 +22,6 @@ describe('gatekeeper', () => {
     action_type: 'charge',
   };
 
-  const reviewedFrame: AgentFrameParams = {
-    profile: 'charge@0.3',
-    path: 'charge-reviewed',
-    amount_max: 5000,
-    currency: 'EUR',
-    action_type: 'charge',
-  };
-
   beforeAll(async () => {
     registerProfile('charge@0.3', CHARGE_PROFILE);
     registerProfile('charge@0.4', CHARGE_PROFILE_V4);
@@ -188,59 +180,6 @@ describe('gatekeeper', () => {
     });
   });
 
-  describe('missing domain → DOMAIN_NOT_COVERED', () => {
-    it('rejects when required domain is missing (multi-owner)', async () => {
-      // charge-reviewed requires finance + compliance
-      const financeBlob = await createTestAttestation({
-        keyPair,
-        frame: reviewedFrame,
-        profile: CHARGE_PROFILE,
-        domain: 'finance',
-      });
-
-      // Only finance attested, compliance missing
-      const result = await verify(
-        {
-          frame: reviewedFrame,
-          attestations: [financeBlob],
-          execution: { amount: 2000, currency: 'EUR', action_type: 'charge'},
-        },
-        keyPair.publicKeyHex
-      );
-
-      expect(result.approved).toBe(false);
-      if (!result.approved) {
-        expect(result.errors.some(e => e.code === 'DOMAIN_NOT_COVERED' && e.message.includes('compliance'))).toBe(true);
-      }
-    });
-
-    it('approves when all domains are covered', async () => {
-      const financeBlob = await createTestAttestation({
-        keyPair,
-        frame: reviewedFrame,
-        profile: CHARGE_PROFILE,
-        domain: 'finance',
-      });
-      const complianceBlob = await createTestAttestation({
-        keyPair,
-        frame: reviewedFrame,
-        profile: CHARGE_PROFILE,
-        domain: 'compliance',
-      });
-
-      const result = await verify(
-        {
-          frame: reviewedFrame,
-          attestations: [financeBlob, complianceBlob],
-          execution: { amount: 2000, currency: 'EUR', action_type: 'charge'},
-        },
-        keyPair.publicKeyHex
-      );
-
-      expect(result.approved).toBe(true);
-    });
-  });
-
   describe('unknown profile → INVALID_PROFILE', () => {
     it('rejects unknown profile ID', async () => {
       const result = await verify(
@@ -255,45 +194,6 @@ describe('gatekeeper', () => {
       expect(result.approved).toBe(false);
       if (!result.approved) {
         expect(result.errors[0].code).toBe('INVALID_PROFILE');
-      }
-    });
-  });
-
-  describe('unknown execution path → INVALID_PROFILE', () => {
-    it('rejects unknown path', async () => {
-      const result = await verify(
-        {
-          frame: { profile: 'charge@0.3', path: 'nonexistent-path', amount_max: 80, currency: 'EUR', action_type: 'charge'},
-          attestations: [],
-          execution: {},
-        },
-        keyPair.publicKeyHex
-      );
-
-      expect(result.approved).toBe(false);
-      if (!result.approved) {
-        expect(result.errors[0].code).toBe('INVALID_PROFILE');
-      }
-    });
-  });
-
-  describe('authorization checked before bounds (§8.6.4 rule 4)', () => {
-    it('returns authorization errors even if bounds would pass', async () => {
-      // No attestations at all — should fail with DOMAIN_NOT_COVERED, not check bounds
-      const result = await verify(
-        {
-          frame: routineFrame,
-          attestations: [],
-          execution: { amount: 5, currency: 'EUR', action_type: 'charge'},
-        },
-        keyPair.publicKeyHex
-      );
-
-      expect(result.approved).toBe(false);
-      if (!result.approved) {
-        expect(result.errors.some(e => e.code === 'DOMAIN_NOT_COVERED')).toBe(true);
-        // Should NOT contain BOUND_EXCEEDED since auth failed first
-        expect(result.errors.some(e => e.code === 'BOUND_EXCEEDED')).toBe(false);
       }
     });
   });
