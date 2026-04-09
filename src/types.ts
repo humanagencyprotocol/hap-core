@@ -30,6 +30,16 @@ export interface AttestationPayload {
   execution_context_hash: string;
   resolved_domains: ResolvedDomain[];
   gate_content_hashes: Record<string, string>;
+  /**
+   * v0.4 — commitment mode chosen by the decision owner at attestation time.
+   * - 'automatic': agent may invoke bounded tools without per-action review.
+   * - 'review': every tool call requires an approved proposal before the
+   *   receipt route will sign a receipt.
+   *
+   * Cryptographically bound in the signed payload so a compromised SP cannot
+   * silently flip 'review' → 'automatic'. Absent on v0.3 attestations.
+   */
+  commitment_mode?: 'automatic' | 'review';
   issued_at: number;
   expires_at: number;
 }
@@ -65,7 +75,54 @@ export interface ProfileFrameField {
 }
 
 /**
+ * Bound enforcement semantics — how a v0.4 bound is checked.
+ *
+ * Every bounds field in a v0.4 profile declares a `boundType` so the SP
+ * receipt route and hap-core gatekeeper can dispatch on it directly,
+ * without parsing field names or guessing conventions. This is the
+ * single source of truth for "what does this bound mean at enforcement
+ * time" — if a new kind is needed, add a variant here and update the
+ * dispatch sites.
+ *
+ * See `ProfileBoundsField.boundType`.
+ */
+export type BoundType =
+  /**
+   * Per-transaction cap. The execution context field named in `of` must
+   * satisfy `execution[of] <= bound` for the current call. No cumulative
+   * tracking. Used by: amount_max, recipient_max, booking_duration_max, etc.
+   */
+  | { kind: 'per_transaction'; of: string }
+  /**
+   * Cumulative sum within a time window. The SP maintains a running sum
+   * of `execution[of]` across all prior executions in the window; the
+   * current call is approved iff `running_sum + execution[of] <= bound`.
+   * Used by: amount_daily_max, spend_monthly_max, etc.
+   */
+  | { kind: 'cumulative_sum'; of: string; window: CumulativeWindow }
+  /**
+   * Cumulative count within a time window. Every qualifying execution
+   * counts as +1; the current call is approved iff
+   * `running_count + 1 <= bound`. No execution context field is read.
+   * Used by: write_daily_max, post_monthly_max, booking_daily_max, etc.
+   */
+  | { kind: 'cumulative_count'; window: CumulativeWindow }
+  /**
+   * String bound restricted to a fixed set of allowed values. The bound's
+   * value must be one of `values` at attestation time. The gateway
+   * tool-proxy gates tool calls based on the stored bound (via the
+   * integration manifest's `boundField` + `requiredValue`). Not cumulated,
+   * not checked by the SP receipt route — it's a capability flag.
+   * Used by: read_access, delete_access, archive_access.
+   */
+  | { kind: 'enum'; values: readonly string[] };
+
+/**
  * Bounds field definition within a v0.4 profile.
+ *
+ * v0.4 adds the required `boundType` — an explicit declaration of how
+ * the bound is enforced. The older `constraint.enforceable` pattern is
+ * deprecated and superseded by `boundType`.
  */
 export interface ProfileBoundsField {
   type: 'string' | 'number';
@@ -73,7 +130,16 @@ export interface ProfileBoundsField {
   description?: string;
   displayName?: string;
   format?: 'email' | 'domain' | 'url' | 'currency';
+  /**
+   * v0.4 enforcement semantics. Required for all new profiles.
+   * Optional here only so the type stays backward compatible with v0.3
+   * profiles that predate the boundType convention — consumers must
+   * treat a missing boundType as an error when running in v0.4 mode.
+   */
+  boundType?: BoundType;
+  /** @deprecated v0.4: use boundType instead. */
   constraint?: FieldConstraint;
+  /** @deprecated v0.4: use boundType: { kind: 'enum', values: [...] }. */
   enum?: string[];
 }
 

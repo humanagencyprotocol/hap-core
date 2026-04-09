@@ -264,18 +264,14 @@ async function verifyV4(
     return { approved: false, errors };
   }
 
-  // Resolve cumulative fields from execution log
-  if (executionLog && profile.executionContextSchema?.fields) {
-    const cumulativeErrors = resolveCumulativeFields(request, profile, executionLog, now);
-    if (cumulativeErrors.length > 0) {
-      return { approved: false, errors: cumulativeErrors };
-    }
-  }
-
-  // Check bounds using boundsSchema
-  const boundsErrors = checkBoundsFromBoundsSchema(request, profile);
-  if (boundsErrors.length > 0) {
-    return { approved: false, errors: boundsErrors };
+  // v0.4 bounds check — single pass that dispatches on each field's
+  // boundType.kind. Replaces the two-pass (resolveCumulativeFields +
+  // checkBoundsFromBoundsSchema) approach, which used name-pattern
+  // heuristics and silently failed when ctx field names didn't round-trip
+  // through `${fieldName}_max`.
+  const v4BoundsErrors = checkBoundsV4(request, profile, executionLog, now);
+  if (v4BoundsErrors.length > 0) {
+    return { approved: false, errors: v4BoundsErrors };
   }
 
   // Check context constraints using contextSchema
@@ -364,49 +360,170 @@ function checkBoundsFromFrameSchema(request: GatekeeperRequest, profile: AgentPr
 }
 
 /**
- * Check execution values against boundsSchema constraints (v0.4).
- * Convention: bounds field "X_max" → checks execution field "X".
+ * v0.4 bounds enforcement — dispatches on each bound field's declared
+ * `boundType.kind` with no name-pattern heuristics. This is the single
+ * source of truth for client-side bounds checking in v0.4.
+ *
+ * Why this replaces the old two-function approach:
+ *
+ *   checkBoundsFromBoundsSchema (old) stripped "_max" from the bound name
+ *   to guess the execution context field, which required a fixed naming
+ *   convention (e.g., "amount_max" → "amount"). Profiles that used other
+ *   conventions silently failed to enforce.
+ *
+ *   resolveCumulativeFields (old) appended "_max" to the cumulative
+ *   execution context field name to find its corresponding bound, which
+ *   required ANOTHER fixed naming convention (e.g., "amount_daily" →
+ *   "amount_daily_max"). Profiles where the ctx field added a "_count_"
+ *   infix (write_count_daily → write_daily_max, not
+ *   write_count_daily_max) silently failed too.
+ *
+ * The new function ignores ctx field names entirely and reads
+ * enforcement semantics from `fieldDef.boundType`:
+ *
+ *   per_transaction  — compares `execution[of] <= bound`
+ *   cumulative_sum   — sumByWindow(of, window) + execution[of] <= bound
+ *   cumulative_count — sumByWindow('_count', window) + 1 <= bound
+ *   enum             — bound value must be in the allowed set (attest-time
+ *                      validation; not an execution-time check)
  */
-function checkBoundsFromBoundsSchema(request: GatekeeperRequest, profile: AgentProfile): GatekeeperError[] {
+function checkBoundsV4(
+  request: GatekeeperRequest,
+  profile: AgentProfile,
+  executionLog: ExecutionLogQuery | undefined,
+  now: number,
+): GatekeeperError[] {
   const errors: GatekeeperError[] = [];
-  const bounds = request.frame as AgentBoundsParams;
-
   if (!profile.boundsSchema) return errors;
 
+  const bounds = request.frame as AgentBoundsParams;
+  const profileId = String(bounds.profile ?? profile.id);
+  const path = bounds.path ? String(bounds.path) : '';
+
   for (const [fieldName, fieldDef] of Object.entries(profile.boundsSchema.fields)) {
-    if (!fieldDef.constraint) continue;
+    if (fieldName === 'profile' || fieldName === 'path') continue;
 
-    const constraint = fieldDef.constraint;
+    const boundValue = bounds[fieldName];
+    if (boundValue === undefined) continue;
 
-    for (const enforceType of constraint.enforceable) {
-      if (enforceType === 'max') {
-        // Convention: bounds field "X_max" maps to execution field "X"
-        const execField = fieldName.replace(/_max$/, '');
-        const boundValue = bounds[fieldName];
-        const actualValue = request.execution[execField];
+    const bt = fieldDef.boundType;
+    if (!bt) {
+      // v0.4 requires boundType on every non-metadata bound field. A
+      // missing boundType is a profile authoring bug — fail closed on
+      // enforcement rather than silently skipping (which is what caused
+      // the write_daily_max display bug in the first place).
+      errors.push({
+        code: 'BOUND_EXCEEDED',
+        field: fieldName,
+        message: `Profile ${profile.id} bound "${fieldName}" has no boundType — enforcement semantics undefined. Add boundType to the profile's boundsSchema.`,
+        bound: boundValue,
+        actual: boundValue,
+      });
+      continue;
+    }
 
-        if (actualValue === undefined) continue;
-
-        if (typeof boundValue !== 'number' || typeof actualValue !== 'number') {
+    switch (bt.kind) {
+      case 'per_transaction': {
+        const actual = request.execution[bt.of];
+        if (actual === undefined) continue;
+        if (typeof boundValue !== 'number' || typeof actual !== 'number') {
           errors.push({
             code: 'BOUND_EXCEEDED',
-            field: execField,
-            message: `Bound check requires numeric values for "${execField}"`,
+            field: bt.of,
+            message: `Bound "${fieldName}" requires numeric values (bound=${boundValue}, actual=${actual})`,
             bound: boundValue,
-            actual: actualValue,
+            actual,
           });
-          continue;
+          break;
         }
-
-        if (actualValue > boundValue) {
+        if (actual > boundValue) {
           errors.push({
             code: 'BOUND_EXCEEDED',
-            field: execField,
-            message: `Value ${actualValue} exceeds authorized maximum of ${boundValue}`,
+            field: bt.of,
+            message: `Value ${actual} exceeds authorized maximum of ${boundValue} for ${fieldName}`,
             bound: boundValue,
-            actual: actualValue,
+            actual,
           });
         }
+        break;
+      }
+
+      case 'cumulative_sum': {
+        if (typeof boundValue !== 'number') {
+          errors.push({
+            code: 'CUMULATIVE_LIMIT_EXCEEDED',
+            field: bt.of,
+            message: `Cumulative bound "${fieldName}" must be numeric`,
+            bound: boundValue,
+            actual: 0,
+          });
+          break;
+        }
+        if (!executionLog) break;
+
+        const runningTotal = executionLog.sumByWindow(profileId, path, bt.of, bt.window, now);
+        const currentRaw = request.execution[bt.of];
+        const current = typeof currentRaw === 'number'
+          ? currentRaw
+          : (currentRaw !== undefined ? Number(currentRaw) : 0);
+        const total = runningTotal + current;
+
+        if (total > boundValue) {
+          errors.push({
+            code: 'CUMULATIVE_LIMIT_EXCEEDED',
+            field: bt.of,
+            message: `Cumulative ${bt.window} sum of ${bt.of} (${total}) exceeds limit of ${boundValue} for ${fieldName}`,
+            bound: boundValue,
+            actual: total,
+          });
+        }
+        break;
+      }
+
+      case 'cumulative_count': {
+        if (typeof boundValue !== 'number') {
+          errors.push({
+            code: 'CUMULATIVE_LIMIT_EXCEEDED',
+            field: fieldName,
+            message: `Cumulative count bound "${fieldName}" must be numeric`,
+            bound: boundValue,
+            actual: 0,
+          });
+          break;
+        }
+        if (!executionLog) break;
+
+        const runningCount = executionLog.sumByWindow(profileId, path, '_count', bt.window, now);
+        const total = runningCount + 1;
+
+        if (total > boundValue) {
+          errors.push({
+            code: 'CUMULATIVE_LIMIT_EXCEEDED',
+            field: fieldName,
+            message: `Cumulative ${bt.window} count (${total}) exceeds limit of ${boundValue} for ${fieldName}`,
+            bound: boundValue,
+            actual: total,
+          });
+        }
+        break;
+      }
+
+      case 'enum': {
+        // Enum bounds are capability flags. The stored bound value must
+        // be in the allowed set (a profile authoring check, really
+        // belongs at attestation time). They are NOT compared against
+        // runtime execution here — tool-proxy gates tool calls against
+        // the manifest's required value before they reach the gatekeeper.
+        if (typeof boundValue === 'string' && !bt.values.includes(boundValue)) {
+          errors.push({
+            code: 'BOUND_EXCEEDED',
+            field: fieldName,
+            message: `Bound "${fieldName}"="${boundValue}" is not in allowed values [${bt.values.join(', ')}]`,
+            bound: boundValue,
+            actual: boundValue,
+          });
+        }
+        break;
       }
     }
   }
