@@ -274,11 +274,30 @@ async function verifyV4(
     return { approved: false, errors: v4BoundsErrors };
   }
 
-  // Check context constraints using contextSchema
-  if (context && profile.contextSchema && Object.keys(profile.contextSchema.fields).length > 0) {
-    const contextErrors = checkContextConstraints(context, request.execution, profile);
-    if (contextErrors.length > 0) {
-      return { approved: false, errors: contextErrors };
+  // Check context constraints using contextSchema.
+  // Fail closed: if the profile declares enforceable context constraints but
+  // no declared context was supplied, reject — the SP cannot enforce these
+  // (it only holds context_hash), so skipping the check would silently
+  // bypass scope restrictions like allowed_recipients / allowed_domains.
+  if (profile.contextSchema && Object.keys(profile.contextSchema.fields).length > 0) {
+    const enforceableFields = Object.entries(profile.contextSchema.fields)
+      .filter(([, def]) => def.constraint?.enforceable?.length);
+
+    if (enforceableFields.length > 0 && !context) {
+      return {
+        approved: false,
+        errors: [{
+          code: 'BOUND_EXCEEDED',
+          message: `Declared context required for constraint enforcement but not provided. Fields: ${enforceableFields.map(([n]) => n).join(', ')}`,
+        }],
+      };
+    }
+
+    if (context) {
+      const contextErrors = checkContextConstraints(context, request.execution, profile);
+      if (contextErrors.length > 0) {
+        return { approved: false, errors: contextErrors };
+      }
     }
   }
 
