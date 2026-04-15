@@ -1,6 +1,6 @@
 {
   "name": "@humanagencyp/hap-core",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Core types, cryptographic primitives, and verification logic for the Human Agency Protocol",
   "license": "MIT",
   "repository": {
