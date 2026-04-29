@@ -118,6 +118,22 @@ export type BoundType =
   | { kind: 'enum'; values: readonly string[] };
 
 /**
+ * The measurement dimension of a numeric bound's value.
+ *
+ * Orthogonal to `BoundType` (which describes how the bound is *enforced*).
+ * `unit` describes what the *value* means — 4 minutes vs 4 hours vs 4 EUR.
+ *
+ * UI uses this to render the unit next to the input. Future gatekeeper
+ * versions can use it to enforce unit alignment between profile bounds
+ * and tool payloads.
+ */
+export type FieldUnit =
+  | 'count'                 // dimensionless integer (no unit suffix in UI)
+  | 'minutes' | 'hours' | 'days'
+  | `currency:${string}`    // ISO 4217 code, e.g. 'currency:EUR'
+  | 'percent';
+
+/**
  * Bounds field definition within a v0.4 profile.
  *
  * v0.4 adds the required `boundType` — an explicit declaration of how
@@ -137,6 +153,13 @@ export interface ProfileBoundsField {
    * treat a missing boundType as an error when running in v0.4 mode.
    */
   boundType?: BoundType;
+  /**
+   * The measurement dimension of the bound's value. UI renders the unit
+   * inline next to the input (e.g. `4 min`, `100 EUR`). Independent from
+   * `boundType` — the same unit can appear under different enforcement
+   * kinds, and the same boundType can carry different units.
+   */
+  unit?: FieldUnit;
   /** @deprecated v0.4: use boundType instead. */
   constraint?: FieldConstraint;
   /** @deprecated v0.4: use boundType: { kind: 'enum', values: [...] }. */
