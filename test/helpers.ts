@@ -5,6 +5,7 @@
 import * as ed from '@noble/ed25519';
 import { computeFrameHash, computeBoundsHash, computeContextHash } from '../src/frame';
 import { encodeAttestationBlob } from '../src/attestation';
+import { canonicalize } from '../src/canonicalize';
 import type {
   AgentFrameParams,
   AgentBoundsParams,
@@ -63,7 +64,7 @@ export async function createTestAttestation(opts: {
     expires_at: opts.expiresAt ?? now + 3600,
   };
 
-  const payloadJson = JSON.stringify(payload);
+  const payloadJson = canonicalize(payload);
   const payloadBytes = new TextEncoder().encode(payloadJson);
   const signature = await ed.signAsync(payloadBytes, opts.keyPair.privateKey);
   const signatureBase64 = Buffer.from(signature).toString('base64');
@@ -111,7 +112,7 @@ export async function createTestAttestationV4(opts: {
     expires_at: opts.expiresAt ?? now + 3600,
   };
 
-  const payloadJson = JSON.stringify(payload);
+  const payloadJson = canonicalize(payload);
   const payloadBytes = new TextEncoder().encode(payloadJson);
   const signature = await ed.signAsync(payloadBytes, opts.keyPair.privateKey);
   const signatureBase64 = Buffer.from(signature).toString('base64');

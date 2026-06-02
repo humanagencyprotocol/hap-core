@@ -7,6 +7,7 @@
 import { createHash } from 'crypto';
 import * as ed from '@noble/ed25519';
 import type { Attestation, AttestationPayload } from './types';
+import { canonicalize } from './canonicalize';
 
 /**
  * Decodes a base64url-encoded attestation blob.
@@ -50,7 +51,9 @@ export async function verifyAttestationSignature(
   publicKeyHex: string
 ): Promise<void> {
   try {
-    const payloadJson = JSON.stringify(attestation.payload);
+    // JCS-canonical bytes (RFC 8785) — must match the canonicalization the
+    // signer used. The AS signs the same canonical form (see keys.ts).
+    const payloadJson = canonicalize(attestation.payload);
     const payloadBytes = new TextEncoder().encode(payloadJson);
     const signatureBytes = Buffer.from(attestation.signature, 'base64');
     const publicKeyBytes = Buffer.from(publicKeyHex, 'hex');
