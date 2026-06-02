@@ -27,6 +27,12 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           cache: 'pnpm'
 
+      - name: Upgrade npm
+        # Trusted Publishing (OIDC) requires npm 11.5+ for the publish flow to
+        # recognize the OIDC token instead of expecting a bearer token. Mirrors
+        # the suveren-gateway publish workflow.
+        run: npm install -g npm@latest
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -46,6 +52,7 @@ jobs:
         run: pnpm test
 
       - name: Publish to npm
-        run: pnpm publish --access public --provenance --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        # Trusted Publishing via OIDC — no NPM_TOKEN secret. Requires a Trusted
+        # Publisher configured for @humanagencyp/hap-core on npmjs.com pointing
+        # at this repo + workflow file (.github/workflows/publish.yml).
+        run: npm publish --access public --provenance
