@@ -5,6 +5,7 @@
  */
 
 export * from './types';
+export * from './canonicalize';
 export * from './frame';
 export * from './attestation';
 export * from './gatekeeper';
