@@ -167,6 +167,33 @@ export interface ProfileBoundsField {
 }
 
 /**
+ * v0.5 Content Provenance — how a profile's action content is hashed into a
+ * signed receipt (`contentHash`). The ephemeral-content analog of Output
+ * Provenance: it binds the *bytes* of the action rather than a location.
+ *
+ * Profile-bound and OPTIONAL. Absent → no content hash is produced (full
+ * backward compatibility). The gateway computes the hash; the SP only ever
+ * receives the hash, never the content, so HAP's privacy-minimal design holds.
+ *
+ * The profile declares only the *policy* — whether to bind and how to
+ * canonicalize. It does NOT name the tool field: that is tool-specific and is
+ * resolved at runtime (the same content-field resolver the footer uses for
+ * `kind:"text"`; the whole record payload for `kind:"jcs"`).
+ */
+export interface ContentBinding {
+  /** Canonicalization version. A verifier MUST pin the version named here. */
+  version: string;
+  /**
+   * - 'jcs'  → structured writes: RFC 8785 JCS over the record payload.
+   * - 'text' → free text: NFC + LF + trailing-whitespace strip (see
+   *   canonicalizeText), auto-detected content field.
+   */
+  kind: 'jcs' | 'text';
+  /** text only: hash the content BEFORE any appended Suveren footer. */
+  pre_footer?: boolean;
+}
+
+/**
  * Context field definition within a v0.4 profile.
  */
 export interface ProfileContextField {
@@ -294,6 +321,14 @@ export interface AgentProfile {
 
   ttl: { default: number; max: number };
   retention_minimum: number;
+
+  /**
+   * v0.5 Content Provenance (OPTIONAL, profile-bound). When present, the
+   * gateway computes a `contentHash` for gated writes under this profile and
+   * passes it (hash only) to the SP, which signs it into the receipt. Absent
+   * → no content hash. See {@link ContentBinding}.
+   */
+  content_binding?: ContentBinding;
 
   /**
    * Tool gating configuration — how MCP tools map to execution context.
