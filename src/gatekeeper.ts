@@ -131,12 +131,12 @@ async function verifyV3(
     try {
       checkAttestationExpiry(attestation.payload, now);
     } catch {
-      const domainNames = attestation.payload.resolved_domains.map(d => d.domain).join(', ');
+      const domainNames = (attestation.payload.resolved_domains ?? []).map(d => d.domain).join(', ');
       errors.push({ code: 'TTL_EXPIRED', message: `Attestation for domain "${domainNames}" has expired` });
       continue;
     }
 
-    for (const rd of attestation.payload.resolved_domains) {
+    for (const rd of attestation.payload.resolved_domains ?? []) {
       coveredDomains.add(rd.domain);
     }
   }
@@ -244,12 +244,12 @@ async function verifyV4(
     try {
       checkAttestationExpiry(attestation.payload, now);
     } catch {
-      const domainNames = attestation.payload.resolved_domains.map(d => d.domain).join(', ');
+      const domainNames = (attestation.payload.resolved_domains ?? []).map(d => d.domain).join(', ');
       errors.push({ code: 'TTL_EXPIRED', message: `Attestation for domain "${domainNames}" has expired` });
       continue;
     }
 
-    for (const rd of attestation.payload.resolved_domains) {
+    for (const rd of attestation.payload.resolved_domains ?? []) {
       coveredDomains.add(rd.domain);
     }
   }

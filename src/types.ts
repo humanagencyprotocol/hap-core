@@ -19,7 +19,7 @@ export interface ResolvedDomain {
 
 export interface AttestationPayload {
   attestation_id: string;
-  version: '0.3' | '0.4';
+  version: '0.3' | '0.4' | '0.5';
   profile_id: string;
   /** v0.3 (deprecated) — hash of the authorization frame */
   frame_hash?: string;
@@ -28,8 +28,29 @@ export interface AttestationPayload {
   /** v0.4 — hash of the context parameters */
   context_hash?: string;
   execution_context_hash: string;
-  resolved_domains: ResolvedDomain[];
+  /**
+   * v0.4 (deprecated in v0.5) — domain-scoped owners. Optional so v0.5
+   * attestations that carry only `resolved_owners` remain valid. During the
+   * transition the AS emits BOTH `resolved_domains` (internal coverage) and
+   * `resolved_owners` (the v0.5 signed wire field).
+   */
+  resolved_domains?: ResolvedDomain[];
+  /**
+   * v0.5 — the Decision Owner DIDs this attestation covers (person-centric
+   * model; replaces the abstract domain in `resolved_domains`). Carried in the
+   * signed payload so verifiers bind the action to the human(s) who authorized it.
+   */
+  resolved_owners?: string[];
   gate_content_hashes: Record<string, string>;
+  /**
+   * v0.5 (companion spec `intent-disclosure@0.1`) — present iff the attestation
+   * carries an encrypted-intent disclosure object. `sha256:`-prefixed hash that
+   * binds the disclosure's `intent_ciphertext` + `approvers_frozen` into the
+   * signed payload (see {@link computeIntentDisclosureHash}), so a compromised
+   * AS cannot swap the ciphertext/wrapped keys or alter the approver set
+   * without invalidating the attestation signature (companion invariant C2).
+   */
+  intent_disclosure_hash?: string;
   /**
    * v0.4 — commitment mode chosen by the decision owner at attestation time.
    * - 'automatic': agent may invoke bounded tools without per-action review.
