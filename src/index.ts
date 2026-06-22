@@ -7,6 +7,7 @@
 export * from './types';
 export * from './canonicalize';
 export * from './content-binding';
+export * from './intent-disclosure';
 export * from './frame';
 export * from './attestation';
 export * from './gatekeeper';
