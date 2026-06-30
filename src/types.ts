@@ -52,6 +52,14 @@ export interface AttestationPayload {
    */
   intent_disclosure_hash?: string;
   /**
+   * v0.6 (Identity Assurance) — optional signed overlay carrying the verified
+   * real-world identity of the Decision Owner(s), one entry per owner. Present
+   * only when identity is disclosed; an attestation with no `subjects` renders
+   * as `low` (pseudonymous, no name). See {@link Subject} and
+   * {@link deriveIdentityLine}.
+   */
+  subjects?: Subject[];
+  /**
    * v0.4 — commitment mode chosen by the decision owner at attestation time.
    * - 'automatic': agent may invoke bounded tools without per-action review.
    * - 'review': every tool call requires an approved proposal before the
@@ -63,6 +71,37 @@ export interface AttestationPayload {
   commitment_mode?: 'automatic' | 'review';
   issued_at: number;
   expires_at: number;
+}
+
+/**
+ * v0.6 Identity Assurance — a signed overlay binding a Decision Owner's verified
+ * real-world identity to the attestation, gated by HOW the identity was verified.
+ *
+ * Two display levels (`assurance`): `low` discloses no name; `high` MAY disclose a
+ * name. At `high`, two trust roots: `as` (the AS operator vouches — valid only
+ * within its own domain) and `external` (an external eID such as EUDI — carries the
+ * owner's own signature, AS-independent). See review.md → "Identity Assurance".
+ */
+export interface Subject {
+  /** The Decision Owner DID this subject describes (matches an entry in resolved_owners). */
+  did: string;
+  /** `low` → no name shown; `high` → the name MAY be shown. */
+  assurance: 'low' | 'high';
+  /** How identity was established. */
+  method: 'self_declared' | 'as_vouched' | 'eudi';
+  /** Who vouches: `self` (owner's claim), `as` (operator), `external` (eID scheme). */
+  trust_root: 'self' | 'as' | 'external';
+  /** Verifier id — the AS operator (as_vouched) or the eID scheme (eudi). Required at `high`. */
+  verifier?: string;
+  /** Disclosed attributes. `name` present ONLY at `assurance:"high"` and when disclosure is on. */
+  disclose?: { name: string };
+  /** When the underlying verification was performed (unix seconds). */
+  verified_at?: number;
+  /**
+   * eudi only (Phase 2) — the owner's per-event wallet signature, making the
+   * identity claim non-repudiable independent of the AS. Null/absent otherwise.
+   */
+  owner_signature?: string | null;
 }
 
 export interface Attestation {
