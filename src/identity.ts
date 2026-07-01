@@ -56,8 +56,13 @@ export function validateSubject(subject: Subject): SubjectValidation {
  * The name appears only at `high` with a disclosed name; otherwise no name.
  *
  *  - low / no disclosure → "Sent by an AI agent via «operator»"
- *  - high / as_vouched   → "Sent by an AI agent of «name» — verified by «operator»"
- *  - high / eudi         → "Sent by an AI agent of «name» — identity verified (EUDI)"
+ *  - high / as_vouched   → "Sent by an AI agent of «name», verified by «operator»"
+ *  - high / eudi         → "Sent by an AI agent of «name», identity verified (EUDI)"
+ *
+ * Punctuation is ASCII (comma, not em-dash) so the line survives header and
+ * plain-text encoding intact across email, calendar, and publishing channels.
+ * The leading verb ("Sent") is the default; presentation layers may swap it
+ * (e.g. the gateway uses "Published" for the publish profile).
  *
  * `operatorName` is the rendered AS operator (e.g. "Suveren") — never hardcode it
  * upstream; a different operator self-vouches under its own name.
@@ -71,7 +76,7 @@ export function deriveIdentityLine(
     return `Sent by an AI agent via ${operatorName}`;
   }
   if (subject!.method === 'eudi') {
-    return `Sent by an AI agent of ${name} — identity verified (EUDI)`;
+    return `Sent by an AI agent of ${name}, identity verified (EUDI)`;
   }
-  return `Sent by an AI agent of ${name} — verified by ${operatorName}`;
+  return `Sent by an AI agent of ${name}, verified by ${operatorName}`;
 }

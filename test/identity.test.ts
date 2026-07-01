@@ -65,22 +65,27 @@ describe('deriveIdentityLine — footer wording (name only at high)', () => {
     expect(deriveIdentityLine(undefined, op)).toBe('Sent by an AI agent via Suveren');
   });
 
-  it('high / as_vouched shows "of «name» — verified by «operator»"', () => {
+  it('high / as_vouched shows "of «name», verified by «operator»"', () => {
     expect(deriveIdentityLine(asVouched, op)).toBe(
-      'Sent by an AI agent of Andreas Schadauer — verified by Suveren',
+      'Sent by an AI agent of Andreas Schadauer, verified by Suveren',
     );
   });
 
   it('renders the actual operator, not a hardcoded brand', () => {
     expect(deriveIdentityLine(asVouched, { operatorName: 'Acme' })).toBe(
-      'Sent by an AI agent of Andreas Schadauer — verified by Acme',
+      'Sent by an AI agent of Andreas Schadauer, verified by Acme',
     );
   });
 
   it('high / eudi shows "identity verified (EUDI)" without naming the operator', () => {
     expect(deriveIdentityLine(eudi, op)).toBe(
-      'Sent by an AI agent of Andreas Schadauer — identity verified (EUDI)',
+      'Sent by an AI agent of Andreas Schadauer, identity verified (EUDI)',
     );
+  });
+
+  it('uses ASCII punctuation only (no em-dash) so encoding stays intact', () => {
+    expect(deriveIdentityLine(asVouched, op)).not.toContain('—');
+    expect(deriveIdentityLine(eudi, op)).not.toContain('—');
   });
 
   it('high but disclosure off (no name) falls back to no name', () => {
