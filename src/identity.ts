@@ -56,8 +56,13 @@ export function validateSubject(subject: Subject): SubjectValidation {
  * The name appears only at `high` with a disclosed name; otherwise no name.
  *
  *  - low / no disclosure → "Sent by an AI agent via «operator»"
- *  - high / as_vouched   → "Sent by an AI agent of «name», verified by «operator»"
- *  - high / eudi         → "Sent by an AI agent of «name», identity verified (EUDI)"
+ *  - high / as_vouched   → "Sent by «name»'s AI agent, verified by «operator»"
+ *  - high / eudi         → "Sent by «name»'s AI agent, identity verified (EUDI)"
+ *
+ * Footer wording v1.1 (July 2026): the named forms read "«name»'s AI agent"
+ * (more natural than the v1 "an AI agent of «name»"). The v1 wording is frozen
+ * for already-sent content; verifiers strip BOTH forms (see the gateway's
+ * FOOTER_RE and the AS ContentVerifier).
  *
  * Punctuation is ASCII (comma, not em-dash) so the line survives header and
  * plain-text encoding intact across email, calendar, and publishing channels.
@@ -76,7 +81,7 @@ export function deriveIdentityLine(
     return `Sent by an AI agent via ${operatorName}`;
   }
   if (subject!.method === 'eudi') {
-    return `Sent by an AI agent of ${name}, identity verified (EUDI)`;
+    return `Sent by ${name}'s AI agent, identity verified (EUDI)`;
   }
-  return `Sent by an AI agent of ${name}, verified by ${operatorName}`;
+  return `Sent by ${name}'s AI agent, verified by ${operatorName}`;
 }

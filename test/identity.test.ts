@@ -65,21 +65,21 @@ describe('deriveIdentityLine — footer wording (name only at high)', () => {
     expect(deriveIdentityLine(undefined, op)).toBe('Sent by an AI agent via Suveren');
   });
 
-  it('high / as_vouched shows "of «name», verified by «operator»"', () => {
+  it('high / as_vouched shows "«name»\'s AI agent, verified by «operator»" (v1.1)', () => {
     expect(deriveIdentityLine(asVouched, op)).toBe(
-      'Sent by an AI agent of Andreas Schadauer, verified by Suveren',
+      "Sent by Andreas Schadauer's AI agent, verified by Suveren",
     );
   });
 
   it('renders the actual operator, not a hardcoded brand', () => {
     expect(deriveIdentityLine(asVouched, { operatorName: 'Acme' })).toBe(
-      'Sent by an AI agent of Andreas Schadauer, verified by Acme',
+      "Sent by Andreas Schadauer's AI agent, verified by Acme",
     );
   });
 
   it('high / eudi shows "identity verified (EUDI)" without naming the operator', () => {
     expect(deriveIdentityLine(eudi, op)).toBe(
-      'Sent by an AI agent of Andreas Schadauer, identity verified (EUDI)',
+      "Sent by Andreas Schadauer's AI agent, identity verified (EUDI)",
     );
   });
 
