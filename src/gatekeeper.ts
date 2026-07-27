@@ -40,6 +40,8 @@ import type {
   AgentContextParams,
   ExecutionLogQuery,
   CumulativeFieldDef,
+  ProfileBoundsField,
+  BoundType,
 } from './types';
 
 /**
@@ -406,6 +408,41 @@ function checkBoundsFromFrameSchema(request: GatekeeperRequest, profile: AgentPr
  *   enum             — bound value must be in the allowed set (attest-time
  *                      validation; not an execution-time check)
  */
+/**
+ * Does this bound govern the action being attempted?
+ *
+ * Cumulative totals are scoped by (profileId, path) only, so without this every
+ * cumulative_count bound on a profile sees the same running count. On customers
+ * — which declares both write_daily_max and delete_daily_max — the smaller
+ * delete limit would count writes and block them.
+ *
+ * Preferred answer is the profile's declared `appliesTo`. Absent that, fall back
+ * to the field-name convention (`delete_daily_max` → `delete`), matching how the
+ * Authority Server selects bounds so the two enforcement points cannot disagree.
+ *
+ * Fails CLOSED: when the action type is unknown, or the bound's name implies no
+ * particular action, the bound is enforced.
+ */
+function boundGovernsAction(
+  fieldName: string,
+  fieldDef: ProfileBoundsField,
+  bt: BoundType,
+  actionType: string | undefined,
+): boolean {
+  if (fieldDef.appliesTo) {
+    return actionType ? fieldDef.appliesTo.includes(actionType) : true;
+  }
+
+  // The name convention only ever disambiguated count bounds; sums are governed
+  // by their `of` field and stay unfiltered, as at the Authority Server.
+  if (bt.kind !== 'cumulative_count' || !actionType) return true;
+
+  const prefix = fieldName.replace(/_(?:daily|monthly|weekly)_max$/, '');
+  const namedForAnAction = prefix !== fieldName;
+  const matches = prefix === actionType || prefix.startsWith('transaction');
+  return !namedForAnAction || matches;
+}
+
 function checkBoundsV4(
   request: GatekeeperRequest,
   profile: AgentProfile,
@@ -417,6 +454,9 @@ function checkBoundsV4(
 
   const bounds = request.frame as AgentBoundsParams;
   const profileId = String(bounds.profile ?? profile.id);
+  const actionType = typeof request.execution.action_type === 'string'
+    ? request.execution.action_type
+    : undefined;
   // Prefer the explicit request path. `frame.path` is retained only as a
   // fallback for callers that legitimately declare `path` in their profile's
   // boundsSchema; for every shipped profile it is absent, which is exactly why
@@ -444,6 +484,8 @@ function checkBoundsV4(
       });
       continue;
     }
+
+    if (!boundGovernsAction(fieldName, fieldDef, bt, actionType)) continue;
 
     switch (bt.kind) {
       case 'per_transaction': {
