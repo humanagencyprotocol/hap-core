@@ -214,6 +214,21 @@ export interface ProfileBoundsField {
    */
   boundType?: BoundType;
   /**
+   * Which execution action types this bound governs, e.g. `["write"]`.
+   *
+   * When present, this is authoritative. When absent, enforcement falls back to
+   * inferring the action type from the FIELD NAME (`send_daily_max` → `send`),
+   * which is a convention rather than a contract: a profile that names a bound
+   * after the domain concept instead of the action — calendar's
+   * `booking_daily_max` against an action type of `write` — matches nothing and
+   * is skipped, so a limit the user set is never applied and nothing says so.
+   *
+   * Declaring it removes the guess. Deliberately additive: profiles migrate one
+   * at a time, and every remaining fallback is logged, so the cases still
+   * relying on the naming convention become visible instead of staying silent.
+   */
+  appliesTo?: string[];
+  /**
    * The measurement dimension of the bound's value. UI renders the unit
    * inline next to the input (e.g. `4 min`, `100 EUR`). Independent from
    * `boundType` — the same unit can appear under different enforcement
@@ -502,6 +517,18 @@ export interface GatekeeperRequest {
   execution: Record<string, string | number>;
   /** v0.4: context parameters (currency, action_type, etc.) */
   context?: AgentContextParams;
+  /**
+   * Authorization path used to scope cumulative lookups in the execution log.
+   *
+   * Deliberately OUTSIDE `frame`: the frame is hashed and validated against the
+   * profile's boundsSchema, so an extra key there is rejected as an unknown
+   * field and breaks attestation verification outright. Cumulative checks
+   * previously read the path from the frame, where callers cannot legally put
+   * it — so it resolved to "" while the log stored real paths, no entry ever
+   * matched, and every running total read zero. The local gate existed but
+   * could never fire.
+   */
+  path?: string;
 }
 
 /**
