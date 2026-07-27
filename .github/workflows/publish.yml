@@ -28,10 +28,12 @@ jobs:
           cache: 'pnpm'
 
       - name: Upgrade npm
-        # Trusted Publishing (OIDC) requires npm 11.5+ for the publish flow to
-        # recognize the OIDC token instead of expecting a bearer token. Mirrors
-        # the suveren-gateway publish workflow.
-        run: npm install -g npm@latest
+        # Trusted Publishing (OIDC) needs npm 11.5+. Pin to 11.x rather than
+        # @latest: npm@latest is now 12.x which requires Node 22+ (EBADENGINE on
+        # Node 20), and bleeding-edge npm has broken provenance (missing
+        # sigstore). 11.x is stable, Node-20-compatible, and has trusted publishing.
+        # Matches hap-linkedin-mcp, which hit this first.
+        run: npm install -g npm@11
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
