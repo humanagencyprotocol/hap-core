@@ -50,6 +50,25 @@ function customersProfile(withAppliesTo: boolean): AgentProfile {
   } as unknown as AgentProfile;
 }
 
+/** Mirrors hap-profiles/calendar@0.4: a bound named for the domain, not the action. */
+function calendarProfile(): AgentProfile {
+  return {
+    id: 'calendar-shape@0.4',
+    version: '0.4',
+    boundsSchema: {
+      keyOrder: ['profile', 'booking_daily_max'],
+      fields: {
+        profile: { type: 'string', required: true },
+        booking_daily_max: {
+          type: 'number', required: true,
+          boundType: { kind: 'cumulative_count', window: 'daily' },
+        },
+      },
+    },
+    contextSchema: { keyOrder: [], fields: {} },
+  } as unknown as AgentProfile;
+}
+
 const PATH = 'customers-path';
 
 /** All prior actions share one path, exactly as ExecutionLog records them. */
@@ -107,6 +126,28 @@ describe('cumulative bounds are selected by action type', () => {
     // write_daily_max -> "write", delete_daily_max -> "delete".
     const result = await attempt('customers-inferred@0.5', 'write', 3);
     expect(result.approved).toBe(true);
+  });
+
+  it('calendar: a domain-named bound is skipped under a mismatched action type', async () => {
+    // booking_daily_max vs action_type "write" — the shipped calendar bug. The
+    // manifest now labels calendar writes "booking" so the two line up; this
+    // pins the behaviour that made the limit unenforceable in the first place.
+    registerProfile('calendar-shape@0.4', calendarProfile());
+    const bounds = { profile: 'calendar-shape@0.4', booking_daily_max: 2 } as AgentBoundsParams;
+    const blob = await createTestAttestationV4({
+      keyPair, bounds, context: {}, profile: calendarProfile(), domain: 'owner',
+    });
+    const run = (actionType: string) => verify(
+      { frame: bounds, context: {}, attestations: [blob], execution: { action_type: actionType }, path: PATH },
+      keyPair.publicKeyHex,
+      undefined,
+      logWith(5), // well past the limit of 2
+    );
+
+    // "write" does not match the "booking" prefix → bound skipped → allowed.
+    expect((await run('write')).approved).toBe(true);
+    // "booking" matches → bound applies → blocked.
+    expect((await run('booking')).approved).toBe(false);
   });
 
   it('no action type available: enforces every bound (fail closed)', async () => {
