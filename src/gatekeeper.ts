@@ -417,7 +417,11 @@ function checkBoundsV4(
 
   const bounds = request.frame as AgentBoundsParams;
   const profileId = String(bounds.profile ?? profile.id);
-  const path = bounds.path ? String(bounds.path) : '';
+  // Prefer the explicit request path. `frame.path` is retained only as a
+  // fallback for callers that legitimately declare `path` in their profile's
+  // boundsSchema; for every shipped profile it is absent, which is exactly why
+  // this silently resolved to "" and disabled the cumulative gate entirely.
+  const path = request.path ?? (bounds.path ? String(bounds.path) : '');
 
   for (const [fieldName, fieldDef] of Object.entries(profile.boundsSchema.fields)) {
     if (fieldName === 'profile' || fieldName === 'path') continue;
