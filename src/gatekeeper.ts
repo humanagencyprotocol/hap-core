@@ -612,6 +612,34 @@ function checkContextConstraints(
   for (const [fieldName, fieldDef] of Object.entries(profile.contextSchema.fields)) {
     if (!fieldDef.constraint) continue;
 
+    // A constrained dimension that the call does not expose cannot be checked.
+    // Skipping is only safe when the action does not engage that dimension —
+    // deleting a draft has no recipients. When it DOES engage it, silence must
+    // not read as compliance: an absent value means the Gatekeeper cannot show
+    // the call is in scope, and an unverifiable send is exactly what the scope
+    // exists to prevent. The profile declares which actions engage the field.
+    const requiredFor = fieldDef.constraint.requiredFor;
+    if (requiredFor?.length) {
+      const boundValue = context[fieldName];
+      const actualValue = execution[fieldName];
+      const actionType = execution['action_type'];
+      const constrained = boundValue !== undefined && boundValue !== '';
+      const engaged = actionType !== undefined && requiredFor.includes(String(actionType));
+
+      if (constrained && engaged && (actualValue === undefined || actualValue === '')) {
+        errors.push({
+          code: 'BOUND_EXCEEDED',
+          field: fieldName,
+          message:
+            `Authorization limits "${fieldName}" to [${boundValue}], but this ` +
+            `"${String(actionType)}" call exposes no ${fieldName} to check against it. ` +
+            `Refusing: the call cannot be shown to stay in scope.`,
+          bound: boundValue,
+        });
+        continue; // nothing further to compare for this field
+      }
+    }
+
     for (const enforceType of fieldDef.constraint.enforceable) {
       if (enforceType === 'enum') {
         // The context field value is the allowed value; execution must match

@@ -121,6 +121,27 @@ export interface Attestation {
 export interface FieldConstraint {
   type: 'number' | 'string';
   enforceable: Array<'max' | 'enum' | 'subset'>;
+  /**
+   * Action types for which this dimension MUST be present in the execution
+   * context. When the grant constrains this field and the action is one of
+   * these, an absent value is a denial rather than a skipped check.
+   *
+   * Without it, a constraint is only enforced against calls that happen to
+   * expose the value. Gmail's `send_message` is the live case: pass `raw` and
+   * `to` is never populated, so `allowed_recipients` had nothing to compare and
+   * the check passed — a send to an unverified recipient looked authorized.
+   * `send_draft` has the same shape: it transmits, and the Gatekeeper cannot
+   * see to whom.
+   *
+   * Keyed on `action_type` because "does this action engage recipients?" is a
+   * property of the action, not of the field name — deleting a draft has no
+   * recipients and must keep passing, while sending one must not. This keeps
+   * the engine profile-agnostic: it compares declared strings and knows nothing
+   * about email, calendars or payments.
+   *
+   * Omitted → previous behaviour: absence skips the check.
+   */
+  requiredFor?: string[];
 }
 
 /**
