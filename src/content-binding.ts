@@ -16,6 +16,12 @@
  *    (Unicode NFC, LF line endings, trailing per-line whitespace stripped,
  *    trailing blank lines removed), taken pre-footer when `pre_footer` is set.
  *
+ * At `version:"2"` the profile also declares WHICH tool arguments are bound
+ * ({@link selectBoundFields}), so a receipt can commit to an email's recipients
+ * and not only its prose — while still omitting what the intended verifier
+ * cannot see. Every string entering the hashed object is canonicalized by the
+ * same `text` rule, so a delivered copy with CRLF endings still reproduces it.
+ *
  * Both Node and the browser produce byte-identical output: JCS relies only on
  * environment-independent primitives, and the text rule uses String.normalize +
  * plain string ops. The SHA-256 is computed with Node `crypto` here (the same
@@ -80,4 +86,166 @@ export function computeContentHash(
   content: Record<string, unknown> | string,
 ): string {
   return `sha256:${sha256Hex(contentCanonicalBytes(binding.kind, content))}`;
+}
+
+// ─── v2: binding over a declared field subset ────────────────────────────────
+
+/** Why a field binding refused. Every case is fail-closed by design. */
+export type ContentBindingErrorCode =
+  /** The profile declares version:"2" with no usable `fields` list. */
+  | 'NO_FIELDS_DECLARED'
+  /** `required_fields` names something absent from `fields`. */
+  | 'REQUIRED_FIELD_NOT_DECLARED'
+  /** A required field was absent or empty at call time. */
+  | 'MISSING_REQUIRED_FIELD'
+  /** No declared field carried a value — the hash would commit to nothing. */
+  | 'EMPTY_BINDING';
+
+/**
+ * A field binding could not be computed. ALWAYS a refusal, never a downgrade:
+ * the alternative is a receipt that verifies while proving less than it appears
+ * to, which is the failure content binding exists to prevent.
+ */
+export class ContentBindingError extends Error {
+  readonly code: ContentBindingErrorCode;
+  /** The offending field, when the code names one. */
+  readonly field?: string;
+
+  constructor(code: ContentBindingErrorCode, message: string, field?: string) {
+    super(message);
+    this.name = 'ContentBindingError';
+    this.code = code;
+    this.field = field;
+  }
+}
+
+/** True when this binding selects a declared subset (v2) rather than v1's implicit scope. */
+export function isFieldBinding(binding: ContentBinding): boolean {
+  return binding.version === '2' && Array.isArray(binding.fields) && binding.fields.length > 0;
+}
+
+/**
+ * Whether a field binding covers this action type, per the profile's `appliesTo`.
+ *
+ * Read STRICTLY — an undeclared action type is NOT covered. This differs from
+ * how bounds read the same key (there, an unknown action type enforces the
+ * bound, because an extra limit is safe). Here the two directions are not
+ * symmetric: applying a field binding to a call that carries no content refuses
+ * a legitimate action, so an unknown action type must fall outside rather than
+ * inside. Callers are expected to warn on the undeclared case — it is a
+ * manifest bug either way.
+ */
+export function bindingAppliesTo(
+  binding: ContentBinding,
+  actionType: string | undefined,
+): boolean {
+  if (!binding.appliesTo) return true;
+  return actionType !== undefined && binding.appliesTo.includes(actionType);
+}
+
+/**
+ * Canonicalize one value on its way into the bound object, or `undefined` when
+ * it carries nothing (absent / null / empty after canonicalization).
+ *
+ * Strings are run through {@link canonicalizeText} — the SAME rule `kind:"text"`
+ * uses, applied per string rather than to one field. This is not decoration:
+ * the verifier of an email holds the DELIVERED copy, whose body has CRLF line
+ * endings and transport-added trailing whitespace. JCS embeds strings verbatim,
+ * so without this the recipient could never reproduce the hash.
+ *
+ * Deliberately NOT normalized: array order (the To: header preserves what was
+ * sent, and reordering recipients is a change worth catching) and address case
+ * (the local part is case-sensitive per RFC 5321, so lowercasing would be a
+ * semantic claim this layer has no business making).
+ */
+function canonicalizeValue(value: unknown): unknown {
+  if (value === null || value === undefined) return undefined;
+  if (typeof value === 'string') {
+    const text = canonicalizeText(value);
+    return text === '' ? undefined : text;
+  }
+  if (typeof value === 'number' || typeof value === 'boolean') return value;
+  if (Array.isArray(value)) {
+    const items = value.map(canonicalizeValue).filter((v) => v !== undefined);
+    return items.length > 0 ? items : undefined;
+  }
+  if (typeof value === 'object') {
+    const out: Record<string, unknown> = {};
+    for (const [key, v] of Object.entries(value as Record<string, unknown>)) {
+      const c = canonicalizeValue(v);
+      if (c !== undefined) out[key] = c;
+    }
+    return Object.keys(out).length > 0 ? out : undefined;
+  }
+  return undefined; // functions/symbols — not JSON, nothing to bind
+}
+
+/**
+ * Build the object a v2 binding hashes: exactly the declared `fields` that
+ * carry a value, canonicalized. Exported so a verifier can construct the same
+ * object from what they hold and see it before hashing.
+ *
+ * Throws {@link ContentBindingError} rather than returning a partial result —
+ * see that class for why refusing is the only safe outcome.
+ */
+export function selectBoundFields(
+  binding: ContentBinding,
+  args: Record<string, unknown>,
+): Record<string, unknown> {
+  const fields = binding.fields;
+  if (!fields || fields.length === 0) {
+    throw new ContentBindingError(
+      'NO_FIELDS_DECLARED',
+      'content_binding version "2" requires a non-empty `fields` list.',
+    );
+  }
+
+  const required = new Set(binding.required_fields ?? []);
+  for (const field of required) {
+    if (!fields.includes(field)) {
+      throw new ContentBindingError(
+        'REQUIRED_FIELD_NOT_DECLARED',
+        `content_binding requires "${field}" but does not bind it — required_fields must be a subset of fields.`,
+        field,
+      );
+    }
+  }
+
+  const bound: Record<string, unknown> = {};
+  for (const field of fields) {
+    const value = canonicalizeValue(args[field]);
+    if (value === undefined) {
+      if (required.has(field)) {
+        throw new ContentBindingError(
+          'MISSING_REQUIRED_FIELD',
+          `content_binding requires "${field}", which is absent or empty in this call. ` +
+            `Refusing rather than hashing a partial object.`,
+          field,
+        );
+      }
+      continue; // legitimately absent (an email with no cc)
+    }
+    bound[field] = value;
+  }
+
+  if (Object.keys(bound).length === 0) {
+    throw new ContentBindingError(
+      'EMPTY_BINDING',
+      `No declared field (${fields.join(', ')}) carried a value — the hash would commit to nothing.`,
+    );
+  }
+
+  return bound;
+}
+
+/**
+ * Compute a v2 field-binding hash from raw tool arguments: select the declared
+ * subset, then hash it by the declared `kind`. Convenience over
+ * {@link selectBoundFields} + {@link computeContentHash} for the common path.
+ */
+export function computeFieldsContentHash(
+  binding: ContentBinding,
+  args: Record<string, unknown>,
+): string {
+  return computeContentHash(binding, selectBoundFields(binding, args));
 }

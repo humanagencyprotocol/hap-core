@@ -271,22 +271,64 @@ export interface ProfileBoundsField {
  * backward compatibility). The gateway computes the hash; the SP only ever
  * receives the hash, never the content, so HAP's privacy-minimal design holds.
  *
- * The profile declares only the *policy* — whether to bind and how to
- * canonicalize. It does NOT name the tool field: that is tool-specific and is
- * resolved at runtime (the same content-field resolver the footer uses for
- * `kind:"text"`; the whole record payload for `kind:"jcs"`).
+ * At `version:"1"` the profile declares only the *policy* — whether to bind and
+ * how to canonicalize. It does NOT name the tool field: that is tool-specific
+ * and is resolved at runtime (the same content-field resolver the footer uses
+ * for `kind:"text"`; the whole record payload for `kind:"jcs"`).
+ *
+ * At `version:"2"` the profile additionally declares WHICH fields are bound (see
+ * {@link ContentBinding.fields}). Neither v1 mode is the general case: `text`
+ * binds one field and leaves everything beside it unbound, while `jcs` over the
+ * whole payload is checkable only by a party that already knows the whole
+ * payload — an email recipient holds the body, the subject and their own
+ * address, but not `bcc`. The general case is a declared subset, chosen so the
+ * intended verifier can reproduce it.
  */
 export interface ContentBinding {
   /** Canonicalization version. A verifier MUST pin the version named here. */
   version: string;
   /**
-   * - 'jcs'  → structured writes: RFC 8785 JCS over the record payload.
+   * - 'jcs'  → structured writes: RFC 8785 JCS over the record payload
+   *   (v1) or over the object built from {@link fields} (v2).
    * - 'text' → free text: NFC + LF + trailing-whitespace strip (see
    *   canonicalizeText), auto-detected content field.
    */
   kind: 'jcs' | 'text';
   /** text only: hash the content BEFORE any appended Suveren footer. */
   pre_footer?: boolean;
+
+  /**
+   * v2 only — the tool-argument keys this binding covers, and the complete
+   * statement of what a verifier must reproduce. The Gatekeeper builds an
+   * object from exactly these keys and canonicalizes it by `kind`.
+   *
+   * Adding or removing an entry changes every resulting hash, so it is a
+   * BREAKING profile change requiring a version bump, never a silent edit.
+   *
+   * Choose the subset by one rule: bind everything the approving human is
+   * shown, and nothing the intended verifier cannot see.
+   */
+  fields?: string[];
+  /**
+   * v2 only — the subset of {@link fields} whose absence is a fault rather than
+   * a fact. An absent OPTIONAL field is omitted from the hashed object (an
+   * email legitimately has no `cc`); an absent REQUIRED field means the call is
+   * not the call this profile thinks it is, and MUST refuse rather than hash a
+   * partial object that reads exactly like a complete one.
+   *
+   * MUST be a subset of `fields`. Absent → every field is optional, and only a
+   * wholly empty selection refuses.
+   */
+  required_fields?: string[];
+  /**
+   * v2 only — the action types this binding covers, using the same vocabulary
+   * as {@link ProfileBoundsField.appliesTo}. A profile gates more than its
+   * content-bearing calls: `email` also gates deletes, which carry an id and no
+   * content, and applying a field binding to those would refuse them.
+   *
+   * Absent → the binding applies to every gated action under the profile.
+   */
+  appliesTo?: string[];
 }
 
 /**
