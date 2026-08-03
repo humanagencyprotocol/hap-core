@@ -428,6 +428,29 @@ export interface AgentProfile {
   whatsNew?: string;
 
   /**
+   * Whether receipts under this profile may be looked up BY THEIR CONTENT — a
+   * verifier holding the content supplies its hash and learns which receipts
+   * bind it, without needing a receipt id.
+   *
+   * OFF unless declared, and that default is the point. The lookup is a
+   * confirmation oracle: given a guess at the content it says whether that
+   * content was authorized. Where the bound content has low entropy this is
+   * disclosure, not verification — guessing a message body is hopeless,
+   * guessing `production` takes a second. It is the same enumeration hazard
+   * recorded for per-field commitments, arriving from the other direction.
+   *
+   * Enable only when the bound content is unguessable enough that producing it
+   * is equivalent to already having it: prose, an artifact URL, a whole record
+   * payload. Never for a binding over a short value drawn from a small set.
+   *
+   * Why it must exist at all: most consequential actions cannot carry their
+   * receipt id. A released build was built before the receipt existed, a
+   * content-addressed artifact would change identity if the id were added, and
+   * a forwarded message has usually lost the footer that carried it.
+   */
+  receipt_lookup?: boolean;
+
+  /**
    * v0.3 frame schema (deprecated, kept for backward compat).
    * Used when boundsSchema is not present.
    */
