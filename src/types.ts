@@ -413,6 +413,21 @@ export interface AgentProfile {
   description: string;
 
   /**
+   * One line on what this version changed and why it matters to the person
+   * granting authority — written for them, not for a changelog.
+   *
+   * A grant pins the profile version it was signed against, so authorities
+   * issued before a newer version keep their old terms indefinitely and
+   * nothing prompts an upgrade. A version number alone does not motivate one:
+   * "email@0.4 → 0.5" says nothing, while "binds recipients, not only the
+   * message body" says what the older grant is not protecting.
+   *
+   * Belongs on the profile because the profile is what changed; a UI cannot
+   * know why 0.5 exists. Absent → surfaces show the version alone.
+   */
+  whatsNew?: string;
+
+  /**
    * v0.3 frame schema (deprecated, kept for backward compat).
    * Used when boundsSchema is not present.
    */
