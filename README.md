@@ -1,11 +1,11 @@
-# @humanagencyprotocol/hap-core
+# @humanagencyp/hap-core
 
-Core types, cryptographic primitives, and verification logic for the [Human Agency Protocol](https://humanagencyprotocol.com).
+Core types, cryptographic primitives, and verification logic for the [Human Agency Protocol](https://humanagencyprotocol.org).
 
 ## Install
 
 ```bash
-npm install @humanagencyprotocol/hap-core
+npm install @humanagencyp/hap-core
 ```
 
 ## What's included
@@ -26,7 +26,7 @@ import {
   verify,
   registerProfile,
   getProfile,
-} from '@humanagencyprotocol/hap-core';
+} from '@humanagencyp/hap-core';
 
 // Register a profile
 registerProfile(profile.id, profile);
