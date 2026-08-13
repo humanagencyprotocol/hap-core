@@ -13,3 +13,6 @@ export * from './frame';
 export * from './attestation';
 export * from './gatekeeper';
 export * from './profiles';
+export * from './did-key';
+export * from './mandate';
+export * from './receipt';

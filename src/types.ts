@@ -19,7 +19,7 @@ export interface ResolvedDomain {
 
 export interface AttestationPayload {
   attestation_id: string;
-  version: '0.3' | '0.4' | '0.5';
+  version: '0.3' | '0.4' | '0.5' | '0.6';
   profile_id: string;
   /** v0.3 (deprecated) — hash of the authorization frame */
   frame_hash?: string;
@@ -67,10 +67,53 @@ export interface AttestationPayload {
    *
    * Cryptographically bound in the signed payload so a compromised SP cannot
    * silently flip 'review' → 'automatic'. Absent on v0.3 attestations.
+   * `review_above_cap` (v0.5): automatic below the signed caps, proposal above.
    */
-  commitment_mode?: 'automatic' | 'review';
+  commitment_mode?: 'automatic' | 'review' | 'review_above_cap';
+  /**
+   * v0.6 (Owner Mandate Signatures) — the Decision Owner's own signature(s)
+   * over the mandate projection ({@link MandateProjection}), one entry per
+   * co-signing owner. Carried INSIDE the AS-signed payload, so the AS attests
+   * to having received it and cannot strip it without invalidating its own
+   * signature. Optional and additive: an attestation without it behaves as
+   * before (the v0.5 posture — the AS asserts, nobody co-signs).
+   */
+  owner_mandates?: OwnerMandate[];
   issued_at: number;
   expires_at: number;
+}
+
+/** Mandate-assurance axis — what custody signed the mandate. Independent of
+ * identity assurance ({@link Subject.method}). */
+export type MandateBinding = 'raw' | 'webauthn' | 'eudi';
+
+/** Which surface showed the owner what they signed. A DECLARATION, not a proof
+ * — no verifier can check it; see protocol.md → Owner Mandate Signatures. */
+export type SigningSurface = 'gatekeeper_local' | 'as_web' | 'wallet_display';
+
+/**
+ * v0.6 — one owner's signature over the mandate projection.
+ *
+ * There is deliberately NO `public_key` field, and it MUST NOT be added: the
+ * verification key is carried in the DID itself (key-bearing `did:key`), so a
+ * non-key-bearing DID fails STRUCTURALLY instead of validating against a key
+ * the AS could have substituted. `alg` is kept only as curve-confusion
+ * hygiene; if it disagrees with the DID's key type, the DID is authoritative.
+ */
+export interface OwnerMandate {
+  /** The signing owner's key-bearing DID. MUST be a member of `resolved_owners`. */
+  did: string;
+  /** Signature algorithm hint. The DID's multicodec wins on any disagreement. */
+  alg: 'EdDSA' | 'ES256';
+  /** base64url (no padding) signature over the JCS bytes of the mandate projection. */
+  signature: string;
+  /** When the owner signed (unix seconds). */
+  signed_at: number;
+  /** Defence-in-depth against duplicate issuance by an HONEST AS only —
+   * AS-side nonce enforcement is no defence against the AS itself. */
+  nonce: string;
+  binding: MandateBinding;
+  signing_surface?: SigningSurface;
 }
 
 /**
@@ -98,8 +141,11 @@ export interface Subject {
   /** When the underlying verification was performed (unix seconds). */
   verified_at?: number;
   /**
-   * eudi only (Phase 2) — the owner's per-event wallet signature, making the
-   * identity claim non-repudiable independent of the AS. Null/absent otherwise.
+   * @deprecated v0.6 — replaced by {@link AttestationPayload.owner_mandates}.
+   * This field signed the wrong object (the identity claim, not what was
+   * committed to) and was welded to one method. Implementations MUST NOT emit
+   * it; verifiers MAY ignore it on artifacts that carry it. Kept readable for
+   * audit of pre-0.6 artifacts only.
    */
   owner_signature?: string | null;
 }
@@ -340,6 +386,15 @@ export interface ProfileContextField {
   description?: string;
   displayName?: string;
   format?: 'email' | 'domain' | 'url' | 'currency';
+  /**
+   * v0.6 — what this field NAMES on the read path. `counterparty` = the other
+   * party to a communication (matched against an item's participants);
+   * `resource` = the container an item belongs to (a direct attribute match —
+   * and a resource scope enforced on writes MUST also bind reads). Absent →
+   * implementations MAY infer `counterparty` from `format: email|domain`
+   * (transitional; the explicit declaration is normative).
+   */
+  scopeKind?: 'counterparty' | 'resource';
   constraint?: FieldConstraint;
   enum?: string[];
 }
@@ -636,7 +691,28 @@ export interface GatekeeperRequest {
  * Structured error from Gatekeeper verification.
  */
 export interface GatekeeperError {
-  code: 'BOUND_EXCEEDED' | 'CUMULATIVE_LIMIT_EXCEEDED' | 'INVALID_SIGNATURE' | 'TTL_EXPIRED' | 'FRAME_MISMATCH' | 'BOUNDS_MISMATCH' | 'CONTEXT_MISMATCH' | 'DOMAIN_NOT_COVERED' | 'INVALID_PROFILE' | 'MALFORMED_ATTESTATION';
+  code:
+    | 'BOUND_EXCEEDED'
+    | 'CUMULATIVE_LIMIT_EXCEEDED'
+    | 'INVALID_SIGNATURE'
+    | 'TTL_EXPIRED'
+    | 'FRAME_MISMATCH'
+    | 'BOUNDS_MISMATCH'
+    | 'CONTEXT_MISMATCH'
+    | 'DOMAIN_NOT_COVERED'
+    | 'INVALID_PROFILE'
+    | 'MALFORMED_ATTESTATION'
+    // v0.5/v0.6 receipt-path codes a Gatekeeper must recognize as definitive
+    // rejections (protocol.md → Pre-flight Receipt Request):
+    | 'INVALID_ACTION_TYPE'
+    | 'ATTESTATION_REVOKED'
+    | 'APPROVAL_REQUIRED'
+    | 'IDEMPOTENCY_MISMATCH'
+    // v0.6 owner-mandate codes (protocol.md → Owner Mandate Signatures):
+    | 'MANDATE_SIGNATURE_REQUIRED'
+    | 'MANDATE_SIGNATURE_INVALID'
+    | 'APPROVAL_SIGNATURE_REQUIRED'
+    | 'APPROVAL_SIGNATURE_INVALID';
   field?: string;
   message: string;
   bound?: string | number;

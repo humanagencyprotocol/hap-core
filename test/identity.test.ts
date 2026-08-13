@@ -43,10 +43,23 @@ describe('validateSubject', () => {
     expect(validateSubject({ ...asVouched, trust_root: 'self' } as Subject).valid).toBe(false);
   });
 
-  it('rejects eudi without an owner_signature', () => {
+  it('v0.6: eudi no longer requires the deprecated owner_signature (subject-shape check alone)', () => {
     const r = validateSubject({ ...eudi, owner_signature: null } as Subject);
+    expect(r.valid).toBe(true);
+  });
+
+  it('v0.6: with ownerMandates supplied, eudi requires a binding:"eudi" entry for this DID', () => {
+    const mandates = [{
+      did: 'did:key:alice', alg: 'EdDSA' as const, signature: 's', signed_at: 1,
+      nonce: 'n', binding: 'eudi' as const,
+    }];
+    expect(validateSubject(eudi, { ownerMandates: mandates }).valid).toBe(true);
+    // wrong binding → invalid
+    expect(validateSubject(eudi, { ownerMandates: [{ ...mandates[0], binding: 'webauthn' as const }] }).valid).toBe(false);
+    // no entry at all → invalid
+    const r = validateSubject(eudi, { ownerMandates: [] });
     expect(r.valid).toBe(false);
-    expect(r.errors.join(' ')).toContain('owner_signature');
+    expect(r.errors.join(' ')).toContain('owner_mandates');
   });
 
   it('rejects high assurance with a low-only method', () => {
