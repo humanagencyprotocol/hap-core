@@ -712,7 +712,13 @@ export interface GatekeeperError {
     | 'MANDATE_SIGNATURE_REQUIRED'
     | 'MANDATE_SIGNATURE_INVALID'
     | 'APPROVAL_SIGNATURE_REQUIRED'
-    | 'APPROVAL_SIGNATURE_INVALID';
+    | 'APPROVAL_SIGNATURE_INVALID'
+    // Canonicalization refusals (protocol.md → Bounds & Scope Canonicalization
+    // → Value encoding). Raised when a value cannot be canonicalized at all —
+    // a raw LF/CR, or a profile `constraint.pattern` violation. Distinct from
+    // BOUNDS_MISMATCH / CONTEXT_MISMATCH, which mean the hashes disagree.
+    | 'BOUNDS_INVALID_VALUE'
+    | 'CONTEXT_INVALID_VALUE';
   field?: string;
   message: string;
   bound?: string | number;

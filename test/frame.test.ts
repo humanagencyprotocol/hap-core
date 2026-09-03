@@ -11,6 +11,7 @@ import {
   validateContextParams,
 } from '../src/frame';
 import { CHARGE_PROFILE, EMAIL_PROFILE, CHARGE_PROFILE_V4 } from './fixtures';
+import type { AgentProfile } from '../src/types';
 
 describe('frame', () => {
   describe('canonicalFrame', () => {
@@ -304,6 +305,164 @@ describe('context (v0.4)', () => {
       const result = validateContextParams(ctx, CHARGE_PROFILE_V4);
       expect(result.valid).toBe(false);
       expect(result.errors.some(e => e.includes('unknown'))).toBe(true);
+    });
+  });
+});
+
+// ─── Value Encoding (protocol.md → Bounds & Scope Canonicalization) ──────────
+
+describe('value encoding', () => {
+  /** Synthetic profile: one required key + optional string/number keys. */
+  const ENCODING_PROFILE: AgentProfile = {
+    id: 'encoding@0.6',
+    version: '0.6',
+    description: 'Synthetic profile for value-encoding tests',
+    boundsSchema: {
+      keyOrder: ['profile', 'note', 'label', 'amount_max'],
+      fields: {
+        profile: { type: 'string', required: true },
+        note: { type: 'string', required: false },
+        label: { type: 'string', required: false },
+        amount_max: { type: 'number', required: false },
+      },
+    },
+    contextSchema: {
+      keyOrder: ['note', 'label'],
+      fields: {
+        note: { type: 'string', required: false },
+        label: { type: 'string', required: false },
+      },
+    },
+    executionContextSchema: { fields: {} },
+    requiredGates: [],
+    ttl: { default: 3600, max: 86400 },
+    retention_minimum: 0,
+  };
+
+  describe('percent-encoding', () => {
+    it('encodes "=" so it cannot be confused with the separator', () => {
+      const result = canonicalBounds({ profile: 'encoding@0.6', note: 'a=b' }, ENCODING_PROFILE);
+      expect(result).toBe('profile=encoding@0.6\nnote=a%3Db');
+    });
+
+    it('encodes "%" so the encoding is self-inverse', () => {
+      const result = canonicalBounds({ profile: 'encoding@0.6', note: '100%' }, ENCODING_PROFILE);
+      expect(result).toBe('profile=encoding@0.6\nnote=100%25');
+    });
+
+    it('encodes non-ASCII over its UTF-8 bytes, uppercase hex', () => {
+      // em dash U+2014 → E2 80 94
+      const result = canonicalBounds({ profile: 'encoding@0.6', note: '—' }, ENCODING_PROFILE);
+      expect(result).toBe('profile=encoding@0.6\nnote=%E2%80%94');
+    });
+
+    it('encodes control bytes below 0x20 (tab) and 0x7F', () => {
+      const result = canonicalContext({ note: '\t', label: '\x7f' }, ENCODING_PROFILE);
+      expect(result).toBe('note=%09\nlabel=%7F');
+    });
+
+    it('leaves printable ASCII, including space, untouched', () => {
+      const result = canonicalContext({ note: 'a b~!' }, ENCODING_PROFILE);
+      expect(result).toBe('note=a b~!');
+    });
+
+    it('is applied to context too', () => {
+      expect(canonicalContext({ note: 'a=b 100% —' }, ENCODING_PROFILE))
+        .toBe('note=a%3Db 100%25 %E2%80%94');
+    });
+
+    it('does not mutate the stored value — encoding happens at canonicalization time', () => {
+      const bounds = { profile: 'encoding@0.6', note: 'a=b 100% —' };
+      canonicalBounds(bounds, ENCODING_PROFILE);
+      expect(bounds.note).toBe('a=b 100% —');
+    });
+  });
+
+  describe('raw LF/CR is refused, never normalized', () => {
+    it('bounds → BOUNDS_INVALID_VALUE on LF', () => {
+      let code: unknown;
+      try {
+        canonicalBounds({ profile: 'encoding@0.6', note: 'one\ntwo' }, ENCODING_PROFILE);
+      } catch (err) {
+        code = (err as { code?: string }).code;
+      }
+      expect(code).toBe('BOUNDS_INVALID_VALUE');
+    });
+
+    it('bounds → BOUNDS_INVALID_VALUE on CR', () => {
+      expect(() => canonicalBounds({ profile: 'encoding@0.6', note: 'a\rb' }, ENCODING_PROFILE))
+        .toThrow(/raw newline or carriage return/);
+    });
+
+    it('context → CONTEXT_INVALID_VALUE', () => {
+      let code: unknown;
+      try {
+        canonicalContext({ note: 'a\rb' }, ENCODING_PROFILE);
+      } catch (err) {
+        code = (err as { code?: string }).code;
+      }
+      expect(code).toBe('CONTEXT_INVALID_VALUE');
+    });
+
+    it('names the offending field', () => {
+      let field: unknown;
+      try {
+        canonicalContext({ label: 'a\nb' }, ENCODING_PROFILE);
+      } catch (err) {
+        field = (err as { field?: string }).field;
+      }
+      expect(field).toBe('label');
+    });
+
+    it('computeBoundsHash surfaces the refusal rather than hashing stripped input', () => {
+      expect(() => computeBoundsHash({ profile: 'encoding@0.6', note: 'a\nb' }, ENCODING_PROFILE))
+        .toThrow(/Refusing/);
+    });
+  });
+
+  describe('numbers use the shortest round-trippable form', () => {
+    it('20.0 serializes as "20"', () => {
+      const result = canonicalBounds(
+        { profile: 'encoding@0.6', amount_max: 20.0 },
+        ENCODING_PROFILE,
+      );
+      expect(result).toBe('profile=encoding@0.6\namount_max=20');
+    });
+
+    it('12.5 keeps its decimal', () => {
+      const result = canonicalBounds(
+        { profile: 'encoding@0.6', amount_max: 12.5 },
+        ENCODING_PROFILE,
+      );
+      expect(result).toBe('profile=encoding@0.6\namount_max=12.5');
+    });
+  });
+
+  describe('absent optional keys are omitted', () => {
+    it('emits no record for a key the human never set', () => {
+      expect(canonicalBounds({ profile: 'encoding@0.6' }, ENCODING_PROFILE))
+        .toBe('profile=encoding@0.6');
+    });
+
+    it('never hashes the literal string "undefined"', () => {
+      expect(canonicalBounds({ profile: 'encoding@0.6', note: 'x' }, ENCODING_PROFILE))
+        .not.toContain('undefined');
+    });
+
+    it('keeps "absent" distinguishable from "explicitly empty"', () => {
+      const absent = canonicalBounds({ profile: 'encoding@0.6' }, ENCODING_PROFILE);
+      const empty = canonicalBounds({ profile: 'encoding@0.6', note: '' }, ENCODING_PROFILE);
+      expect(empty).toBe('profile=encoding@0.6\nnote=');
+      expect(absent).not.toBe(empty);
+    });
+
+    it('a real value of "undefined" is not confusable with an absent key', () => {
+      const literal = canonicalBounds(
+        { profile: 'encoding@0.6', note: 'undefined' },
+        ENCODING_PROFILE,
+      );
+      expect(literal).toBe('profile=encoding@0.6\nnote=undefined');
+      expect(literal).not.toBe(canonicalBounds({ profile: 'encoding@0.6' }, ENCODING_PROFILE));
     });
   });
 });
