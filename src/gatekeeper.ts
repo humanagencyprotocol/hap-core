@@ -86,6 +86,28 @@ export async function verify(
   }
 }
 
+/**
+ * Fail closed when there is nothing to verify.
+ *
+ * The attestation loop below is a `for` over `request.attestations`. With an
+ * empty (or missing) array it runs zero times, pushes zero errors, and control
+ * falls through to the bounds check — which happily approves a call whose
+ * signature, bounds_hash, and TTL were never checked. "No errors" is not the
+ * same as "verified"; an absent attestation is the one case where silence must
+ * read as refusal.
+ */
+function noAttestationSupplied(request: GatekeeperRequest): boolean {
+  return !Array.isArray(request.attestations) || request.attestations.length === 0;
+}
+
+/** Built fresh per call so a caller cannot mutate a shared error array. */
+function noAttestationResult(): GatekeeperResult {
+  return {
+    approved: false,
+    errors: [{ code: 'MALFORMED_ATTESTATION', message: 'No attestation supplied — nothing to verify' }],
+  };
+}
+
 // ─── v0.3 Verification ────────────────────────────────────────────────────────
 
 async function verifyV3(
@@ -96,6 +118,8 @@ async function verifyV3(
   executionLog: ExecutionLogQuery | undefined,
   errors: GatekeeperError[],
 ): Promise<GatekeeperResult> {
+  if (noAttestationSupplied(request)) return noAttestationResult();
+
   let expectedFrameHash: string;
   try {
     expectedFrameHash = computeFrameHash(request.frame, profile);
@@ -179,6 +203,8 @@ async function verifyV4(
   now: number,
   executionLog: ExecutionLogQuery | undefined,
 ): Promise<GatekeeperResult> {
+  if (noAttestationSupplied(request)) return noAttestationResult();
+
   const errors: GatekeeperError[] = [];
 
   // In v0.4 the `frame` param carries bounds; `context` carries context params

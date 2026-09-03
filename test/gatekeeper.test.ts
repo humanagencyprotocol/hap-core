@@ -531,4 +531,90 @@ describe('gatekeeper', () => {
       }
     });
   });
+  // ─── No attestation → fail closed ───────────────────────────────────────────
+
+  describe('no attestation supplied → fail closed', () => {
+    // The attestation loop is a `for` over request.attestations. With an empty
+    // array it runs zero times, collects zero errors, and — before this fix —
+    // fell through to the bounds check, which approved a call whose signature,
+    // bounds_hash and TTL had never been verified. "No errors" is not
+    // "verified".
+
+    it('v0.3 path: empty array is refused, not approved', async () => {
+      const result = await verify(
+        { frame: routineFrame, attestations: [], execution: { amount: 5, currency: 'EUR', action_type: 'charge' } },
+        keyPair.publicKeyHex,
+      );
+
+      expect(result.approved).toBe(false);
+      if (!result.approved) {
+        expect(result.errors).toHaveLength(1);
+        expect(result.errors[0].code).toBe('MALFORMED_ATTESTATION');
+        expect(result.errors[0].message).toBe('No attestation supplied — nothing to verify');
+      }
+    });
+
+    it('v0.4 path: empty array is refused, not approved', async () => {
+      const bounds: AgentFrameParams = {
+        profile: 'charge@0.4',
+        path: 'charge-routine',
+        amount_max: 80,
+        amount_daily_max: 500,
+        amount_monthly_max: 5000,
+        transaction_count_daily_max: 10,
+      };
+
+      const result = await verify(
+        {
+          frame: bounds,
+          context: { currency: 'EUR', action_type: 'charge' },
+          attestations: [],
+          execution: { amount: 5, currency: 'EUR', action_type: 'charge' },
+        },
+        keyPair.publicKeyHex,
+      );
+
+      expect(result.approved).toBe(false);
+      if (!result.approved) {
+        expect(result.errors).toHaveLength(1);
+        expect(result.errors[0].code).toBe('MALFORMED_ATTESTATION');
+        expect(result.errors[0].message).toBe('No attestation supplied — nothing to verify');
+      }
+    });
+
+    it('v0.4 path: a missing attestations field is refused too', async () => {
+      const bounds: AgentFrameParams = {
+        profile: 'charge@0.4',
+        path: 'charge-routine',
+        amount_max: 80,
+        amount_daily_max: 500,
+        amount_monthly_max: 5000,
+        transaction_count_daily_max: 10,
+      };
+
+      const request = {
+        frame: bounds,
+        execution: { amount: 5, currency: 'EUR', action_type: 'charge' },
+      } as unknown as Parameters<typeof verify>[0];
+
+      const result = await verify(request, keyPair.publicKeyHex);
+
+      expect(result.approved).toBe(false);
+      if (!result.approved) {
+        expect(result.errors[0].code).toBe('MALFORMED_ATTESTATION');
+      }
+    });
+
+    it('an unknown profile still reports INVALID_PROFILE first', async () => {
+      const result = await verify(
+        { frame: { profile: 'unknown@1.0', path: 'test' }, attestations: [], execution: {} },
+        keyPair.publicKeyHex,
+      );
+
+      expect(result.approved).toBe(false);
+      if (!result.approved) {
+        expect(result.errors[0].code).toBe('INVALID_PROFILE');
+      }
+    });
+  });
 });
