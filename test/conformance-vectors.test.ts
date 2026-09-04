@@ -162,7 +162,13 @@ if (!haveEmailProfile) {
 }
 
 describe.skipIf(!haveEmailProfile)('shipped profile email@0.6 — absent optional keys', () => {
-  const profile: AgentProfile = JSON.parse(readFileSync(EMAIL_PROFILE_PATH, 'utf8'));
+  // Read only if it is there. `describe.skipIf` still evaluates this callback to
+  // collect the tests it is about to skip, so a bare readFileSync throws ENOENT
+  // in any checkout without the hap-profiles sibling — which is every CI run of
+  // this repo, and is what turned an intended skip into a failed publish.
+  const profile: AgentProfile = haveEmailProfile
+    ? JSON.parse(readFileSync(EMAIL_PROFILE_PATH, 'utf8'))
+    : (null as unknown as AgentProfile);
 
   it('every bound except `profile` is optional (premise of this test)', () => {
     const fields = Object.entries(profile.boundsSchema!.fields);
