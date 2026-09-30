@@ -636,7 +636,27 @@ export interface ExecutionLogQuery {
    * Sum a field's values within a time window for a given profile.
    * Use field="_count" to count executions instead of summing a field.
    */
-  sumByWindow(profileId: string, path: string, field: string, window: CumulativeWindow, now?: number): number;
+  sumByWindow(
+    profileId: string,
+    path: string,
+    field: string,
+    window: CumulativeWindow,
+    now?: number,
+    /**
+     * Only count executions whose `execution.action_type` is one of these.
+     * Omitted → every execution counts (a bound that governs all action types).
+     *
+     * Consumption is partitioned by action type (*Cumulative Tracking* rule 4):
+     * a bound counts only the action types it governs. Without the filter a
+     * profile with several action types feeds every bound the combined total —
+     * sales' "orders per day" counted quotes and sends too, and its daily order
+     * value summed quote values. Use {@link boundActionTypes} to derive it.
+     *
+     * Implementations SHOULD count an entry that carries no `action_type`
+     * against every filter: an unknown action is not evidence of headroom.
+     */
+    actionTypes?: readonly string[],
+  ): number;
 }
 
 // ─── Frame Types ─────────────────────────────────────────────────────────────

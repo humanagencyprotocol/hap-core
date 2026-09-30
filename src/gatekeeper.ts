@@ -469,6 +469,36 @@ function boundGovernsAction(
   return !namedForAnAction || matches;
 }
 
+/**
+ * Which action types' executions count toward this cumulative bound's running
+ * total. `undefined` means all of them.
+ *
+ * `boundGovernsAction` decides whether a bound applies to the current call; this
+ * decides what the bound's total is made of. Both are needed: selecting the right
+ * bound and then feeding it the profile's combined total is still wrong — sales'
+ * "orders per day" was checked only on orders, but counted every quote and send.
+ * Consumption is partitioned by action type (*Cumulative Tracking* rule 4), as
+ * the Authority Server already does.
+ *
+ * Same answer, same order of preference as `boundGovernsAction`: the declared
+ * `appliesTo`; else, for a count bound named for an action (`delete_daily_max`),
+ * that action; else every action type. Exported so display surfaces report the
+ * same totals the gate enforces.
+ */
+export function boundActionTypes(
+  fieldName: string,
+  fieldDef: ProfileBoundsField,
+): readonly string[] | undefined {
+  if (fieldDef.appliesTo) return fieldDef.appliesTo;
+
+  const bt = fieldDef.boundType;
+  if (!bt || bt.kind !== 'cumulative_count') return undefined;
+
+  const prefix = fieldName.replace(/_(?:daily|monthly|weekly)_max$/, '');
+  if (prefix === fieldName || prefix.startsWith('transaction')) return undefined;
+  return [prefix];
+}
+
 function checkBoundsV4(
   request: GatekeeperRequest,
   profile: AgentProfile,
@@ -552,7 +582,9 @@ function checkBoundsV4(
         }
         if (!executionLog) break;
 
-        const runningTotal = executionLog.sumByWindow(profileId, path, bt.of, bt.window, now);
+        const runningTotal = executionLog.sumByWindow(
+          profileId, path, bt.of, bt.window, now, boundActionTypes(fieldName, fieldDef),
+        );
         const currentRaw = request.execution[bt.of];
         const current = typeof currentRaw === 'number'
           ? currentRaw
@@ -584,7 +616,9 @@ function checkBoundsV4(
         }
         if (!executionLog) break;
 
-        const runningCount = executionLog.sumByWindow(profileId, path, '_count', bt.window, now);
+        const runningCount = executionLog.sumByWindow(
+          profileId, path, '_count', bt.window, now, boundActionTypes(fieldName, fieldDef),
+        );
         const total = runningCount + 1;
 
         if (total > boundValue) {
