@@ -99,9 +99,18 @@ describe('per_transaction bound requiredFor', () => {
     expect(r.approved).toBe(false);
   });
 
-  it('REFUSES a charge whose amount is null', async () => {
+  it('REFUSES a charge whose amount is null — null is "missing", not zero', async () => {
+    // Number(null) === 0: a value lost in transit (an unmapped connector
+    // field, or JSON.stringify(NaN) === 'null' on the wire) must not silently
+    // read as "amount 0, within bound".
     const r = await check(GUARDED, { amount: null as unknown as number, currency: 'EUR', action_type: 'charge' });
     expect(r.approved).toBe(false);
+    if (!r.approved) {
+      // Must be classified as MISSING (requiredFor's own message), not just
+      // caught by the generic non-numeric fallback that happened to exist
+      // already — that distinction is the whole point of the null !== 0 fix.
+      expect(r.errors[0].message).toMatch(/exposes no amount/i);
+    }
   });
 
   it('an unlisted action type with no value keeps passing (today\'s behaviour)', async () => {

@@ -556,13 +556,20 @@ function checkBoundsV4(
           && bt.requiredFor.includes(actionType);
 
         if (engaged) {
-          const numericActual = typeof actual === 'number' ? actual : Number(actual);
-          const missingOrNonNumeric = actual === undefined || Number.isNaN(numericActual);
+          // `null` is treated as "missing", not as the number 0 — JSON has no
+          // undefined, so a value lost somewhere upstream (an unmapped
+          // connector field serialized through JSON) commonly arrives as
+          // null. `Number(null) === 0` would otherwise read as "an amount of
+          // zero was declared and is within bound", which is the exact
+          // silent-pass this feature exists to close.
+          const missing = actual === undefined || actual === null;
+          const numericActual = missing ? NaN : (typeof actual === 'number' ? actual : Number(actual));
+          const missingOrNonNumeric = missing || Number.isNaN(numericActual);
           if (missingOrNonNumeric) {
             errors.push({
               code: 'BOUND_EXCEEDED',
               field: bt.of,
-              message: actual === undefined
+              message: missing
                 ? `Bound "${fieldName}" requires "${bt.of}" for "${actionType}" calls, but this ` +
                   `call exposes no ${bt.of} to check against it. Refusing: the call cannot be ` +
                   `shown to stay within ${fieldName}.`
