@@ -546,6 +546,36 @@ function checkBoundsV4(
     switch (bt.kind) {
       case 'per_transaction': {
         const actual = request.execution[bt.of];
+
+        // `requiredFor`: for a listed action_type, absence (or a non-numeric
+        // value) is a denial, not a skip — see BoundType.per_transaction's
+        // doc comment for why. Unlisted action types, or no `requiredFor` at
+        // all, keep the pre-existing skip-on-absence behaviour below.
+        const engaged = !!bt.requiredFor?.length
+          && actionType !== undefined
+          && bt.requiredFor.includes(actionType);
+
+        if (engaged) {
+          const numericActual = typeof actual === 'number' ? actual : Number(actual);
+          const missingOrNonNumeric = actual === undefined || Number.isNaN(numericActual);
+          if (missingOrNonNumeric) {
+            errors.push({
+              code: 'BOUND_EXCEEDED',
+              field: bt.of,
+              message: actual === undefined
+                ? `Bound "${fieldName}" requires "${bt.of}" for "${actionType}" calls, but this ` +
+                  `call exposes no ${bt.of} to check against it. Refusing: the call cannot be ` +
+                  `shown to stay within ${fieldName}.`
+                : `Bound "${fieldName}" requires a numeric "${bt.of}" for "${actionType}" calls, ` +
+                  `but this call's value (${String(actual)}) is not a number. Refusing: the call ` +
+                  `cannot be shown to stay within ${fieldName}.`,
+              bound: boundValue,
+              actual,
+            });
+            continue;
+          }
+        }
+
         if (actual === undefined) continue;
         if (typeof boundValue !== 'number' || typeof actual !== 'number') {
           errors.push({

@@ -13,7 +13,7 @@
  */
 
 import { createHash } from 'crypto';
-import type { AgentFrameParams, AgentBoundsParams, AgentContextParams, AgentProfile } from './types';
+import type { AgentFrameParams, AgentBoundsParams, AgentContextParams, AgentProfile, BoundType } from './types';
 
 // ─── v0.3 Frame Functions ─────────────────────────────────────────────────────
 
@@ -177,6 +177,68 @@ export function validateContextParams(
   }
 
   return { valid: errors.length === 0, errors };
+}
+
+/**
+ * Authoring-time check for `per_transaction` bound `requiredFor` (v0.8+):
+ * entries must name a real `action_type` from the profile's declared
+ * `boundsSchema.actionTypes` registry, and the field is only meaningful on
+ * `per_transaction` bounds (see `BoundType`'s doc comment for why the other
+ * kinds don't carry it).
+ *
+ * This is NOT wired into `registerProfile` or any enforcement path — nothing
+ * in hap-core validates profile JSON at load time today (the pre-existing
+ * `requiredFor` on a context/scope constraint has the same gap), so adding
+ * an automatic refusal here would be new behaviour beyond this change's
+ * scope. Call it explicitly from an authoring tool, a hap-profiles CI check,
+ * or a test, to catch a `requiredFor` entry that can never match (misspelled
+ * action type) or is attached to a bound kind that silently ignores it.
+ *
+ * Returns an empty array when the profile has no boundsSchema or nothing to
+ * check — never throws.
+ */
+export function validateBoundsRequiredFor(profile: AgentProfile): string[] {
+  const errors: string[] = [];
+  const boundsSchema = profile.boundsSchema;
+  if (!boundsSchema) return errors;
+
+  const actionTypes = boundsSchema.actionTypes ? [...boundsSchema.actionTypes] : undefined;
+
+  for (const [fieldName, fieldDef] of Object.entries(boundsSchema.fields)) {
+    const bt = fieldDef.boundType as (BoundType & { requiredFor?: unknown }) | undefined;
+    if (!bt) continue;
+    const requiredFor = (bt as { requiredFor?: unknown }).requiredFor;
+    if (requiredFor === undefined) continue;
+
+    if (!Array.isArray(requiredFor) || !requiredFor.every((v) => typeof v === 'string')) {
+      errors.push(`Bound "${fieldName}": requiredFor must be a string array.`);
+      continue;
+    }
+
+    if (bt.kind !== 'per_transaction') {
+      errors.push(
+        `Bound "${fieldName}": requiredFor is only meaningful on a per_transaction bound ` +
+        `(found on kind "${bt.kind}") — every enforcement point ignores it there. Remove it.`,
+      );
+      continue;
+    }
+
+    if (actionTypes) {
+      for (const actionType of requiredFor) {
+        if (!actionTypes.includes(actionType)) {
+          errors.push(
+            `Bound "${fieldName}": requiredFor names action type "${actionType}", which is not ` +
+            `in this profile's boundsSchema.actionTypes registry [${actionTypes.join(', ')}]. ` +
+            `It can never match a real execution and the requirement is dead.`,
+          );
+        }
+      }
+    }
+    // No actionTypes registry declared: membership cannot be checked (same
+    // tolerance the AS receipt route applies to pre-registry profiles).
+  }
+
+  return errors;
 }
 
 // ─── Value Encoding (normative, v0.5+) ───────────────────────────────────────
