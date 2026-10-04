@@ -546,6 +546,43 @@ function checkBoundsV4(
     switch (bt.kind) {
       case 'per_transaction': {
         const actual = request.execution[bt.of];
+
+        // `requiredFor`: for a listed action_type, absence (or a non-numeric
+        // value) is a denial, not a skip — see BoundType.per_transaction's
+        // doc comment for why. Unlisted action types, or no `requiredFor` at
+        // all, keep the pre-existing skip-on-absence behaviour below.
+        const engaged = !!bt.requiredFor?.length
+          && actionType !== undefined
+          && bt.requiredFor.includes(actionType);
+
+        if (engaged) {
+          // `null` is treated as "missing", not as the number 0 — JSON has no
+          // undefined, so a value lost somewhere upstream (an unmapped
+          // connector field serialized through JSON) commonly arrives as
+          // null. `Number(null) === 0` would otherwise read as "an amount of
+          // zero was declared and is within bound", which is the exact
+          // silent-pass this feature exists to close.
+          const missing = actual === undefined || actual === null;
+          const numericActual = missing ? NaN : (typeof actual === 'number' ? actual : Number(actual));
+          const missingOrNonNumeric = missing || Number.isNaN(numericActual);
+          if (missingOrNonNumeric) {
+            errors.push({
+              code: 'BOUND_EXCEEDED',
+              field: bt.of,
+              message: missing
+                ? `Bound "${fieldName}" requires "${bt.of}" for "${actionType}" calls, but this ` +
+                  `call exposes no ${bt.of} to check against it. Refusing: the call cannot be ` +
+                  `shown to stay within ${fieldName}.`
+                : `Bound "${fieldName}" requires a numeric "${bt.of}" for "${actionType}" calls, ` +
+                  `but this call's value (${String(actual)}) is not a number. Refusing: the call ` +
+                  `cannot be shown to stay within ${fieldName}.`,
+              bound: boundValue,
+              actual,
+            });
+            continue;
+          }
+        }
+
         if (actual === undefined) continue;
         if (typeof boundValue !== 'number' || typeof actual !== 'number') {
           errors.push({

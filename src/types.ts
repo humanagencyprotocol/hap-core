@@ -218,8 +218,26 @@ export type BoundType =
    * Per-transaction cap. The execution context field named in `of` must
    * satisfy `execution[of] <= bound` for the current call. No cumulative
    * tracking. Used by: amount_max, recipient_max, booking_duration_max, etc.
+   *
+   * `requiredFor` (v0.8+) closes the converse: without it, a call that does
+   * not carry `of` at all is simply skipped — a 5,000 cap refuses 6,000 but
+   * permits a call that declares no value whatsoever, which is indistinguishable
+   * from an unenforced bound. The same hole, and the same fix, as
+   * `FieldConstraint.requiredFor` on a scope constraint (below): values drawn
+   * from the profile's `boundsSchema.actionTypes` registry. For a listed
+   * `action_type`, an execution whose context lacks `of` — or whose value is
+   * not a finite number — MUST be refused rather than skipped. For an
+   * unlisted (or when `requiredFor` is absent) action type, today's
+   * skip-on-absence behaviour is unchanged. Meaningful only on
+   * `per_transaction`; the other `BoundType` kinds have no per-call "value
+   * exposed or not" question — `cumulative_sum`/`cumulative_count` always read
+   * from the execution log regardless of what this call declares, and `enum`
+   * is a capability flag, not a runtime value — so the field does not exist
+   * on those variants and a profile that puts it there has it silently
+   * ignored by every enforcement point (TypeScript also refuses it when the
+   * profile is authored against this type rather than raw JSON).
    */
-  | { kind: 'per_transaction'; of: string }
+  | { kind: 'per_transaction'; of: string; requiredFor?: string[] }
   /**
    * Cumulative sum within a time window. The SP maintains a running sum
    * of `execution[of]` across all prior executions in the window; the
@@ -520,6 +538,16 @@ export interface AgentProfile {
   boundsSchema?: {
     keyOrder: string[];
     fields: Record<string, ProfileBoundsField>;
+    /**
+     * v0.5+ registry of the action types this profile recognizes (e.g.
+     * `["send", "delete", "setup"]`). Every `execution.action_type` the
+     * Authority Server and gateway accept for this profile MUST be a member
+     * when the registry is declared (protocol.md → Bounds Schema, rule 2);
+     * it is also what a `per_transaction` bound's `requiredFor` draws from.
+     * Absent on profiles published before the registry existed — membership
+     * is then uncheckable, not a violation.
+     */
+    actionTypes?: readonly string[];
   };
 
   /**
