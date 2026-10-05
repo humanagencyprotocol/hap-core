@@ -10,6 +10,7 @@ export * from './content-binding';
 export * from './intent-disclosure';
 export * from './identity';
 export * from './frame';
+export * from './commitment-modes';
 export * from './attestation';
 export * from './gatekeeper';
 export * from './profiles';

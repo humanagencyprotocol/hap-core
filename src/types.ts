@@ -479,6 +479,12 @@ export interface ExecutionPath {
  *
  * Supports both v0.3 (frameSchema) and v0.4 (boundsSchema + contextSchema).
  */
+/**
+ * A commitment mode a person can choose when signing a mandate. (`review_above_cap`
+ * is not chosen by the signer — it follows from team caps.)
+ */
+export type SignableCommitmentMode = 'automatic' | 'review';
+
 export interface AgentProfile {
   id: string;
   name?: string;
@@ -522,6 +528,19 @@ export interface AgentProfile {
    * a forwarded message has usually lost the footer that carried it.
    */
   receipt_lookup?: boolean;
+
+  /**
+   * The commitment modes a mandate under this profile may be signed with.
+   * Absent → every mode (`automatic`, `review`), as before this field existed.
+   *
+   * Lets a profile be review-only: every action it governs then needs a
+   * person's approval, whatever the signer would have picked. The Authority
+   * Server refuses to sign a mandate whose `commitment_mode` is not listed;
+   * a mandate screen offers only the listed modes. Fail-closed: a declared
+   * list with no valid entry allows nothing — a malformed declaration never
+   * widens what a profile allows. See {@link allowedCommitmentModes}.
+   */
+  commitment_modes?: readonly SignableCommitmentMode[];
 
   /**
    * v0.3 frame schema (deprecated, kept for backward compat).
