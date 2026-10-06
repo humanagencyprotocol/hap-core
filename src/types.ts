@@ -320,6 +320,19 @@ export interface ProfileBoundsField {
    * kinds, and the same boundType can carry different units.
    */
   unit?: FieldUnit;
+  /**
+   * The largest value a mandate may set for this (numeric) bound — a ceiling
+   * on what the owner can grant, declared by the profile. E.g. reporting@0.2
+   * `read_max_age_days: { maximum: 366 }`: no reporting mandate may read back
+   * further than a year.
+   *
+   * Distinct from the bound itself: the bound limits each ACTION; `maximum`
+   * limits the MANDATE. A value above it is not a valid mandate for this
+   * profile — the mandate editor caps its input, the issuing Authority Server
+   * should refuse it, and an enforcement point that reads the bound applies
+   * min(value, maximum). Absent → no ceiling.
+   */
+  maximum?: number;
   /** @deprecated v0.4: use boundType instead. */
   constraint?: FieldConstraint;
   /** @deprecated v0.4: use boundType: { kind: 'enum', values: [...] }. */
