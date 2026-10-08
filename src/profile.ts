@@ -90,6 +90,17 @@ export function validateProfile(profile: AgentProfile): ProfileValidationError[]
     for (const [fieldName, fieldDef] of Object.entries(boundsSchema.fields)) {
       if (fieldName === 'profile') continue;
 
+      // Bounds Schema rule 6: no action-routing arrays. v0.4 retired execution
+      // paths; routing is the job of actionType + the tool-gating manifest.
+      const routing = ['path', 'paths'].filter((k) => k in (fieldDef as object));
+      if (routing.length > 0) {
+        errors.push({
+          code: 'PROFILE_INVALID',
+          field: fieldName,
+          message: `Bounds field "${fieldName}" declares ${routing.map((k) => `"${k}"`).join(' and ')} — action-routing arrays are forbidden (Bounds Schema rule 6); use actionType and appliesTo.`,
+        });
+      }
+
       if (!fieldDef.boundType) {
         errors.push({
           code: 'PROFILE_INVALID',
