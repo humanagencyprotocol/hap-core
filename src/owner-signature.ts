@@ -22,11 +22,11 @@
  */
 
 import * as ed from '@noble/ed25519';
-import type { Mandate, MandatePayload, MandateOwnerEntry } from './types';
+import type { Mandate, MandatePayload, MandateOwnerEntry, OwnerSignatureBinding, ProfileOwnerSignatureFloor } from './types';
 import { canonicalize } from './canonicalize';
 import { decodeDidKey } from './did-key';
 import { toBase64Url, fromBase64Url } from './base64url';
-import { HapError, type HapErrorCode } from './errors';
+import type { HapErrorCode } from './errors';
 
 /** The object the owner signs — a canonical projection of the mandate.
  * Field absence is defined, not incidental (protocol.md → *The signed
@@ -225,5 +225,47 @@ export async function verifyApproval(approval: ApprovalObject, signature: string
   const ok = await ed.verifyAsync(fromBase64Url(signature), approvalSigningBytes(approval), publicKey).catch(() => false);
   if (!ok) {
     throw new OwnerSignatureError('APPROVAL_SIGNATURE_INVALID', `approval signature by ${signerDid} does not verify`);
+  }
+}
+
+/** Signature-assurance ranking for `OwnerSignatureBinding`, weakest first —
+ * protocol.md → *Owner Signatures* → "binding" table ordering (raw < webauthn < eudi). */
+const BINDING_RANK: Record<OwnerSignatureBinding, number> = { raw: 0, webauthn: 1, eudi: 2 };
+
+/**
+ * Enforce a profile's `ownerSignature` floor (protocol.md → *Owner
+ * Signatures* → "Where the requirement lives" — the profile-floor tier,
+ * checkable without trusting the AS: `profile_id`/`profile_hash` are in the
+ * signed payload AND in the owner-signed projection).
+ *
+ * An unknown `binding` value is treated as rank 0 (weakest) rather than
+ * rejected outright — "an AS MUST NOT reject a mandate_owners entry solely
+ * because it does not recognize its binding value" extends naturally to a
+ * verifier ranking it, since crediting an unrecognized binding with
+ * unearned strength would be the more dangerous failure mode.
+ *
+ * @throws OwnerSignatureError `OWNER_SIGNATURE_REQUIRED` when the floor is
+ * unmet — "MUST fail, not warn" (protocol.md, same section).
+ */
+export function checkOwnerSignatureRequirement(
+  payload: MandatePayload,
+  floor: ProfileOwnerSignatureFloor | undefined,
+): void {
+  if (!floor?.required) return;
+  const entry = payload.mandate_owners[0];
+  const signed = entry?.signature !== undefined && entry?.binding !== undefined;
+  if (!signed) {
+    throw new OwnerSignatureError(
+      'OWNER_SIGNATURE_REQUIRED',
+      'this profile requires an owner signature and mandate_owners[0] carries none',
+    );
+  }
+  const minRank = floor.minBinding ? BINDING_RANK[floor.minBinding] : 0;
+  const haveRank = BINDING_RANK[entry!.binding as OwnerSignatureBinding] ?? 0;
+  if (haveRank < minRank) {
+    throw new OwnerSignatureError(
+      'OWNER_SIGNATURE_REQUIRED',
+      `this profile requires binding >= "${floor.minBinding}", mandate_owners[0] carries "${entry!.binding}"`,
+    );
   }
 }
