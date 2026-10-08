@@ -11,9 +11,29 @@ jobs:
     permissions:
       contents: read
       id-token: write  # for npm provenance
+    # The test step reads the conformance vectors (spec repo) and a published
+    # profile (hap-profiles); without them the vector tests FAIL in CI — the
+    # same layout as ci.yml, so a release is tested exactly like a PR.
+    env:
+      HAP_SPEC_DIR: ${{ github.workspace }}/.hap-protocol/content
+      HAP_PROFILES_DIR: ${{ github.workspace }}/.hap-profiles
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
+      - name: Checkout hap-protocol (spec + conformance vectors)
+        uses: actions/checkout@v6
+        with:
+          repository: humanagencyprotocol/hap-protocol
+          ref: 6bee578af9cda55f56df581acc51f047b28abb2f
+          path: .hap-protocol
+          sparse-checkout: content
+
+      - name: Checkout hap-profiles
+        uses: actions/checkout@v6
+        with:
+          repository: humanagencyprotocol/hap-profiles
+          path: .hap-profiles
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6

@@ -17,17 +17,17 @@ import { describe, it, expect, beforeAll } from 'vitest';
 import { verify } from '../src/gatekeeper';
 import { registerProfile } from '../src/profiles';
 import { EMAIL_PROFILE_V4 } from './fixtures';
-import { generateTestKeyPair, createTestAttestationV4, type TestKeyPair } from './helpers';
-import type { AgentFrameParams, AgentProfile } from '../src/types';
+import { generateTestKeyPair, createTestMandate, type TestKeyPair } from './helpers';
+import type { AgentBoundsParams, AgentProfile } from '../src/types';
 
-const GUARDED = 'email-guarded@0.4';
-const LEGACY = 'email-legacy@0.4';
+const GUARDED = 'email-guarded@0.7';
+const LEGACY = 'email-legacy@0.7';
 
 /** EMAIL_PROFILE_V4 with recipients required for sends. */
 function withRequiredFor(id: string, requiredFor?: string[]): AgentProfile {
   const base = JSON.parse(JSON.stringify(EMAIL_PROFILE_V4)) as AgentProfile;
   base.id = id;
-  const field = base.contextSchema!.fields.allowed_recipients;
+  const field = base.scopeSchema!.fields.allowed_recipients;
   if (requiredFor) field.constraint!.requiredFor = requiredFor;
   return base;
 }
@@ -35,13 +35,12 @@ function withRequiredFor(id: string, requiredFor?: string[]): AgentProfile {
 describe('a constrained dimension the call does not expose', () => {
   let keyPair: TestKeyPair;
 
-  const bounds: AgentFrameParams = {
+  const bounds: AgentBoundsParams = {
     profile: GUARDED,
-    path: 'email-routine',
     recipient_max: 5,
     send_daily_max: 20,
   };
-  const context = { allowed_recipients: 'andreas@example.com', allowed_domains: 'example.com' };
+  const scope = { allowed_recipients: 'andreas@example.com', allowed_domains: 'example.com' };
 
   beforeAll(async () => {
     registerProfile(GUARDED, withRequiredFor(GUARDED, ['send']));
@@ -49,16 +48,11 @@ describe('a constrained dimension the call does not expose', () => {
     keyPair = await generateTestKeyPair();
   });
 
-  async function check(profile: string, execution: Record<string, string | number>) {
-    const frame = { ...bounds, profile };
-    const blob = await createTestAttestationV4({
-      keyPair,
-      bounds: frame,
-      context,
-      profile: profile === GUARDED ? withRequiredFor(GUARDED, ['send']) : withRequiredFor(LEGACY),
-      domain: 'email',
-    });
-    return verify({ frame, context, attestations: [blob], execution }, keyPair.publicKeyHex);
+  async function check(profileId: string, execution: Record<string, string | number>) {
+    const requestBounds = { ...bounds, profile: profileId };
+    const profile = profileId === GUARDED ? withRequiredFor(GUARDED, ['send']) : withRequiredFor(LEGACY);
+    const blob = await createTestMandate({ keyPair, bounds: requestBounds, scope, profile });
+    return verify({ bounds: requestBounds, scope, mandates: [blob], execution });
   }
 
   it('approves a send whose recipients are visible and in scope', async () => {

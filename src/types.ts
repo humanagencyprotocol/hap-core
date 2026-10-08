@@ -1,132 +1,74 @@
 /**
- * HAP Core Types — Agent Demo
+ * HAP Core Types — v0.7 ("mandate" / "ticket" / "scope" / "Mandate Owner")
  *
- * Types for agent-oriented profiles with bounded execution.
+ * v0.7 is a vocabulary release (protocol.md → *Migration from v0.6*): the
+ * wire renames *attestation* → *mandate*, *context* → *scope*, *execution
+ * receipt* → *mandate ticket*, and *Decision Owner* → *Mandate Owner*. There
+ * is no backward-compat alias here — v0.6 and earlier artifacts are
+ * verification-only history outside this package (CLAUDE.md "Decided by the
+ * owner": no verify path for 0.5/0.6, no old→new code map).
  */
 
-// ─── Attestation Types ───────────────────────────────────────────────────────
+// ─── Mandate Types ────────────────────────────────────────────────────────────
 
-export interface AttestationHeader {
-  typ: 'HAP-attestation';
+export interface MandateHeader {
+  typ: 'HAP-mandate';
   alg: 'EdDSA';
+  /**
+   * When present MUST identify the same key as `issuer` (for a `did:key`
+   * issuer, the multibase key fingerprint) — Mandate rule 8. The field a
+   * party writes (`kid`) loses to the field a party cannot forge (`issuer`).
+   */
   kid?: string;
 }
 
-export interface ResolvedDomain {
-  domain: string;
-  did: string;
-}
-
-export interface AttestationPayload {
-  attestation_id: string;
-  version: '0.3' | '0.4' | '0.5' | '0.6';
-  profile_id: string;
-  /** v0.3 (deprecated) — hash of the authorization frame */
-  frame_hash?: string;
-  /** v0.4 — hash of the bounds parameters */
-  bounds_hash?: string;
-  /** v0.4 — hash of the context parameters */
-  context_hash?: string;
-  execution_context_hash: string;
-  /**
-   * v0.4 (deprecated in v0.5) — domain-scoped owners. Optional so v0.5
-   * attestations that carry only `resolved_owners` remain valid. During the
-   * transition the AS emits BOTH `resolved_domains` (internal coverage) and
-   * `resolved_owners` (the v0.5 signed wire field).
-   */
-  resolved_domains?: ResolvedDomain[];
-  /**
-   * v0.5 — the Decision Owner DIDs this attestation covers (person-centric
-   * model; replaces the abstract domain in `resolved_domains`). Carried in the
-   * signed payload so verifiers bind the action to the human(s) who authorized it.
-   */
-  resolved_owners?: string[];
-  gate_content_hashes: Record<string, string>;
-  /**
-   * v0.5 (companion spec `intent-disclosure@0.1`) — present iff the attestation
-   * carries an encrypted-intent disclosure object. `sha256:`-prefixed hash that
-   * binds the disclosure's `intent_ciphertext` + `approvers_frozen` into the
-   * signed payload (see {@link computeIntentDisclosureHash}), so a compromised
-   * AS cannot swap the ciphertext/wrapped keys or alter the approver set
-   * without invalidating the attestation signature (companion invariant C2).
-   */
-  intent_disclosure_hash?: string;
-  /**
-   * v0.6 (Identity Assurance) — optional signed overlay carrying the verified
-   * real-world identity of the Decision Owner(s), one entry per owner. Present
-   * only when identity is disclosed; an attestation with no `subjects` renders
-   * as `low` (pseudonymous, no name). See {@link Subject} and
-   * {@link deriveIdentityLine}.
-   */
-  subjects?: Subject[];
-  /**
-   * v0.4 — commitment mode chosen by the decision owner at attestation time.
-   * - 'automatic': agent may invoke bounded tools without per-action review.
-   * - 'review': every tool call requires an approved proposal before the
-   *   receipt route will sign a receipt.
-   *
-   * Cryptographically bound in the signed payload so a compromised SP cannot
-   * silently flip 'review' → 'automatic'. Absent on v0.3 attestations.
-   * `review_above_cap` (v0.5): automatic below the signed caps, proposal above.
-   */
-  commitment_mode?: 'automatic' | 'review' | 'review_above_cap';
-  /**
-   * v0.6 (Owner Mandate Signatures) — the Decision Owner's own signature(s)
-   * over the mandate projection ({@link MandateProjection}), one entry per
-   * co-signing owner. Carried INSIDE the AS-signed payload, so the AS attests
-   * to having received it and cannot strip it without invalidating its own
-   * signature. Optional and additive: an attestation without it behaves as
-   * before (the v0.5 posture — the AS asserts, nobody co-signs).
-   */
-  owner_mandates?: OwnerMandate[];
-  issued_at: number;
-  expires_at: number;
-}
-
-/** Mandate-assurance axis — what custody signed the mandate. Independent of
- * identity assurance ({@link Subject.method}). */
-export type MandateBinding = 'raw' | 'webauthn' | 'eudi';
+/** Signature-assurance axis — what custody signed the mandate projection or
+ * approval. Independent of identity assurance ({@link Subject.method}). */
+export type OwnerSignatureBinding = 'raw' | 'webauthn' | 'eudi';
 
 /** Which surface showed the owner what they signed. A DECLARATION, not a proof
- * — no verifier can check it; see protocol.md → Owner Mandate Signatures. */
+ * — no verifier can check it; see protocol.md → *Owner Signatures*. */
 export type SigningSurface = 'gatekeeper_local' | 'as_web' | 'wallet_display';
 
 /**
- * v0.6 — one owner's signature over the mandate projection.
+ * v0.7 `mandate_owners` entry (protocol.md → *Mandate field: mandate_owners*).
+ * `did` is required; the remaining fields are present together when the
+ * owner co-signed and absent together when they did not (Mandate rule 7).
  *
  * There is deliberately NO `public_key` field, and it MUST NOT be added: the
  * verification key is carried in the DID itself (key-bearing `did:key`), so a
  * non-key-bearing DID fails STRUCTURALLY instead of validating against a key
- * the AS could have substituted. `alg` is kept only as curve-confusion
- * hygiene; if it disagrees with the DID's key type, the DID is authoritative.
+ * the AS could have substituted.
  */
-export interface OwnerMandate {
-  /** The signing owner's key-bearing DID. MUST be a member of `resolved_owners`. */
+export interface MandateOwnerEntry {
+  /** The Mandate Owner's DID. For a co-signing entry, MUST be key-bearing. */
   did: string;
   /** Signature algorithm hint. The DID's multicodec wins on any disagreement. */
-  alg: 'EdDSA' | 'ES256';
+  alg?: 'EdDSA' | 'ES256';
   /** base64url (no padding) signature over the JCS bytes of the mandate projection. */
-  signature: string;
+  signature?: string;
   /** When the owner signed (unix seconds). */
-  signed_at: number;
+  signed_at?: number;
   /** Defence-in-depth against duplicate issuance by an HONEST AS only —
    * AS-side nonce enforcement is no defence against the AS itself. */
-  nonce: string;
-  binding: MandateBinding;
+  nonce?: string;
+  /** Required-present, value-open when a signature is carried: an AS MUST
+   * NOT reject an entry for a `binding` value it does not recognize. */
+  binding?: OwnerSignatureBinding;
   signing_surface?: SigningSurface;
 }
 
 /**
- * v0.6 Identity Assurance — a signed overlay binding a Decision Owner's verified
- * real-world identity to the attestation, gated by HOW the identity was verified.
+ * v0.6 Identity Assurance — a signed overlay binding a Mandate Owner's verified
+ * real-world identity to the mandate, gated by HOW the identity was verified.
  *
  * Two display levels (`assurance`): `low` discloses no name; `high` MAY disclose a
  * name. At `high`, two trust roots: `as` (the AS operator vouches — valid only
  * within its own domain) and `external` (an external eID such as EUDI — carries the
- * owner's own signature, AS-independent). See review.md → "Identity Assurance".
+ * owner's own signature, AS-independent).
  */
 export interface Subject {
-  /** The Decision Owner DID this subject describes (matches an entry in resolved_owners). */
+  /** The Mandate Owner DID this subject describes (matches the `mandate_owners` entry). */
   did: string;
   /** `low` → no name shown; `high` → the name MAY be shown. */
   assurance: 'low' | 'high';
@@ -140,19 +82,55 @@ export interface Subject {
   disclose?: { name: string };
   /** When the underlying verification was performed (unix seconds). */
   verified_at?: number;
-  /**
-   * @deprecated v0.6 — replaced by {@link AttestationPayload.owner_mandates}.
-   * This field signed the wrong object (the identity claim, not what was
-   * committed to) and was welded to one method. Implementations MUST NOT emit
-   * it; verifiers MAY ignore it on artifacts that carry it. Kept readable for
-   * audit of pre-0.6 artifacts only.
-   */
-  owner_signature?: string | null;
 }
 
-export interface Attestation {
-  header: AttestationHeader;
-  payload: AttestationPayload;
+/** protocol.md → *Mandate Payload (v0.7)*. */
+export interface MandatePayload {
+  mandate_id: string;
+  version: '0.7';
+  profile_id: string;
+  /** Hash of the canonical bounds string. */
+  bounds_hash: string;
+  /** Hash of the canonical scope string (sha256 of "" when scope is empty). */
+  scope_hash: string;
+  execution_context_hash: string;
+  /** `sha256` over the JCS serialization of the profile the Gatekeeper
+   * provisioned for `profile_id` — the content address of the rulebook this
+   * mandate was issued under (new in v0.7). */
+  profile_hash: string;
+  /** The Authority Server's DID — SHOULD be the `did:key` of the signing key
+   * itself (new in v0.7). */
+  issuer: string;
+  /** Exactly one entry in v0.7 (Mandate rule 7). */
+  mandate_owners: MandateOwnerEntry[];
+  gate_content_hashes: Record<string, string>;
+  commitment_mode: 'automatic' | 'review' | 'review_above_cap';
+  /** Required, together with `above_cap_approvers`, iff `commitment_mode === "review_above_cap"`. */
+  above_cap_caps?: Record<string, number>;
+  above_cap_approvers?: string[];
+  /**
+   * Present iff the mandate carries an encrypted-intent disclosure object
+   * (companion spec `intent-disclosure@0.1`) — `sha256:`-prefixed hash
+   * binding `intent_ciphertext` + `approvers_frozen` into the signed payload.
+   */
+  intent_disclosure_hash?: string;
+  /** Signed identity-assurance block, one entry per owner — present iff the
+   * Mandate Owner disclosed identity. */
+  subjects?: Subject[];
+  /**
+   * The owner's narrowing of the profile's `disclose_fields` list (new in
+   * v0.7) — a subset of the profile's own list. See *Ticket Disclosure Is
+   * Declared*.
+   */
+  disclose_fields?: string[];
+  issued_at: number;
+  expires_at: number;
+}
+
+export interface Mandate {
+  header: MandateHeader;
+  payload: MandatePayload;
+  /** base64url (no padding) Ed25519 signature over the JCS-canonical payload. */
   signature: string;
 }
 
@@ -191,25 +169,13 @@ export interface FieldConstraint {
 }
 
 /**
- * Frame field definition within a profile.
- */
-export interface ProfileFrameField {
-  type: 'string' | 'number';
-  required: boolean;
-  description?: string;
-  constraint?: FieldConstraint;
-  enum?: string[];
-}
-
-/**
- * Bound enforcement semantics — how a v0.4 bound is checked.
+ * Bound enforcement semantics — how a bound is checked.
  *
- * Every bounds field in a v0.4 profile declares a `boundType` so the SP
- * receipt route and hap-core gatekeeper can dispatch on it directly,
- * without parsing field names or guessing conventions. This is the
- * single source of truth for "what does this bound mean at enforcement
- * time" — if a new kind is needed, add a variant here and update the
- * dispatch sites.
+ * Every bounds field in a profile declares a `boundType` so the AS and
+ * hap-core gatekeeper can dispatch on it directly, without parsing field
+ * names or guessing conventions. This is the single source of truth for
+ * "what does this bound mean at enforcement time" — if a new kind is needed,
+ * add a variant here and update the dispatch sites.
  *
  * See `ProfileBoundsField.boundType`.
  */
@@ -219,46 +185,45 @@ export type BoundType =
    * satisfy `execution[of] <= bound` for the current call. No cumulative
    * tracking. Used by: amount_max, recipient_max, booking_duration_max, etc.
    *
-   * `requiredFor` (v0.8+) closes the converse: without it, a call that does
-   * not carry `of` at all is simply skipped — a 5,000 cap refuses 6,000 but
+   * `requiredFor` closes the converse: without it, a call that does not
+   * carry `of` at all is simply skipped — a 5,000 cap refuses 6,000 but
    * permits a call that declares no value whatsoever, which is indistinguishable
-   * from an unenforced bound. The same hole, and the same fix, as
-   * `FieldConstraint.requiredFor` on a scope constraint (below): values drawn
-   * from the profile's `boundsSchema.actionTypes` registry. For a listed
-   * `action_type`, an execution whose context lacks `of` — or whose value is
-   * not a finite number — MUST be refused rather than skipped. For an
-   * unlisted (or when `requiredFor` is absent) action type, today's
-   * skip-on-absence behaviour is unchanged. Meaningful only on
-   * `per_transaction`; the other `BoundType` kinds have no per-call "value
-   * exposed or not" question — `cumulative_sum`/`cumulative_count` always read
-   * from the execution log regardless of what this call declares, and `enum`
-   * is a capability flag, not a runtime value — so the field does not exist
-   * on those variants and a profile that puts it there has it silently
-   * ignored by every enforcement point (TypeScript also refuses it when the
-   * profile is authored against this type rather than raw JSON).
+   * from an unenforced bound. Values are drawn from the profile's
+   * `boundsSchema.actionTypes` registry. For a listed `action_type`, an
+   * execution whose context lacks `of` — or whose value is not a finite
+   * number — MUST be refused rather than skipped. `appliesTo` MUST NOT be
+   * declared on a `per_transaction` bound (protocol.md → Bounds Schema rule 7)
+   * — it applies wherever `of` is present in the execution context.
    */
   | { kind: 'per_transaction'; of: string; requiredFor?: string[] }
   /**
-   * Cumulative sum within a time window. The SP maintains a running sum
-   * of `execution[of]` across all prior executions in the window; the
+   * Cumulative sum within a time window. The AS maintains a running sum
+   * of `execution[of]` across all prior tickets in the window; the
    * current call is approved iff `running_sum + execution[of] <= bound`.
-   * Used by: amount_daily_max, spend_monthly_max, etc.
+   * AS-only enforcement (protocol.md → *Enforcement Authority*); the
+   * Gatekeeper MUST NOT enforce this locally. Used by: amount_daily_max,
+   * spend_monthly_max, etc.
    */
   | { kind: 'cumulative_sum'; of: string; window: CumulativeWindow }
   /**
-   * Cumulative count within a time window. Every qualifying execution
+   * Cumulative count within a time window. Every qualifying ticket
    * counts as +1; the current call is approved iff
    * `running_count + 1 <= bound`. No execution context field is read.
-   * Used by: write_daily_max, post_monthly_max, booking_daily_max, etc.
+   * AS-only enforcement. `appliesTo` is REQUIRED on a profile published
+   * under v0.7 or later (Bounds Schema rule 7) — absence would mean
+   * "governs every action type", so a forgotten declaration silently
+   * throttles every action. Used by: write_daily_max, post_monthly_max,
+   * booking_daily_max, etc.
    */
   | { kind: 'cumulative_count'; window: CumulativeWindow }
   /**
    * String bound restricted to a fixed set of allowed values. The bound's
-   * value must be one of `values` at attestation time. The gateway
+   * value must be one of `values` at mandate time. The gateway
    * tool-proxy gates tool calls based on the stored bound (via the
    * integration manifest's `boundField` + `requiredValue`). Not cumulated,
-   * not checked by the SP receipt route — it's a capability flag.
-   * Used by: read_access, delete_access, archive_access.
+   * not checked by the AS ticket route — it's a capability flag.
+   * `appliesTo` MUST NOT be declared here (it is a capability flag, not an
+   * action-scoped limit). Used by: read_access, delete_access, archive_access.
    */
   | { kind: 'enum'; values: readonly string[] };
 
@@ -279,11 +244,11 @@ export type FieldUnit =
   | 'percent';
 
 /**
- * Bounds field definition within a v0.4 profile.
+ * Bounds field definition within a profile.
  *
- * v0.4 adds the required `boundType` — an explicit declaration of how
- * the bound is enforced. The older `constraint.enforceable` pattern is
- * deprecated and superseded by `boundType`.
+ * Every non-metadata bounds field MUST declare `boundType` — an explicit
+ * declaration of how the bound is enforced. Implementations MUST fail
+ * closed on any bounds field that omits it (Bounds Schema rule 2).
  */
 export interface ProfileBoundsField {
   type: 'string' | 'number';
@@ -291,26 +256,18 @@ export interface ProfileBoundsField {
   description?: string;
   displayName?: string;
   format?: 'email' | 'domain' | 'url' | 'currency';
-  /**
-   * v0.4 enforcement semantics. Required for all new profiles.
-   * Optional here only so the type stays backward compatible with v0.3
-   * profiles that predate the boundType convention — consumers must
-   * treat a missing boundType as an error when running in v0.4 mode.
-   */
+  /** Enforcement semantics. REQUIRED on every bounds field except `profile`. */
   boundType?: BoundType;
   /**
    * Which execution action types this bound governs, e.g. `["write"]`.
    *
-   * When present, this is authoritative. When absent, enforcement falls back to
-   * inferring the action type from the FIELD NAME (`send_daily_max` → `send`),
-   * which is a convention rather than a contract: a profile that names a bound
-   * after the domain concept instead of the action — calendar's
-   * `booking_daily_max` against an action type of `write` — matches nothing and
-   * is skipped, so a limit the user set is never applied and nothing says so.
-   *
-   * Declaring it removes the guess. Deliberately additive: profiles migrate one
-   * at a time, and every remaining fallback is logged, so the cases still
-   * relying on the naming convention become visible instead of staying silent.
+   * When present, this is authoritative. When absent, a `cumulative_sum` bound
+   * (or any bound on a profile published before v0.7) governs every action
+   * type in the profile's `actionTypes` registry; a `cumulative_count` bound
+   * on a v0.7+ profile MUST declare it (Bounds Schema rule 7). MUST NOT be
+   * declared on a `per_transaction` bound (it applies wherever its `of`
+   * field is present in the execution context) or on an `enum` bound (a
+   * capability flag, not an action-scoped limit).
    */
   appliesTo?: string[];
   /**
@@ -333,19 +290,15 @@ export interface ProfileBoundsField {
    * min(value, maximum). Absent → no ceiling.
    */
   maximum?: number;
-  /** @deprecated v0.4: use boundType instead. */
-  constraint?: FieldConstraint;
-  /** @deprecated v0.4: use boundType: { kind: 'enum', values: [...] }. */
-  enum?: string[];
 }
 
 /**
  * v0.5 Content Provenance — how a profile's action content is hashed into a
- * signed receipt (`contentHash`). The ephemeral-content analog of Output
+ * signed ticket (`contentHash`). The ephemeral-content analog of Output
  * Provenance: it binds the *bytes* of the action rather than a location.
  *
  * Profile-bound and OPTIONAL. Absent → no content hash is produced (full
- * backward compatibility). The gateway computes the hash; the SP only ever
+ * backward compatibility). The gateway computes the hash; the AS only ever
  * receives the hash, never the content, so HAP's privacy-minimal design holds.
  *
  * At `version:"1"` the profile declares only the *policy* — whether to bind and
@@ -409,16 +362,17 @@ export interface ContentBinding {
 }
 
 /**
- * Context field definition within a v0.4 profile.
+ * Scope field definition within a profile (renamed from `ProfileContextField`
+ * in v0.7 — protocol.md → *Migration from v0.6*, `contextSchema` → `scopeSchema`).
  */
-export interface ProfileContextField {
+export interface ProfileScopeField {
   type: 'string' | 'number';
   required: boolean;
   description?: string;
   displayName?: string;
   format?: 'email' | 'domain' | 'url' | 'currency';
   /**
-   * v0.6 — what this field NAMES on the read path. `counterparty` = the other
+   * What this field NAMES on the read path. `counterparty` = the other
    * party to a communication (matched against an item's participants);
    * `resource` = the container an item belongs to (a direct attribute match —
    * and a resource scope enforced on writes MUST also bind reads). Absent →
@@ -427,7 +381,6 @@ export interface ProfileContextField {
    */
   scopeKind?: 'counterparty' | 'resource';
   constraint?: FieldConstraint;
-  enum?: string[];
 }
 
 /**
@@ -446,13 +399,11 @@ export interface DeclaredFieldDef {
 export type CumulativeWindow = 'daily' | 'weekly' | 'monthly';
 
 /**
- * Execution context field definition — cumulative source (resolved from execution log).
+ * Execution context field definition — cumulative source (resolved from the
+ * AS's ticket history; see protocol.md → *Cumulative State*).
  *
- * The gatekeeper resolves these by querying the execution log:
  * - `cumulativeField`: which declared field to sum (use "_count" for plain counting)
  * - `window`: time window for aggregation (daily, weekly, monthly)
- *
- * The resolved value = running total within window + current call value.
  */
 export interface CumulativeFieldDef {
   source: 'cumulative';
@@ -469,34 +420,22 @@ export interface CumulativeFieldDef {
 export type ExecutionContextFieldDef = DeclaredFieldDef | CumulativeFieldDef;
 
 /**
- * Gate question definition.
- * @deprecated v0.4 uses a single intent gate with no profile-specific questions.
- */
-export interface GateQuestion {
-  question: string;
-  required: boolean;
-}
-
-/**
- * @deprecated Execution paths removed in v0.4. Kept for backward compatibility.
- */
-export interface ExecutionPath {
-  description: string;
-  requiredDomains?: string[];
-  ttl?: { default: number; max: number };
-}
-
-/**
- * Agent Profile — defines constraint types, execution paths, gate questions,
- * and the frame/bounds/context schemas for bounded execution.
- *
- * Supports both v0.3 (frameSchema) and v0.4 (boundsSchema + contextSchema).
+ * Agent Profile — defines the bounds/scope/execution-context schemas, gates,
+ * TTL policy, and retention for a bounded authority (protocol.md → *Profiles*).
  */
 /**
  * A commitment mode a person can choose when signing a mandate. (`review_above_cap`
  * is not chosen by the signer — it follows from team caps.)
  */
 export type SignableCommitmentMode = 'automatic' | 'review';
+
+/** protocol.md → *Owner Signatures* → "Where the requirement lives" — the
+ * profile-floor tier: `minBinding` names the weakest `OwnerSignatureBinding`
+ * this profile accepts for a co-signing owner. */
+export interface ProfileOwnerSignatureFloor {
+  required: boolean;
+  minBinding?: OwnerSignatureBinding;
+}
 
 export interface AgentProfile {
   id: string;
@@ -520,9 +459,10 @@ export interface AgentProfile {
   whatsNew?: string;
 
   /**
-   * Whether receipts under this profile may be looked up BY THEIR CONTENT — a
-   * verifier holding the content supplies its hash and learns which receipts
-   * bind it, without needing a receipt id.
+   * Whether tickets under this profile may be looked up BY THEIR CONTENT — a
+   * verifier holding the content supplies its hash and learns which tickets
+   * bind it, without needing a ticket id. (Renamed from `receipt_lookup` in
+   * v0.7.)
    *
    * OFF unless declared, and that default is the point. The lookup is a
    * confirmation oracle: given a guess at the content it says whether that
@@ -534,13 +474,8 @@ export interface AgentProfile {
    * Enable only when the bound content is unguessable enough that producing it
    * is equivalent to already having it: prose, an artifact URL, a whole record
    * payload. Never for a binding over a short value drawn from a small set.
-   *
-   * Why it must exist at all: most consequential actions cannot carry their
-   * receipt id. A released build was built before the receipt existed, a
-   * content-addressed artifact would change identity if the id were added, and
-   * a forwarded message has usually lost the footer that carried it.
    */
-  receipt_lookup?: boolean;
+  ticket_lookup?: boolean;
 
   /**
    * The commitment modes a mandate under this profile may be signed with.
@@ -556,22 +491,14 @@ export interface AgentProfile {
   commitment_modes?: readonly SignableCommitmentMode[];
 
   /**
-   * v0.3 frame schema (deprecated, kept for backward compat).
-   * Used when boundsSchema is not present.
-   */
-  frameSchema?: {
-    keyOrder: string[];
-    fields: Record<string, ProfileFrameField>;
-  };
-
-  /**
-   * v0.4 bounds schema — defines the authorization bounds parameters.
+   * The bounds schema — the enforceable parameters (protocol.md → *Bounds
+   * Schema*).
    */
   boundsSchema?: {
     keyOrder: string[];
     fields: Record<string, ProfileBoundsField>;
     /**
-     * v0.5+ registry of the action types this profile recognizes (e.g.
+     * Registry of the action types this profile recognizes (e.g.
      * `["send", "delete", "setup"]`). Every `execution.action_type` the
      * Authority Server and gateway accept for this profile MUST be a member
      * when the registry is declared (protocol.md → Bounds Schema, rule 2);
@@ -583,96 +510,48 @@ export interface AgentProfile {
   };
 
   /**
-   * v0.4 context schema — defines the execution context parameters (e.g., currency, action_type).
-   * May be absent or empty for profiles with no static context.
+   * The scope schema — operational scoping fields that stay local (renamed
+   * from `contextSchema` in v0.7). May be absent or empty for profiles with
+   * no static scope.
    */
-  contextSchema?: {
+  scopeSchema?: {
     keyOrder: string[];
-    fields: Record<string, ProfileContextField>;
+    fields: Record<string, ProfileScopeField>;
   };
 
   executionContextSchema: {
     fields: Record<string, ExecutionContextFieldDef>;
   };
 
-  /** @deprecated Execution paths removed in v0.4. Kept for backward compatibility. */
-  executionPaths?: Record<string, ExecutionPath>;
-
   requiredGates: string[];
-
-  /**
-   * v0.4: no gateQuestions — intent prompt is universal, defined in the gateway UI.
-   * v0.3: profile-specific gate questions (deprecated).
-   */
-  gateQuestions?: {
-    problem?: GateQuestion;
-    objective?: GateQuestion;
-    tradeoffs?: GateQuestion;
-  };
 
   ttl: { default: number; max: number };
   retention_minimum: number;
 
   /**
-   * v0.5 Content Provenance (OPTIONAL, profile-bound). When present, the
+   * Content Provenance (OPTIONAL, profile-bound). When present, the
    * gateway computes a `contentHash` for gated writes under this profile and
-   * passes it (hash only) to the SP, which signs it into the receipt. Absent
+   * passes it (hash only) to the AS, which signs it into the ticket. Absent
    * → no content hash. See {@link ContentBinding}.
    */
   content_binding?: ContentBinding;
 
   /**
-   * Tool gating configuration — how MCP tools map to execution context.
-   * @deprecated Tool gating now lives in integration manifests (content/integrations/*.json).
-   * Kept for backward compatibility with profiles that still include it.
+   * The execution-context fields a ticket under this profile MAY disclose
+   * (new in v0.7 — protocol.md → *Ticket Disclosure Is Declared*). Absent →
+   * nothing is disclosed by default. A mandate's own `disclose_fields` (when
+   * present) MUST be a subset of this list — a mandate may narrow disclosure,
+   * never widen it.
    */
-  toolGating?: ProfileToolGating;
-}
+  disclose_fields?: string[];
 
-// ─── Tool Gating Types ───────────────────────────────────────────────────
-
-/**
- * Available transforms for array-aware execution mappings.
- * - length: array length → number
- * - join: array items joined by comma → string
- * - join_domains: extract email domains, deduplicate, sort, join → string
- */
-export type ExecutionMappingTransform = 'join' | 'join_domains' | 'length';
-
-/**
- * Execution mapping value — how a tool argument maps to execution context field(s).
- * - string: direct copy (argName → fieldName)
- * - { field, divisor }: numeric division (e.g., cents ÷ 100 → EUR)
- * - { field, transform }: array transform (e.g., join_domains)
- * - Array form: one argument maps to multiple execution fields
- */
-export type ExecutionMappingValue =
-  | string
-  | { field: string; divisor: number }
-  | { field: string; transform: ExecutionMappingTransform }
-  | Array<{ field: string; divisor?: number; transform?: ExecutionMappingTransform }>;
-
-/**
- * Tool gating entry — how a tool's calls map to execution context fields.
- * Read-only tools use { category: "read" } — they require authorization
- * but skip execution context verification.
- */
-export interface ProfileToolGatingEntry {
-  executionMapping: Record<string, ExecutionMappingValue>;
-  staticExecution?: Record<string, string | number>;
-  /** Read-only tools: require authorization but no execution context checks */
-  category?: 'read';
-}
-
-/**
- * Profile-level tool gating configuration.
- * - default: applied to all tools not listed in overrides
- * - overrides: per-tool configs keyed by original MCP tool name
- *   Use { category: "read" } for read-only tools (null is deprecated)
- */
-export interface ProfileToolGating {
-  default: ProfileToolGatingEntry;
-  overrides?: Record<string, ProfileToolGatingEntry | null>;
+  /**
+   * Profile-floor requirement for an owner signature on a mandate under this
+   * profile (protocol.md → *Owner Signatures* → "Where the requirement
+   * lives"). Reserved for domains that cannot mean anything without a
+   * signature — used more freely it forks `charge` from `charge-with-cosign`.
+   */
+  ownerSignature?: ProfileOwnerSignatureFloor;
 }
 
 // ─── Execution Log Types ─────────────────────────────────────────────────────
@@ -719,25 +598,20 @@ export interface ExecutionLogQuery {
   ): number;
 }
 
-// ─── Frame Types ─────────────────────────────────────────────────────────────
-
-/**
- * Agent frame parameters — mixed types (strings and numbers).
- * Keys and values come from the profile's frameSchema.
- */
-export type AgentFrameParams = Record<string, string | number>;
+// ─── Bounds / Scope param types ──────────────────────────────────────────────
 
 /**
  * Agent bounds parameters — mixed types (strings and numbers).
- * Keys and values come from the profile's boundsSchema (v0.4).
+ * Keys and values come from the profile's boundsSchema.
  */
 export type AgentBoundsParams = Record<string, string | number>;
 
 /**
- * Agent context parameters — mixed types (strings and numbers).
- * Keys and values come from the profile's contextSchema (v0.4).
+ * Agent scope parameters — mixed types (strings and numbers). Keys and
+ * values come from the profile's scopeSchema (renamed from
+ * `AgentContextParams` in v0.7).
  */
-export type AgentContextParams = Record<string, string | number>;
+export type AgentScopeParams = Record<string, string | number>;
 
 // ─── Gatekeeper Types ────────────────────────────────────────────────────────
 
@@ -745,60 +619,33 @@ export type AgentContextParams = Record<string, string | number>;
  * Request to the Gatekeeper for bounded execution verification.
  */
 export interface GatekeeperRequest {
-  /** The authorization frame (what was attested to) — v0.3 */
-  frame: AgentFrameParams;
-  /** Attestation blobs (base64url) for each domain */
-  attestations: string[];
-  /** The agent's execution values for this specific action */
+  /** The bounds the mandate(s) committed to. */
+  bounds: AgentBoundsParams;
+  /** Mandate blobs (base64url) to verify against. */
+  mandates: string[];
+  /** The agent's execution values for this specific action. */
   execution: Record<string, string | number>;
-  /** v0.4: context parameters (currency, action_type, etc.) */
-  context?: AgentContextParams;
+  /** Scope parameters (currency, action_type, allowed recipients, etc.) —
+   * enforced locally only; never sent to the Authority Server. */
+  scope?: AgentScopeParams;
   /**
-   * Authorization path used to scope cumulative lookups in the execution log.
-   *
-   * Deliberately OUTSIDE `frame`: the frame is hashed and validated against the
-   * profile's boundsSchema, so an extra key there is rejected as an unknown
-   * field and breaks attestation verification outright. Cumulative checks
-   * previously read the path from the frame, where callers cannot legally put
-   * it — so it resolved to "" while the log stored real paths, no entry ever
-   * matched, and every running total read zero. The local gate existed but
-   * could never fire.
+   * Authorization path used to scope cumulative lookups in the execution log
+   * (display only — see {@link ExecutionLogQuery}; the Gatekeeper MUST NOT
+   * enforce cumulative bounds locally, protocol.md → *Enforcement Authority*).
    */
   path?: string;
 }
 
 /**
- * Structured error from Gatekeeper verification.
+ * Structured error from Gatekeeper verification. Codes are the canonical
+ * v0.7 surface ({@link HapErrorCode}, `src/errors.ts`) plus the two
+ * Gatekeeper-local-only codes that never reach the wire (`FRAME_MISMATCH`
+ * is retired with v0.3; a Gatekeeper reports `BOUNDS_HASH_MISMATCH` /
+ * `SCOPE_HASH_MISMATCH` for both its own local mismatch and the AS's wire
+ * refusal, per protocol.md → *Error Codes*, "Gatekeeper · local").
  */
 export interface GatekeeperError {
-  code:
-    | 'BOUND_EXCEEDED'
-    | 'CUMULATIVE_LIMIT_EXCEEDED'
-    | 'INVALID_SIGNATURE'
-    | 'TTL_EXPIRED'
-    | 'FRAME_MISMATCH'
-    | 'BOUNDS_MISMATCH'
-    | 'CONTEXT_MISMATCH'
-    | 'DOMAIN_NOT_COVERED'
-    | 'INVALID_PROFILE'
-    | 'MALFORMED_ATTESTATION'
-    // v0.5/v0.6 receipt-path codes a Gatekeeper must recognize as definitive
-    // rejections (protocol.md → Pre-flight Receipt Request):
-    | 'INVALID_ACTION_TYPE'
-    | 'ATTESTATION_REVOKED'
-    | 'APPROVAL_REQUIRED'
-    | 'IDEMPOTENCY_MISMATCH'
-    // v0.6 owner-mandate codes (protocol.md → Owner Mandate Signatures):
-    | 'MANDATE_SIGNATURE_REQUIRED'
-    | 'MANDATE_SIGNATURE_INVALID'
-    | 'APPROVAL_SIGNATURE_REQUIRED'
-    | 'APPROVAL_SIGNATURE_INVALID'
-    // Canonicalization refusals (protocol.md → Bounds & Scope Canonicalization
-    // → Value encoding). Raised when a value cannot be canonicalized at all —
-    // a raw LF/CR, or a profile `constraint.pattern` violation. Distinct from
-    // BOUNDS_MISMATCH / CONTEXT_MISMATCH, which mean the hashes disagree.
-    | 'BOUNDS_INVALID_VALUE'
-    | 'CONTEXT_INVALID_VALUE';
+  code: import('./errors').HapErrorCode;
   field?: string;
   message: string;
   bound?: string | number;

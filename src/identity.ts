@@ -8,7 +8,7 @@
  *  - {@link deriveIdentityLine} — the human-readable footer line for a subject.
  */
 
-import type { OwnerMandate, Subject } from './types';
+import type { MandateOwnerEntry, Subject } from './types';
 
 export interface SubjectValidation {
   valid: boolean;
@@ -20,21 +20,18 @@ export interface SubjectValidation {
  *  - `self_declared` ⇒ `low` / `self`, no disclosed name.
  *  - `as_vouched`    ⇒ `high` / `as`,  `verifier` required.
  *  - `eudi`          ⇒ `high` / `external`, `verifier` required — and, when the
- *    carrying attestation's `owner_mandates` are supplied, a corresponding
+ *    carrying mandate's `mandate_owners` are supplied, a corresponding
  *    entry with `binding:"eudi"` for this subject's DID.
  *  - `disclose.name` only at `assurance:"high"`.
  *
- * v0.6: `Subject.owner_signature` is deprecated and IGNORED here — it signed
- * the identity claim, not the mandate (see the field's deprecation note). The
- * signature-bearing object is the attestation's `owner_mandates` entry, which
+ * The signature-bearing object is the mandate's `mandate_owners` entry, which
  * is payload-level context this per-subject check cannot see on its own; pass
- * `opts.ownerMandates` to enforce the eudi ⇒ mandate-entry rule, omit it to
- * validate subject shape alone (pre-0.6 callers keep their behaviour minus
- * the retired owner_signature requirement).
+ * `opts.mandateOwners` to enforce the eudi ⇒ mandate-owner-entry rule, omit it
+ * to validate subject shape alone.
  */
 export function validateSubject(
   subject: Subject,
-  opts?: { ownerMandates?: OwnerMandate[] },
+  opts?: { mandateOwners?: MandateOwnerEntry[] },
 ): SubjectValidation {
   const errors: string[] = [];
   const { did, assurance, method, trust_root, verifier, disclose } = subject;
@@ -52,9 +49,9 @@ export function validateSubject(
     } else if (method === 'eudi') {
       if (trust_root !== 'external') errors.push('eudi requires trust_root "external"');
       if (!verifier) errors.push('eudi requires a verifier');
-      if (opts?.ownerMandates !== undefined) {
-        const entry = opts.ownerMandates.find(m => m.did === did && m.binding === 'eudi');
-        if (!entry) errors.push('eudi requires an owner_mandates entry with binding "eudi" for this DID');
+      if (opts?.mandateOwners !== undefined) {
+        const entry = opts.mandateOwners.find(m => m.did === did && m.binding === 'eudi');
+        if (!entry) errors.push('eudi requires a mandate_owners entry with binding "eudi" for this DID');
       }
     } else {
       errors.push(`high assurance requires method "as_vouched" or "eudi", got "${method}"`);

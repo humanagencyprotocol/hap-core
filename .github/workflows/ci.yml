@@ -9,9 +9,40 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    # Normative data (content/0.7/vectors/*.json) lives in the spec repo, not
+    # here (vectors/README.md: "the reference core library is required to
+    # consume these files in its tests rather than carry its own copies").
+    # The spec repo and hap-profiles are checked out next to hap-core, and
+    # HAP_SPEC_DIR / HAP_PROFILES_DIR point the tests at them.
+    env:
+      CI: true
+      # test/vectors/_spec-dir.ts reads these; set explicitly rather than
+      # relying on sibling-folder layout.
+      HAP_SPEC_DIR: ${{ github.workspace }}/hap-protocol/content
+      HAP_PROFILES_DIR: ${{ github.workspace }}/hap-profiles
     steps:
-      - name: Checkout
+      - name: Checkout hap-core
         uses: actions/checkout@v6
+        with:
+          path: hap-core
+
+      - name: Checkout hap-protocol (spec + conformance vectors)
+        uses: actions/checkout@v6
+        with:
+          repository: humanagencyprotocol/hap-protocol
+          ref: 6bee578af9cda55f56df581acc51f047b28abb2f
+          path: hap-protocol
+          # The spec repo keeps the spec under content/; only that is needed.
+          sparse-checkout: content
+
+      # The profile-hash vector names a published profile file
+      # (charge/0.5.profile.json); the tests read it from ../hap-profiles.
+      # Published profile versions are never edited in place, so main is safe.
+      - name: Checkout hap-profiles
+        uses: actions/checkout@v6
+        with:
+          repository: humanagencyprotocol/hap-profiles
+          path: hap-profiles
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
@@ -23,12 +54,16 @@ jobs:
         with:
           node-version: '20'
           cache: 'pnpm'
+          cache-dependency-path: hap-core/pnpm-lock.yaml
 
       - name: Install dependencies
+        working-directory: hap-core
         run: pnpm install --frozen-lockfile
 
       - name: Build
+        working-directory: hap-core
         run: pnpm build
 
       - name: Test
+        working-directory: hap-core
         run: pnpm test

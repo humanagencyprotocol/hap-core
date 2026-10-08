@@ -44,71 +44,29 @@ describe('canonicalize — RFC 8785 rules', () => {
     expect(() => canonicalize({ n: NaN })).toThrow();
     expect(() => canonicalize({ n: Infinity })).toThrow();
   });
-});
-
-describe('canonicalize — signing test vector (cross-implementation conformance)', () => {
-  // A representative v0.5 attestation payload. Keys are deliberately NOT in
-  // sorted order here, to prove canonicalization reorders them.
-  const PAYLOAD = {
-    attestation_id: '11111111-1111-4111-8111-111111111111',
-    version: '0.5',
-    profile_id: 'charge@0.4',
-    bounds_hash: 'sha256:aaaa',
-    context_hash: 'sha256:bbbb',
-    execution_context_hash: 'sha256:cccc',
-    resolved_domains: [{ domain: 'owner', did: 'did:test:alice' }],
-    gate_content_hashes: { intent: 'sha256:dddd' },
-    commitment_mode: 'automatic',
-    issued_at: 1700000000,
-    expires_at: 1700003600,
-  };
-
-  // THE VECTOR — canonical bytes for the payload above. Other implementations
-  // MUST reproduce this exact string. (Keys sorted; resolved_domains entry
-  // reordered to {did, domain}.)
-  const CANONICAL =
-    '{"attestation_id":"11111111-1111-4111-8111-111111111111",' +
-    '"bounds_hash":"sha256:aaaa",' +
-    '"commitment_mode":"automatic",' +
-    '"context_hash":"sha256:bbbb",' +
-    '"execution_context_hash":"sha256:cccc",' +
-    '"expires_at":1700003600,' +
-    '"gate_content_hashes":{"intent":"sha256:dddd"},' +
-    '"issued_at":1700000000,' +
-    '"profile_id":"charge@0.4",' +
-    '"resolved_domains":[{"did":"did:test:alice","domain":"owner"}],' +
-    '"version":"0.5"}';
-
-  it('produces the published canonical bytes', () => {
-    expect(canonicalize(PAYLOAD)).toBe(CANONICAL);
-  });
 
   it('round-trips through Ed25519 sign/verify, order-independently', async () => {
+    // Generic proof the mechanism works end to end — the SPEC's own
+    // signing vectors (payload → canonical bytes → signature, under
+    // published test keys) live at test/vectors/payload-signatures.test.ts,
+    // reading content/0.7/vectors/payload-signatures.json rather than a
+    // copy of its values kept here (vectors/README.md → *Provenance*:
+    // "the reference core library is required to consume these files in
+    // its tests rather than carry its own copies").
+    const payload = { b: 1, a: 2, nested: { z: 'y', x: 'w' } };
     const priv = ed.utils.randomPrivateKey();
     const pub = await ed.getPublicKeyAsync(priv);
-    const bytes = new TextEncoder().encode(canonicalize(PAYLOAD));
+    const bytes = new TextEncoder().encode(canonicalize(payload));
     const sig = await ed.signAsync(bytes, priv);
 
     // A verifier that rebuilt the payload in a DIFFERENT key order still
     // verifies, because canonicalization makes the bytes identical.
-    const reordered = {
-      version: '0.5',
-      expires_at: 1700003600,
-      issued_at: 1700000000,
-      commitment_mode: 'automatic',
-      gate_content_hashes: { intent: 'sha256:dddd' },
-      resolved_domains: [{ domain: 'owner', did: 'did:test:alice' }],
-      execution_context_hash: 'sha256:cccc',
-      context_hash: 'sha256:bbbb',
-      bounds_hash: 'sha256:aaaa',
-      profile_id: 'charge@0.4',
-      attestation_id: '11111111-1111-4111-8111-111111111111',
-    };
+    const reordered = { nested: { x: 'w', z: 'y' }, a: 2, b: 1 };
     const reBytes = new TextEncoder().encode(canonicalize(reordered));
     expect(await ed.verifyAsync(sig, reBytes, pub)).toBe(true);
 
     // Tampering with a value breaks verification.
-    const tampered = { ...PAYLOAD, expires_at: 1700003601 };
+    const tampered = { ...payload, a: 999 };
     const tBytes = new TextEncoder().encode(canonicalize(tampered));
     expect(await ed.verifyAsync(sig, tBytes, pub)).toBe(false);
   });

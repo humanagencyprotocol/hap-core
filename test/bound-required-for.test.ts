@@ -19,13 +19,14 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import { verify } from '../src/gatekeeper';
 import { registerProfile } from '../src/profiles';
-import { validateBoundsRequiredFor, computeBoundsHash } from '../src/frame';
+import { validateProfile } from '../src/profile';
+import { computeBoundsHash } from '../src/frame';
 import { CHARGE_PROFILE_V4 } from './fixtures';
-import { generateTestKeyPair, createTestAttestationV4, type TestKeyPair } from './helpers';
+import { generateTestKeyPair, createTestMandate, type TestKeyPair } from './helpers';
 import type { AgentBoundsParams, AgentProfile } from '../src/types';
 
-const GUARDED = 'charge-guarded@0.4';
-const LEGACY = 'charge-legacy@0.4';
+const GUARDED = 'charge-guarded@0.7';
+const LEGACY = 'charge-legacy@0.7';
 
 /** CHARGE_PROFILE_V4 with amount_max requiring its value for the given action types. */
 function withRequiredFor(id: string, requiredFor?: string[]): AgentProfile {
@@ -44,16 +45,15 @@ describe('per_transaction bound requiredFor', () => {
 
   const bounds: AgentBoundsParams = {
     profile: GUARDED,
-    path: 'charge-routine',
     amount_max: 5000,
     amount_daily_max: 50000,
     amount_monthly_max: 500000,
     transaction_count_daily_max: 100,
   };
-  // action_type is itself an enum-constrained context field (allowed execution
+  // action_type is itself an enum-constrained scope field (allowed execution
   // values); list every action type this suite exercises so the unrelated
-  // context check doesn't mask the per_transaction behaviour under test.
-  const context = { currency: 'EUR', action_type: 'charge,refund,subscribe' };
+  // scope check doesn't mask the per_transaction behaviour under test.
+  const scope = { currency: 'EUR', action_type: 'charge,refund,subscribe' };
 
   beforeAll(async () => {
     registerProfile(GUARDED, withRequiredFor(GUARDED, ['charge', 'refund']));
@@ -63,9 +63,9 @@ describe('per_transaction bound requiredFor', () => {
 
   async function check(profileId: string, execution: Record<string, string | number>) {
     const profile = profileId === GUARDED ? withRequiredFor(GUARDED, ['charge', 'refund']) : withRequiredFor(LEGACY);
-    const frame = { ...bounds, profile: profileId };
-    const blob = await createTestAttestationV4({ keyPair, bounds: frame, context, profile, domain: 'finance' });
-    return verify({ frame, context, attestations: [blob], execution }, keyPair.publicKeyHex);
+    const requestBounds = { ...bounds, profile: profileId };
+    const blob = await createTestMandate({ keyPair, bounds: requestBounds, scope, profile });
+    return verify({ bounds: requestBounds, scope, mandates: [blob], execution });
   }
 
   it('approves a charge within the bound', async () => {
@@ -138,11 +138,10 @@ describe('requiredFor has no effect on bounds_hash', () => {
     // (canonicalBounds), never from boundType/schema metadata — adding
     // requiredFor to a profile's schema must not change the hash of any
     // existing mandate signed under a profile version that didn't have it.
-    const withIt = withRequiredFor('hash-check-a@0.4', ['charge']);
-    const withoutIt = withRequiredFor('hash-check-b@0.4');
+    const withIt = withRequiredFor('hash-check-a@0.7', ['charge']);
+    const withoutIt = withRequiredFor('hash-check-b@0.7');
     const sameBounds: AgentBoundsParams = {
       profile: 'x',
-      path: 'charge-routine',
       amount_max: 5000,
       amount_daily_max: 50000,
       amount_monthly_max: 500000,
@@ -152,27 +151,29 @@ describe('requiredFor has no effect on bounds_hash', () => {
   });
 });
 
-describe('validateBoundsRequiredFor (authoring-time check)', () => {
+describe('validateProfile — per_transaction requiredFor (authoring-time check)', () => {
+  const messages = (p: AgentProfile) => validateProfile(p).map((e) => e.message);
+
   it('accepts a requiredFor entry that is a real action type', () => {
-    const profile = withRequiredFor('v@0.4', ['charge']);
-    expect(validateBoundsRequiredFor(profile)).toEqual([]);
+    const profile = withRequiredFor('v@0.7', ['charge']);
+    expect(messages(profile)).toEqual([]);
   });
 
   it('flags a requiredFor entry naming an action type outside the registry', () => {
-    const profile = withRequiredFor('v@0.4', ['teleport']);
-    const errors = validateBoundsRequiredFor(profile);
-    expect(errors.some((e) => e.includes('teleport'))).toBe(true);
+    const profile = withRequiredFor('v@0.7', ['teleport']);
+    const errors = validateProfile(profile);
+    expect(errors.some((e) => e.message.includes('teleport') && e.code === 'PROFILE_INVALID')).toBe(true);
   });
 
   it('flags requiredFor attached to a non-per_transaction bound', () => {
-    const profile = withRequiredFor('v@0.4', ['charge']);
+    const profile = withRequiredFor('v@0.7', ['charge']);
     // amount_daily_max is cumulative_sum — requiredFor there is meaningless.
     (profile.boundsSchema!.fields.amount_daily_max.boundType as { requiredFor?: string[] }).requiredFor = ['charge'];
-    const errors = validateBoundsRequiredFor(profile);
-    expect(errors.some((e) => e.includes('amount_daily_max'))).toBe(true);
+    const errors = validateProfile(profile);
+    expect(errors.some((e) => e.message.includes('amount_daily_max') && e.code === 'PROFILE_INVALID')).toBe(true);
   });
 
   it('a profile with no requiredFor anywhere validates clean', () => {
-    expect(validateBoundsRequiredFor(CHARGE_PROFILE_V4)).toEqual([]);
+    expect(messages(CHARGE_PROFILE_V4)).toEqual([]);
   });
 });
