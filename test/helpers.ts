@@ -1,24 +1,26 @@
 /**
- * Test helpers — generate valid attestations for Gatekeeper tests.
+ * Test helpers — generate signed v0.7 mandates for Gatekeeper tests.
  */
 
 import * as ed from '@noble/ed25519';
-import { computeFrameHash, computeBoundsHash, computeContextHash } from '../src/frame';
-import { encodeAttestationBlob } from '../src/attestation';
-import { canonicalize } from '../src/canonicalize';
+import { computeBoundsHash, computeScopeHash } from '../src/frame';
+import { computeProfileHash } from '../src/profile';
+import { signMandate, encodeMandateBlob } from '../src/mandate';
+import { encodeDidKey } from '../src/did-key';
 import type {
-  AgentFrameParams,
   AgentBoundsParams,
-  AgentContextParams,
+  AgentScopeParams,
   AgentProfile,
-  Attestation,
-  AttestationPayload,
+  MandatePayload,
+  SignableCommitmentMode,
 } from '../src/types';
 
 export interface TestKeyPair {
   privateKey: Uint8Array;
   publicKey: Uint8Array;
-  publicKeyHex: string;
+  /** Key-bearing did:key for this keypair — usable as a mandate `issuer` or
+   * a `mandate_owners[].did`. */
+  did: string;
 }
 
 /**
@@ -27,101 +29,54 @@ export interface TestKeyPair {
 export async function generateTestKeyPair(): Promise<TestKeyPair> {
   const privateKey = ed.utils.randomPrivateKey();
   const publicKey = await ed.getPublicKeyAsync(privateKey);
-  return {
-    privateKey,
-    publicKey,
-    publicKeyHex: Buffer.from(publicKey).toString('hex'),
-  };
+  return { privateKey, publicKey, did: encodeDidKey(publicKey) };
+}
+
+/** A fixed-shape `sha256:`-prefixed placeholder — never checked for
+ * provenance by the Gatekeeper, only for format and equality. */
+function dummyHash(seed: string): string {
+  return 'sha256:' + seed.repeat(64).slice(0, 64);
 }
 
 /**
- * Create a signed v0.3 attestation blob for testing.
+ * Create a signed v0.7 mandate blob for testing.
+ *
+ * @param opts.keyPair The AS signing keypair — signs the mandate.
+ * @param opts.issuerDid Override `payload.issuer` to something OTHER than
+ * `keyPair.did` — the one way to construct a mandate whose signature does
+ * not match its claimed issuer, for `INVALID_SIGNATURE` tests.
+ * @param opts.ownerDid The Mandate Owner's DID (defaults to `keyPair.did` —
+ * fine for tests that don't exercise owner co-signing).
  */
-export async function createTestAttestation(opts: {
-  keyPair: TestKeyPair;
-  frame: AgentFrameParams;
-  profile: AgentProfile;
-  domain: string;
-  expiresAt?: number;
-  did?: string;
-}): Promise<string> {
-  const now = Math.floor(Date.now() / 1000);
-  const frameHashValue = computeFrameHash(opts.frame, opts.profile);
-
-  const payload: AttestationPayload = {
-    attestation_id: `sha256:test-${Date.now()}`,
-    version: '0.3',
-    profile_id: opts.profile.id,
-    frame_hash: frameHashValue,
-    execution_context_hash: 'sha256:test-context',
-    resolved_domains: [{ domain: opts.domain, did: opts.did ?? 'did:key:test' }],
-    gate_content_hashes: {
-      problem: 'sha256:test-problem',
-      objective: 'sha256:test-objective',
-      tradeoffs: 'sha256:test-tradeoffs',
-    },
-    issued_at: now,
-    expires_at: opts.expiresAt ?? now + 3600,
-  };
-
-  const payloadJson = canonicalize(payload);
-  const payloadBytes = new TextEncoder().encode(payloadJson);
-  const signature = await ed.signAsync(payloadBytes, opts.keyPair.privateKey);
-  const signatureBase64 = Buffer.from(signature).toString('base64');
-
-  const attestation: Attestation = {
-    header: { typ: 'HAP-attestation', alg: 'EdDSA' },
-    payload,
-    signature: signatureBase64,
-  };
-
-  return encodeAttestationBlob(attestation);
-}
-
-/**
- * Create a signed v0.4 attestation blob for testing.
- * Uses bounds_hash + context_hash instead of frame_hash.
- */
-export async function createTestAttestationV4(opts: {
+export async function createTestMandate(opts: {
   keyPair: TestKeyPair;
   bounds: AgentBoundsParams;
-  context: AgentContextParams;
   profile: AgentProfile;
-  domain: string;
+  scope?: AgentScopeParams;
+  issuerDid?: string;
+  ownerDid?: string;
   expiresAt?: number;
-  did?: string;
+  commitmentMode?: SignableCommitmentMode | 'review_above_cap';
 }): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
-  const boundsHashValue = computeBoundsHash(opts.bounds, opts.profile);
-  const contextHashValue = computeContextHash(opts.context, opts.profile);
+  const scope = opts.scope ?? {};
 
-  const payload: AttestationPayload = {
-    attestation_id: `sha256:test-v4-${Date.now()}`,
-    version: '0.4',
+  const payload: MandatePayload = {
+    mandate_id: `test-mandate-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+    version: '0.7',
     profile_id: opts.profile.id,
-    bounds_hash: boundsHashValue,
-    context_hash: contextHashValue,
-    execution_context_hash: 'sha256:test-context',
-    resolved_domains: [{ domain: opts.domain, did: opts.did ?? 'did:key:test' }],
-    gate_content_hashes: {
-      problem: 'sha256:test-problem',
-      objective: 'sha256:test-objective',
-      tradeoffs: 'sha256:test-tradeoffs',
-    },
+    bounds_hash: computeBoundsHash(opts.bounds, opts.profile),
+    scope_hash: computeScopeHash(scope, opts.profile),
+    execution_context_hash: dummyHash('3'),
+    profile_hash: computeProfileHash(opts.profile),
+    issuer: opts.issuerDid ?? opts.keyPair.did,
+    mandate_owners: [{ did: opts.ownerDid ?? opts.keyPair.did }],
+    gate_content_hashes: { intent: dummyHash('4') },
+    commitment_mode: opts.commitmentMode ?? 'automatic',
     issued_at: now,
     expires_at: opts.expiresAt ?? now + 3600,
   };
 
-  const payloadJson = canonicalize(payload);
-  const payloadBytes = new TextEncoder().encode(payloadJson);
-  const signature = await ed.signAsync(payloadBytes, opts.keyPair.privateKey);
-  const signatureBase64 = Buffer.from(signature).toString('base64');
-
-  const attestation: Attestation = {
-    header: { typ: 'HAP-attestation', alg: 'EdDSA' },
-    payload,
-    signature: signatureBase64,
-  };
-
-  return encodeAttestationBlob(attestation);
+  const mandate = await signMandate(payload, opts.keyPair.privateKey);
+  return encodeMandateBlob(mandate);
 }
