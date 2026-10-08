@@ -1,13 +1,12 @@
 # Changelog
 
-## Unreleased
+## 0.12.0 — 2026-10-08
 
-**BREAKING.** v0.7 wire switch, Phase 0 — the vocabulary rename
-(protocol.md → *Migration from v0.6*) plus the structural changes it
-requires. No backward compatibility: v0.5/v0.6 artifacts are not verifiable
-by this package (CLAUDE.md "Decided by the owner"). The version number is
-left as "Unreleased" — version numbers are the package owner's decision, not
-this change's.
+**BREAKING.** HAP v0.7 wire — the vocabulary rename (protocol.md →
+*Migration from v0.6*) plus the structural changes it requires. No backward
+compatibility: v0.5/v0.6 artifacts are not verifiable by this package; such
+mandates fail with `VERSION_UNSUPPORTED` and are re-issued (decided
+2026-10-08). Consumers on `^0.11` are unaffected until they upgrade.
 
 ### Renamed (mechanical, 1:1 — see README.md for the full table)
 
