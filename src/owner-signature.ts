@@ -84,6 +84,17 @@ export class OwnerSignatureError extends Error {
   }
 }
 
+/** Decode a signature, refusing non-base64url input with THIS artifact's code
+ *  — decoding sits outside the `.catch(() => false)` of the verify call, so
+ *  without this a malformed owner or approval signature escaped with no code. */
+function decodeOrThrow(signature: string, code: HapErrorCode): Uint8Array {
+  try {
+    return fromBase64Url(signature);
+  } catch (err) {
+    throw new OwnerSignatureError(code, (err as Error).message);
+  }
+}
+
 /**
  * Rebuild the projection a given `mandate_owners` entry signed, from the
  * mandate's own signed fields. Field absence is defined, not incidental:
@@ -196,7 +207,7 @@ export async function verifyOwnerSignature(mandate: Mandate, entry: MandateOwner
 
   const projection = buildMandateProjection(mandate.payload, entry);
   const ok = await ed
-    .verifyAsync(fromBase64Url(entry.signature), projectionSigningBytes(projection), publicKey)
+    .verifyAsync(decodeOrThrow(entry.signature, 'OWNER_SIGNATURE_INVALID'), projectionSigningBytes(projection), publicKey)
     .catch(() => false);
   if (!ok) {
     throw new OwnerSignatureError('OWNER_SIGNATURE_INVALID', `owner signature by ${entry.did} does not verify`);
@@ -222,7 +233,7 @@ export async function verifyApproval(approval: ApprovalObject, signature: string
   } catch (err) {
     throw new OwnerSignatureError('OWNER_SIGNATURE_INVALID', (err as Error).message);
   }
-  const ok = await ed.verifyAsync(fromBase64Url(signature), approvalSigningBytes(approval), publicKey).catch(() => false);
+  const ok = await ed.verifyAsync(decodeOrThrow(signature, 'APPROVAL_SIGNATURE_INVALID'), approvalSigningBytes(approval), publicKey).catch(() => false);
   if (!ok) {
     throw new OwnerSignatureError('APPROVAL_SIGNATURE_INVALID', `approval signature by ${signerDid} does not verify`);
   }

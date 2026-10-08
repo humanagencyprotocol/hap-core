@@ -10,6 +10,7 @@
  * (protocol.md → *Migration from v0.6*, "Unchanged on purpose").
  */
 
+import { HapError } from './errors';
 import * as ed from '@noble/ed25519';
 import type { ContentBinding, Subject } from './types';
 import { canonicalize } from './canonicalize';
@@ -92,17 +93,17 @@ export async function verifyTicketSignature(
 ): Promise<void> {
   const { signature, ...unsigned } = ticket;
   if (!signature) {
-    throw new Error('INVALID_SIGNATURE: ticket carries no signature');
+    throw new HapError('INVALID_SIGNATURE', 'ticket carries no signature');
   }
   if (opts?.trustedIssuers && !opts.trustedIssuers.includes(ticket.issuer)) {
-    throw new Error(`INVALID_SIGNATURE: issuer ${JSON.stringify(ticket.issuer)} is not a trusted Authority Server`);
+    throw new HapError('INVALID_SIGNATURE', `issuer ${JSON.stringify(ticket.issuer)} is not a trusted Authority Server`);
   }
 
   let publicKey: Uint8Array;
   try {
     publicKey = decodeDidKey(ticket.issuer);
   } catch (err) {
-    throw new Error(`INVALID_SIGNATURE: cannot resolve a key from issuer ${JSON.stringify(ticket.issuer)}: ${(err as Error).message}`);
+    throw new HapError('INVALID_SIGNATURE', `cannot resolve a key from issuer ${JSON.stringify(ticket.issuer)}: ${(err as Error).message}`);
   }
 
   const bytes = new TextEncoder().encode(canonicalize(unsigned));
@@ -110,12 +111,12 @@ export async function verifyTicketSignature(
   try {
     sigBytes = fromBase64Url(signature);
   } catch (err) {
-    throw new Error(`INVALID_SIGNATURE: ${(err as Error).message}`);
+    throw new HapError('INVALID_SIGNATURE', `${(err as Error).message}`);
   }
 
   const ok = await ed.verifyAsync(sigBytes, bytes, publicKey).catch(() => false);
   if (!ok) {
-    throw new Error('INVALID_SIGNATURE: ticket signature verification failed');
+    throw new HapError('INVALID_SIGNATURE', 'ticket signature verification failed');
   }
 }
 

@@ -21,7 +21,7 @@ import { createHash } from 'crypto';
 import { canonicalize } from './canonicalize';
 import { allowedCommitmentModes, SIGNABLE_COMMITMENT_MODES } from './commitment-modes';
 import type { AgentProfile, BoundType } from './types';
-import type { HapErrorCode } from './errors';
+import { HapError, type HapErrorCode } from './errors';
 
 /** One authoring-time finding. `code` is always a canonical v0.7 code — in
  * practice always `PROFILE_INVALID`, since that is the only mandate-request
@@ -214,8 +214,9 @@ export function checkDiscloseSubset(
   const allowed = new Set(profileDiscloseFields ?? []);
   const widened = mandateDiscloseFields.filter((f) => !allowed.has(f));
   if (widened.length > 0) {
-    throw new Error(
-      `MALFORMED_MANDATE: disclose_fields [${widened.join(', ')}] is not a subset of the profile's ` +
+    throw new HapError(
+      'MALFORMED_MANDATE',
+      `disclose_fields [${widened.join(', ')}] is not a subset of the profile's ` +
         `disclose_fields [${[...allowed].join(', ')}] — a mandate may narrow disclosure, never widen it.`,
     );
   }

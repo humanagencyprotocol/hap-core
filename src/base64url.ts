@@ -23,13 +23,14 @@ export function toBase64Url(bytes: Uint8Array): string {
 /**
  * Decode a STRICT base64url string (no padding, no `+`/`/`/`=`).
  *
- * @throws Error prefixed `MALFORMED_MANDATE:` when the input carries a `+`,
- * `/`, `=`, or any other byte outside the base64url alphabet.
+ * @throws Error (no protocol code — the caller knows which artifact it was
+ * decoding and assigns the code) when the input carries a `+`, `/`, `=`, or
+ * any other byte outside the base64url alphabet.
  */
 export function fromBase64Url(s: string): Uint8Array {
   if (!STRICT_B64URL.test(s)) {
     throw new Error(
-      `MALFORMED_MANDATE: ${JSON.stringify(s)} is not strict base64url — standard base64 ` +
+      `${JSON.stringify(s)} is not strict base64url — standard base64 ` +
         '("+"/"/"/padding) is retired (protocol.md → Mandate Payload, rule 3).',
     );
   }

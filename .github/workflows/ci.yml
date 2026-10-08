@@ -29,6 +29,15 @@ jobs:
           ref: 6bee578af9cda55f56df581acc51f047b28abb2f
           path: content
 
+      # The profile-hash vector names a published profile file
+      # (charge/0.5.profile.json); the tests read it from ../hap-profiles.
+      # Published profile versions are never edited in place, so main is safe.
+      - name: Checkout hap-profiles
+        uses: actions/checkout@v6
+        with:
+          repository: humanagencyprotocol/hap-profiles
+          path: hap-profiles
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:

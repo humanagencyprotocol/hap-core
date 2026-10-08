@@ -25,22 +25,20 @@ const CLOCK_SKEW_SECONDS = 300;
 
 /**
  * Decodes a base64url-encoded mandate blob.
- * @throws Error prefixed `MALFORMED_MANDATE:` on anything that is not a
- * strict base64url-encoded JSON mandate.
+ * @throws HapError `MALFORMED_MANDATE` on anything that is not a strict
+ * base64url-encoded JSON mandate.
  */
 export function decodeMandateBlob(blob: string): Mandate {
   let json: string;
   try {
     json = new TextDecoder().decode(fromBase64Url(blob));
   } catch (err) {
-    throw err instanceof Error && err.message.startsWith('MALFORMED_MANDATE')
-      ? err
-      : new Error(`MALFORMED_MANDATE: failed to decode mandate blob: ${err}`);
+    throw new HapError('MALFORMED_MANDATE', `failed to decode mandate blob: ${(err as Error).message}`);
   }
   try {
     return JSON.parse(json);
   } catch (err) {
-    throw new Error(`MALFORMED_MANDATE: mandate blob did not decode to JSON: ${err}`);
+    throw new HapError('MALFORMED_MANDATE', `mandate blob did not decode to JSON: ${err}`);
   }
 }
 
@@ -96,7 +94,7 @@ export async function verifyMandateSignature(
   const { issuer } = mandate.payload;
 
   if (opts?.trustedIssuers && !opts.trustedIssuers.includes(issuer)) {
-    throw new Error(`INVALID_SIGNATURE: issuer ${JSON.stringify(issuer)} is not a trusted Authority Server`);
+    throw new HapError('INVALID_SIGNATURE', `issuer ${JSON.stringify(issuer)} is not a trusted Authority Server`);
   }
 
   let publicKey: Uint8Array;
@@ -106,14 +104,14 @@ export async function verifyMandateSignature(
     // Not every valid `issuer` need be a did:key (it MAY be a did:web that
     // resolves to one) — but this package resolves did:key issuers only;
     // anything else cannot be verified offline here.
-    throw new Error(`INVALID_SIGNATURE: cannot resolve a key from issuer ${JSON.stringify(issuer)}: ${(err as Error).message}`);
+    throw new HapError('INVALID_SIGNATURE', `cannot resolve a key from issuer ${JSON.stringify(issuer)}: ${(err as Error).message}`);
   }
 
   // Mandate rule 8: a present kid MUST identify the same key as issuer.
   if (mandate.header.kid !== undefined) {
     const fingerprint = issuer.startsWith('did:key:') ? issuer.slice('did:key:'.length) : undefined;
     if (mandate.header.kid !== fingerprint) {
-      throw new Error('INVALID_SIGNATURE: header.kid disagrees with issuer\'s key (Mandate rule 8) — the field a verifier cannot forge wins');
+      throw new HapError('INVALID_SIGNATURE', 'header.kid disagrees with issuer\'s key (Mandate rule 8) — the field a verifier cannot forge wins');
     }
   }
 
@@ -122,12 +120,12 @@ export async function verifyMandateSignature(
   try {
     sigBytes = fromBase64Url(mandate.signature);
   } catch (err) {
-    throw new Error(`INVALID_SIGNATURE: ${(err as Error).message}`);
+    throw new HapError('INVALID_SIGNATURE', `${(err as Error).message}`);
   }
 
   const isValid = await ed.verifyAsync(sigBytes, payloadBytes, publicKey).catch(() => false);
   if (!isValid) {
-    throw new Error('INVALID_SIGNATURE: mandate signature verification failed');
+    throw new HapError('INVALID_SIGNATURE', 'mandate signature verification failed');
   }
 }
 
@@ -143,7 +141,7 @@ export function checkMandateExpiry(
   now: number = Math.floor(Date.now() / 1000),
 ): void {
   if (now > payload.expires_at + CLOCK_SKEW_SECONDS) {
-    throw new Error(`TTL_EXPIRED: mandate expired at ${payload.expires_at}, current time is ${now}`);
+    throw new HapError('TTL_EXPIRED', `mandate expired at ${payload.expires_at}, current time is ${now}`);
   }
 }
 
