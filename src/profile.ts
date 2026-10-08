@@ -131,6 +131,16 @@ export function validateProfile(profile: AgentProfile): ProfileValidationError[]
         }
       }
 
+      // requiredFor is only meaningful on a per_transaction bound — every
+      // enforcement point ignores it on any other kind.
+      if (bt.kind !== 'per_transaction' && (bt as { requiredFor?: unknown }).requiredFor !== undefined) {
+        errors.push({
+          code: 'PROFILE_INVALID',
+          field: fieldName,
+          message: `Bounds field "${fieldName}": requiredFor is only meaningful on a per_transaction bound (found on kind "${bt.kind}") — every enforcement point ignores it there. Remove it.`,
+        });
+      }
+
       // per_transaction.requiredFor members MUST also be registered.
       if (bt.kind === 'per_transaction' && Array.isArray(bt.requiredFor) && actionTypes) {
         for (const at of bt.requiredFor as string[]) {
