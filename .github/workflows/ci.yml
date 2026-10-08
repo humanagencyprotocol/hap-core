@@ -9,9 +9,25 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    # Normative data (content/0.7/vectors/*.json) lives in the spec repo, not
+    # here (vectors/README.md: "the reference core library is required to
+    # consume these files in its tests rather than carry its own copies").
+    # test/vectors/*.test.ts resolves it at ../content relative to this repo
+    # root, so the spec checkout goes one level up — a sibling, not a subdir.
+    env:
+      CI: true
     steps:
-      - name: Checkout
+      - name: Checkout hap-core
         uses: actions/checkout@v6
+        with:
+          path: hap-core
+
+      - name: Checkout hap-protocol (spec + conformance vectors)
+        uses: actions/checkout@v6
+        with:
+          repository: humanagencyprotocol/hap-protocol
+          ref: 6bee578af9cda55f56df581acc51f047b28abb2f
+          path: content
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
@@ -23,12 +39,16 @@ jobs:
         with:
           node-version: '20'
           cache: 'pnpm'
+          cache-dependency-path: hap-core/pnpm-lock.yaml
 
       - name: Install dependencies
+        working-directory: hap-core
         run: pnpm install --frozen-lockfile
 
       - name: Build
+        working-directory: hap-core
         run: pnpm build
 
       - name: Test
+        working-directory: hap-core
         run: pnpm test
