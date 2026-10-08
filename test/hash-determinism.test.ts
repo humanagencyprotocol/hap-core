@@ -6,21 +6,21 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { computeBoundsHash, computeContextHash } from '../src/frame';
-import { CHARGE_PROFILE_V4, CHARGE_PROFILE } from './fixtures';
+import { computeBoundsHash, computeScopeHash } from '../src/frame';
+import { CHARGE_PROFILE_V4 } from './fixtures';
+import type { AgentProfile } from '../src/types';
 
 // ── Shared fixtures ───────────────────────────────────────────────────────────
 
 const BOUNDS = {
-  profile: 'charge@0.4',
-  path: 'charge-routine',
+  profile: CHARGE_PROFILE_V4.id,
   amount_max: 100,
   amount_daily_max: 500,
   amount_monthly_max: 5000,
   transaction_count_daily_max: 20,
 };
 
-const CONTEXT = {
+const SCOPE = {
   currency: 'USD',
   action_type: 'charge',
 };
@@ -42,22 +42,13 @@ describe('hash determinism', () => {
     it('produces same hash regardless of input object key insertion order', () => {
       // The profile's boundsSchema.keyOrder controls canonical ordering,
       // so inserting keys in a different order must not affect the hash
-      const boundsForwardOrder = {
-        profile: 'charge@0.4',
-        path: 'charge-routine',
-        amount_max: 100,
-        amount_daily_max: 500,
-        amount_monthly_max: 5000,
-        transaction_count_daily_max: 20,
-      };
-
+      const boundsForwardOrder = { ...BOUNDS };
       const boundsReverseOrder = {
         transaction_count_daily_max: 20,
         amount_monthly_max: 5000,
         amount_daily_max: 500,
         amount_max: 100,
-        path: 'charge-routine',
-        profile: 'charge@0.4',
+        profile: CHARGE_PROFILE_V4.id,
       };
 
       const hash1 = computeBoundsHash(boundsForwardOrder, CHARGE_PROFILE_V4);
@@ -78,19 +69,13 @@ describe('hash determinism', () => {
     it('number 100 and string "100" produce the same canonical form', () => {
       // canonicalBounds converts all values via String(), so number 100 → "100"
       // and string "100" → "100" produce the same canonical line "amount_max=100"
-      // DOCUMENTED BEHAVIOR: numbers and their string representations are treated identically
       const boundsWithNumber = { ...BOUNDS, amount_max: 100 };
-      // TypeScript won't allow string here for a number field, but the canonical
-      // form is identical. We verify the hash is stable for the numeric case.
       const hash1 = computeBoundsHash(boundsWithNumber, CHARGE_PROFILE_V4);
       const hash2 = computeBoundsHash(boundsWithNumber, CHARGE_PROFILE_V4);
       expect(hash1).toBe(hash2);
 
-      // The canonical string contains "amount_max=100", not "amount_max=100.0"
-      // We verify by checking a known hash derivation
       const expectedCanonical = [
-        'profile=charge@0.4',
-        'path=charge-routine',
+        `profile=${CHARGE_PROFILE_V4.id}`,
         'amount_max=100',
         'amount_daily_max=500',
         'amount_monthly_max=5000',
@@ -103,11 +88,11 @@ describe('hash determinism', () => {
     });
   });
 
-  describe('context hash', () => {
-    it('same context produces same hash across multiple calls', () => {
-      const hash1 = computeContextHash(CONTEXT, CHARGE_PROFILE_V4);
-      const hash2 = computeContextHash(CONTEXT, CHARGE_PROFILE_V4);
-      const hash3 = computeContextHash(CONTEXT, CHARGE_PROFILE_V4);
+  describe('scope hash', () => {
+    it('same scope produces same hash across multiple calls', () => {
+      const hash1 = computeScopeHash(SCOPE, CHARGE_PROFILE_V4);
+      const hash2 = computeScopeHash(SCOPE, CHARGE_PROFILE_V4);
+      const hash3 = computeScopeHash(SCOPE, CHARGE_PROFILE_V4);
 
       expect(hash1).toBe(hash2);
       expect(hash2).toBe(hash3);
@@ -115,84 +100,71 @@ describe('hash determinism', () => {
     });
 
     it('produces same hash regardless of input object key insertion order', () => {
-      // contextSchema.keyOrder is ['currency', 'action_type'], so insertion order
+      // scopeSchema.keyOrder is ['currency', 'action_type'], so insertion order
       // of the input object does not affect the canonical form
-      const contextForwardOrder = { currency: 'USD', action_type: 'charge' };
-      const contextReverseOrder = { action_type: 'charge', currency: 'USD' };
+      const scopeForwardOrder = { currency: 'USD', action_type: 'charge' };
+      const scopeReverseOrder = { action_type: 'charge', currency: 'USD' };
 
-      const hash1 = computeContextHash(contextForwardOrder, CHARGE_PROFILE_V4);
-      const hash2 = computeContextHash(contextReverseOrder, CHARGE_PROFILE_V4);
+      const hash1 = computeScopeHash(scopeForwardOrder, CHARGE_PROFILE_V4);
+      const hash2 = computeScopeHash(scopeReverseOrder, CHARGE_PROFILE_V4);
 
       expect(hash1).toBe(hash2);
     });
 
     it('different field values produce different hashes', () => {
-      const contextA = { currency: 'USD', action_type: 'charge' };
-      const contextB = { currency: 'EUR', action_type: 'charge' };
+      const scopeA = { currency: 'USD', action_type: 'charge' };
+      const scopeB = { currency: 'EUR', action_type: 'charge' };
 
-      expect(computeContextHash(contextA, CHARGE_PROFILE_V4)).not.toBe(
-        computeContextHash(contextB, CHARGE_PROFILE_V4),
+      expect(computeScopeHash(scopeA, CHARGE_PROFILE_V4)).not.toBe(
+        computeScopeHash(scopeB, CHARGE_PROFILE_V4),
       );
     });
   });
 
-  describe('empty context', () => {
-    it('empty context always produces sha256 of empty string', () => {
+  describe('empty scope', () => {
+    it('empty scope always produces sha256 of empty string', () => {
       // sha256("") = e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
       const EMPTY_SHA256 = 'sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
 
-      // Profile with no contextSchema → canonicalContext returns "" → hash of ""
-      const hash1 = computeContextHash({}, CHARGE_PROFILE);
-      const hash2 = computeContextHash({}, CHARGE_PROFILE);
+      // A profile with no scopeSchema → canonicalScope returns "" → hash of ""
+      const noScopeSchema: AgentProfile = { ...CHARGE_PROFILE_V4, scopeSchema: undefined };
+      const hash1 = computeScopeHash({}, noScopeSchema);
+      const hash2 = computeScopeHash({}, noScopeSchema);
 
       expect(hash1).toBe(EMPTY_SHA256);
       expect(hash2).toBe(EMPTY_SHA256);
     });
 
-    it('empty context hash is stable across multiple calls', () => {
+    it('empty scope hash is stable across multiple calls', () => {
+      const noScopeSchema: AgentProfile = { ...CHARGE_PROFILE_V4, scopeSchema: undefined };
       const hashes = Array.from({ length: 5 }, () =>
-        computeContextHash({}, CHARGE_PROFILE),
+        computeScopeHash({}, noScopeSchema),
       );
       expect(new Set(hashes).size).toBe(1);
     });
   });
 
-  describe('bounds hash differs from context hash for same field values', () => {
-    it('bounds and context hashes differ even when field values overlap', () => {
-      // Both bounds and context could theoretically contain "USD" or "charge"
-      // as values, but they use different keyOrders, so their canonical forms differ
-      // and thus their hashes differ even if individual values coincidentally match.
-
-      // Construct a degenerate case: a single-field bounds with value matching context
-      // This is necessarily cross-profile, but illustrates the canonical difference.
-
+  describe('bounds hash differs from scope hash for the same field values', () => {
+    it('bounds and scope hashes differ even when field values overlap', () => {
+      // Both bounds and scope could theoretically contain "USD" or "charge"
+      // as values, but they use different keyOrders, so their canonical forms
+      // differ and thus their hashes differ even if individual values
+      // coincidentally match.
       const boundsHash = computeBoundsHash(BOUNDS, CHARGE_PROFILE_V4);
-      const contextHash = computeContextHash(CONTEXT, CHARGE_PROFILE_V4);
+      const scopeHash = computeScopeHash(SCOPE, CHARGE_PROFILE_V4);
 
-      // They must be different — different canonical key=value lines
-      expect(boundsHash).not.toBe(contextHash);
-
-      // Both must be valid sha256 hashes
+      expect(boundsHash).not.toBe(scopeHash);
       expect(boundsHash).toMatch(/^sha256:[a-f0-9]{64}$/);
-      expect(contextHash).toMatch(/^sha256:[a-f0-9]{64}$/);
+      expect(scopeHash).toMatch(/^sha256:[a-f0-9]{64}$/);
     });
 
-    it('bounds hash is sha256 of bounds canonical form, not context canonical form', () => {
-      // The bounds canonical form is:
-      //   profile=charge@0.4\npath=charge-routine\namount_max=100\n...
-      // The context canonical form is:
-      //   currency=USD\naction_type=charge
-      // These are fundamentally different strings, so the hashes must differ.
-
+    it('bounds hash is sha256 of the bounds canonical form, not the scope canonical form', () => {
       const boundsHash = computeBoundsHash(BOUNDS, CHARGE_PROFILE_V4);
-      const contextHash = computeContextHash(CONTEXT, CHARGE_PROFILE_V4);
+      const scopeHash = computeScopeHash(SCOPE, CHARGE_PROFILE_V4);
 
-      // Confirm they are non-equal
-      expect(boundsHash).not.toBe(contextHash);
-
-      // Confirm they are both stable (calling again gives same result)
+      expect(boundsHash).not.toBe(scopeHash);
       expect(computeBoundsHash(BOUNDS, CHARGE_PROFILE_V4)).toBe(boundsHash);
-      expect(computeContextHash(CONTEXT, CHARGE_PROFILE_V4)).toBe(contextHash);
+      expect(computeScopeHash(SCOPE, CHARGE_PROFILE_V4)).toBe(scopeHash);
     });
   });
 });
