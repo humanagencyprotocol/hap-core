@@ -5,7 +5,8 @@
  */
 import { describe, it, expect } from 'vitest';
 import {
-  allowedCommitmentModes, isCommitmentModeAllowed, validateCommitmentModes, SIGNABLE_COMMITMENT_MODES,
+  allowedCommitmentModes, isCommitmentModeAllowed, SIGNABLE_COMMITMENT_MODES,
+  validateProfile,
   type AgentProfile,
 } from '../src';
 
@@ -51,16 +52,19 @@ describe('allowedCommitmentModes', () => {
   });
 });
 
-describe('validateCommitmentModes', () => {
+describe('validateProfile — commitment_modes', () => {
+  const messages = (p: AgentProfile) => validateProfile(p).map((e) => e.message);
+
   it('accepts no declaration and a valid one', () => {
-    expect(validateCommitmentModes(base)).toEqual([]);
-    expect(validateCommitmentModes(withModes(['review']))).toEqual([]);
+    expect(messages(base)).toEqual([]);
+    expect(messages(withModes(['review']))).toEqual([]);
   });
 
   it('names each problem', () => {
-    expect(validateCommitmentModes(withModes('review'))).toEqual(['commitment_modes must be a list of modes.']);
-    expect(validateCommitmentModes(withModes([]))[0]).toMatch(/empty/);
-    expect(validateCommitmentModes(withModes(['review', 'reveiw']))[0]).toMatch(/"reveiw" is not a mode/);
-    expect(validateCommitmentModes(withModes(['review', 'review']))[0]).toMatch(/appears twice/);
+    expect(messages(withModes('review'))).toEqual(['commitment_modes must be a list of modes.']);
+    expect(messages(withModes([]))[0]).toMatch(/empty/);
+    expect(messages(withModes(['review', 'reveiw']))[0]).toMatch(/"reveiw" is not a mode/);
+    expect(messages(withModes(['review', 'review']))[0]).toMatch(/appears twice/);
+    for (const e of validateProfile(withModes('review'))) expect(e.code).toBe('PROFILE_INVALID');
   });
 });

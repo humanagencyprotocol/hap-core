@@ -1,207 +1,220 @@
 /**
- * Owner Mandate Signatures (HAP v0.6) — the `HAP-mandate` projection, the
- * `HAP-approval` object, and their verification.
+ * Mandate encoding, decoding, signing, and verification (v0.7).
  *
- * The human signs BEFORE the AS does, so they cannot sign the finished
- * attestation (`attestation_id`/`issued_at` do not exist yet). They sign a
- * mandate PROJECTION: a canonical object every field of which is known at
- * approval time and reconstructible from the finished attestation — so a
- * verifier rebuilds it from the attestation it already holds and checks the
- * signature with the key carried in the owner's DID. No side channel, no
- * second fetch, no key directory. See protocol.md → "Owner Mandate Signatures".
- *
- * Verification here requires NO trust in the AS. What it cannot do is tell the
- * verifier WHOSE key signed — confirming the DID belongs to the expected
- * person is the out-of-band step (protocol.md → "Identity DIDs vs signing
- * DIDs"), and it is the honest cost of cold verification.
+ * Renamed from `attestation.ts` (protocol.md → *Migration from v0.6*:
+ * `header.typ: "HAP-attestation"` → `"HAP-mandate"`, `attestation_id` →
+ * `mandate_id`). v0.3's frame-hash path and v0.4's dual frame/bounds
+ * verification are retired with the rest of pre-v0.5 — this module issues
+ * and verifies `version: "0.7"` mandates only (CLAUDE.md "Decided by the
+ * owner": no backward-compat verify path for 0.5/0.6).
  */
 
+import { createHash } from 'crypto';
 import * as ed from '@noble/ed25519';
-import type { Attestation, AttestationPayload, OwnerMandate } from './types';
 import { canonicalize } from './canonicalize';
-import { decodeDidKey } from './did-key';
+import { toBase64Url, fromBase64Url } from './base64url';
+import { decodeDidKey, isKeyBearingDid } from './did-key';
+import { HapError } from './errors';
+import { PROTOCOL_VERSION } from './versions';
+import type { Mandate, MandateHeader, MandatePayload } from './types';
 
-/** The object the owner signs — a canonical projection of the mandate. */
-export interface MandateProjection {
-  typ: 'HAP-mandate';
-  /** Projection/canonicalization version. A verifier MUST pin it. */
-  version: '0.6';
-  profile_id: string;
-  /** The signing owner's own DID. MUST be a member of `resolved_owners`. */
-  owner_did: string;
-  bounds_hash: string;
-  context_hash: string;
-  execution_context_hash: string;
-  gate_content_hashes: Record<string, string>;
-  /** Included iff the attestation carries one — binds ciphertext AND the
-   * frozen approver set, the swap this mechanism exists to stop. */
-  intent_disclosure_hash?: string;
-  commitment_mode: string;
-  /** The replay defence: the human signs how long the authority lives. */
-  expires_at: number;
-  nonce: string;
-}
+/** Clock-skew tolerance (Mandate rule 9): `issued_at`/`expires_at` checks
+ * tolerate up to 300s, and the tolerance never extends life past
+ * `expires_at + 300s`. */
+const CLOCK_SKEW_SECONDS = 300;
 
-/** Per-action approval, signed by the owner in `review` mode. Signing a
- * `reject` matters as much as a `commit`: a rejection the AS can discard is a
- * rejection that never happened. */
-export interface ApprovalObject {
-  typ: 'HAP-approval';
-  version: '0.6';
-  proposal_id: string;
-  attestation_id: string;
-  decision: 'commit' | 'reject';
-  /** What was approved: the receipt's contentHash where the profile binds
-   * content; otherwise sha256 over the JCS of the proposal's argument set. */
-  content_hash: string;
-  decided_at: number;
-  nonce: string;
-}
-
-export class MandateError extends Error {
-  constructor(
-    public code:
-      | 'MANDATE_SIGNATURE_INVALID'
-      | 'APPROVAL_SIGNATURE_INVALID'
-      | 'NOT_KEY_BEARING'
-      | 'OWNER_NOT_RESOLVED'
-      | 'MALFORMED_ATTESTATION',
-    message: string,
-  ) {
-    super(`${code}: ${message}`);
-    this.name = 'MandateError';
+/**
+ * Decodes a base64url-encoded mandate blob.
+ * @throws Error prefixed `MALFORMED_MANDATE:` on anything that is not a
+ * strict base64url-encoded JSON mandate.
+ */
+export function decodeMandateBlob(blob: string): Mandate {
+  let json: string;
+  try {
+    json = new TextDecoder().decode(fromBase64Url(blob));
+  } catch (err) {
+    throw err instanceof Error && err.message.startsWith('MALFORMED_MANDATE')
+      ? err
+      : new Error(`MALFORMED_MANDATE: failed to decode mandate blob: ${err}`);
+  }
+  try {
+    return JSON.parse(json);
+  } catch (err) {
+    throw new Error(`MALFORMED_MANDATE: mandate blob did not decode to JSON: ${err}`);
   }
 }
 
 /**
- * Rebuild the projection a given `owner_mandates` entry signed, from the
- * attestation's own signed fields. Field absence is defined, not incidental:
- * `intent_disclosure_hash` is included iff the attestation carries one.
+ * Encodes a mandate as a base64url blob (no padding).
  */
-export function buildMandateProjection(
-  payload: AttestationPayload,
-  entry: Pick<OwnerMandate, 'did' | 'nonce'>,
-): MandateProjection {
-  const { profile_id, bounds_hash, context_hash, execution_context_hash, gate_content_hashes, commitment_mode, expires_at } = payload;
-  if (!bounds_hash || !context_hash || !commitment_mode) {
-    throw new MandateError('MALFORMED_ATTESTATION', 'mandate projection requires bounds_hash, context_hash and commitment_mode');
-  }
-  const projection: MandateProjection = {
-    typ: 'HAP-mandate',
-    version: '0.6',
-    profile_id,
-    owner_did: entry.did,
-    bounds_hash,
-    context_hash,
-    execution_context_hash,
-    gate_content_hashes,
-    commitment_mode,
-    expires_at,
-    nonce: entry.nonce,
-  };
-  if (payload.intent_disclosure_hash !== undefined) {
-    projection.intent_disclosure_hash = payload.intent_disclosure_hash;
-  }
-  return projection;
-}
-
-/** The exact bytes an owner signs: RFC 8785 (JCS) canonical UTF-8. */
-export function mandateSigningBytes(projection: MandateProjection): Uint8Array {
-  return new TextEncoder().encode(canonicalize(projection));
-}
-
-/** The exact bytes an owner signs for a per-action approval. */
-export function approvalSigningBytes(approval: ApprovalObject): Uint8Array {
-  return new TextEncoder().encode(canonicalize(approval));
-}
-
-function base64urlToBytes(s: string): Uint8Array {
-  const base64 = s.replace(/-/g, '+').replace(/_/g, '/');
-  const padding = base64.length % 4 === 0 ? '' : '='.repeat(4 - (base64.length % 4));
-  return new Uint8Array(Buffer.from(base64 + padding, 'base64'));
-}
-
-function bytesToBase64url(bytes: Uint8Array): string {
-  return Buffer.from(bytes).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+export function encodeMandateBlob(mandate: Mandate): string {
+  return toBase64Url(new TextEncoder().encode(JSON.stringify(mandate)));
 }
 
 /**
- * Sign a mandate projection with a raw Ed25519 private key — the `raw`
- * binding: tests and CI only, no custody claim. WebAuthn (`webauthn`) and
- * wallet (`eudi`) bindings sign the same bytes through their own custody;
- * they are implemented by the platforms that hold those keys, not here.
+ * Computes the mandate blob id (hash of the blob) — renamed from
+ * `attestationId`.
  */
-export async function signMandateProjection(
-  projection: MandateProjection,
+export function mandateBlobId(blob: string): string {
+  const hash = createHash('sha256').update(blob, 'utf8').digest('hex');
+  return `sha256:${hash}`;
+}
+
+/**
+ * Sign a mandate payload with the Authority Server's Ed25519 private key.
+ *
+ * @param opts.kid Optional key id for the envelope header. When present it
+ * MUST identify the same key as `payload.issuer` (Mandate rule 8) — this
+ * function does not enforce that on the signer's side; `verifyMandateSignature`
+ * enforces it on the verifier's side, where a mismatch is actually dangerous.
+ */
+export async function signMandate(
+  payload: MandatePayload,
   privateKey: Uint8Array,
-): Promise<string> {
-  const sig = await ed.signAsync(mandateSigningBytes(projection), privateKey);
-  return bytesToBase64url(sig);
-}
-
-/** Sign an approval object with a raw Ed25519 private key (`raw` binding). */
-export async function signApproval(approval: ApprovalObject, privateKey: Uint8Array): Promise<string> {
-  const sig = await ed.signAsync(approvalSigningBytes(approval), privateKey);
-  return bytesToBase64url(sig);
+  opts?: { kid?: string },
+): Promise<Mandate> {
+  const header: MandateHeader = { typ: 'HAP-mandate', alg: 'EdDSA', ...(opts?.kid ? { kid: opts.kid } : {}) };
+  const signature = toBase64Url(await ed.signAsync(new TextEncoder().encode(canonicalize(payload)), privateKey));
+  return { header, payload, signature };
 }
 
 /**
- * Verify ONE `owner_mandates` entry against the attestation that carries it.
+ * Verifies a mandate's Ed25519 signature. The verification key is resolved
+ * from `payload.issuer` itself — never from a key offered alongside the
+ * artifact (protocol.md → *Ticket Verification* step 1, which states the
+ * same rule for tickets; mandates follow it identically).
  *
- * Steps (protocol.md → "Verification procedure", steps 4 of 6): membership in
- * `resolved_owners`, key-bearing DID, projection reconstruction, Ed25519 over
- * JCS bytes. The DID is authoritative over `alg` — a disagreement is
- * MANDATE_SIGNATURE_INVALID, never a fallback to the claimed algorithm.
- *
- * What this deliberately does NOT verify: that the DID belongs to the person
- * the verifier expects (out-of-band, step 5) and the AS's own signature over
- * the attestation (verifyAttestationSignature, step 1).
+ * @param opts.trustedIssuers When supplied, an `issuer` not in this list is
+ * rejected before any cryptography runs — "a verifier MUST reject a [...]
+ * whose `issuer` it does not trust" (protocol.md → *Ticket Verification*).
+ * @throws Error prefixed `INVALID_SIGNATURE:` on any verification failure.
  */
-export async function verifyOwnerMandate(attestation: Attestation, entry: OwnerMandate): Promise<void> {
-  const owners = attestation.payload.resolved_owners ?? [];
-  if (!owners.includes(entry.did)) {
-    throw new MandateError('OWNER_NOT_RESOLVED', `signing DID ${entry.did} is not in resolved_owners`);
-  }
-  if (entry.alg !== 'EdDSA') {
-    // The only key type a did:key carries in this protocol version is Ed25519;
-    // an entry claiming otherwise disagrees with its own DID.
-    throw new MandateError('MANDATE_SIGNATURE_INVALID', `alg ${entry.alg} disagrees with the DID's key type (DID is authoritative)`);
-  }
-  let publicKey: Uint8Array;
-  try {
-    publicKey = decodeDidKey(entry.did);
-  } catch (err) {
-    throw new MandateError('NOT_KEY_BEARING', (err as Error).message);
+export async function verifyMandateSignature(
+  mandate: Mandate,
+  opts?: { trustedIssuers?: readonly string[] },
+): Promise<void> {
+  const { issuer } = mandate.payload;
+
+  if (opts?.trustedIssuers && !opts.trustedIssuers.includes(issuer)) {
+    throw new Error(`INVALID_SIGNATURE: issuer ${JSON.stringify(issuer)} is not a trusted Authority Server`);
   }
 
-  const projection = buildMandateProjection(attestation.payload, entry);
-  const ok = await ed.verifyAsync(base64urlToBytes(entry.signature), mandateSigningBytes(projection), publicKey);
-  if (!ok) {
-    throw new MandateError('MANDATE_SIGNATURE_INVALID', `owner mandate signature by ${entry.did} does not verify`);
+  let publicKey: Uint8Array;
+  try {
+    publicKey = decodeDidKey(issuer);
+  } catch (err) {
+    // Not every valid `issuer` need be a did:key (it MAY be a did:web that
+    // resolves to one) — but this package resolves did:key issuers only;
+    // anything else cannot be verified offline here.
+    throw new Error(`INVALID_SIGNATURE: cannot resolve a key from issuer ${JSON.stringify(issuer)}: ${(err as Error).message}`);
+  }
+
+  // Mandate rule 8: a present kid MUST identify the same key as issuer.
+  if (mandate.header.kid !== undefined) {
+    const fingerprint = issuer.startsWith('did:key:') ? issuer.slice('did:key:'.length) : undefined;
+    if (mandate.header.kid !== fingerprint) {
+      throw new Error('INVALID_SIGNATURE: header.kid disagrees with issuer\'s key (Mandate rule 8) — the field a verifier cannot forge wins');
+    }
+  }
+
+  const payloadBytes = new TextEncoder().encode(canonicalize(mandate.payload));
+  let sigBytes: Uint8Array;
+  try {
+    sigBytes = fromBase64Url(mandate.signature);
+  } catch (err) {
+    throw new Error(`INVALID_SIGNATURE: ${(err as Error).message}`);
+  }
+
+  const isValid = await ed.verifyAsync(sigBytes, payloadBytes, publicKey).catch(() => false);
+  if (!isValid) {
+    throw new Error('INVALID_SIGNATURE: mandate signature verification failed');
   }
 }
 
-/** Verify every `owner_mandates` entry an attestation carries. Resolves to the
- * verified entries; an attestation with none resolves to `[]` (the v0.5
- * posture — nothing to check, and nothing claimed). */
-export async function verifyOwnerMandates(attestation: Attestation): Promise<OwnerMandate[]> {
-  const entries = attestation.payload.owner_mandates ?? [];
-  for (const entry of entries) {
-    await verifyOwnerMandate(attestation, entry);
+/**
+ * Checks a mandate payload's time rules (Mandate rule 9): `expires_at` is
+ * authoritative, with a {@link CLOCK_SKEW_SECONDS} tolerance that never
+ * extends life past `expires_at + 300s`.
+ *
+ * @throws Error prefixed `TTL_EXPIRED:` when expired.
+ */
+export function checkMandateExpiry(
+  payload: MandatePayload,
+  now: number = Math.floor(Date.now() / 1000),
+): void {
+  if (now > payload.expires_at + CLOCK_SKEW_SECONDS) {
+    throw new Error(`TTL_EXPIRED: mandate expired at ${payload.expires_at}, current time is ${now}`);
   }
-  return entries;
 }
 
-/** Verify an approval signature against a signer's key-bearing DID. */
-export async function verifyApproval(approval: ApprovalObject, signature: string, signerDid: string): Promise<void> {
-  let publicKey: Uint8Array;
-  try {
-    publicKey = decodeDidKey(signerDid);
-  } catch (err) {
-    throw new MandateError('NOT_KEY_BEARING', (err as Error).message);
+/** The signature fields that are present together or absent together on a
+ * `mandate_owners` entry (Mandate rule 7). */
+const OWNER_SIGNATURE_FIELDS = ['alg', 'signature', 'signed_at', 'nonce', 'binding', 'signing_surface'] as const;
+
+/**
+ * Validates the structural shape of `mandate_owners` (Mandate rule 7):
+ * exactly one entry, `did` required, and the signature fields present
+ * together or absent together. A co-signing entry's `did` MUST be key-bearing.
+ *
+ * @throws HapError `MALFORMED_MANDATE` on a cardinality or completeness
+ * violation; `OWNER_SIGNATURE_INVALID` when a co-signing DID is not key-bearing.
+ */
+export function validateMandateOwners(payload: MandatePayload): void {
+  const owners = payload.mandate_owners;
+  if (!Array.isArray(owners) || owners.length !== 1) {
+    throw new HapError(
+      'MALFORMED_MANDATE',
+      `mandate_owners MUST contain exactly one entry in v0.7, got ${Array.isArray(owners) ? owners.length : typeof owners}`,
+    );
   }
-  const ok = await ed.verifyAsync(base64urlToBytes(signature), approvalSigningBytes(approval), publicKey);
-  if (!ok) {
-    throw new MandateError('APPROVAL_SIGNATURE_INVALID', `approval signature by ${signerDid} does not verify`);
+  const entry = owners[0];
+  if (!entry.did) {
+    throw new HapError('MALFORMED_MANDATE', 'mandate_owners[0].did is required');
   }
+
+  const present = OWNER_SIGNATURE_FIELDS.filter((f) => entry[f] !== undefined);
+  if (present.length > 0 && present.length < OWNER_SIGNATURE_FIELDS.length) {
+    const missing = OWNER_SIGNATURE_FIELDS.filter((f) => entry[f] === undefined);
+    throw new HapError(
+      'MALFORMED_MANDATE',
+      `mandate_owners[0] carries [${present.join(', ')}] but not [${missing.join(', ')}] — ` +
+        'signature fields are present together or absent together (Mandate rule 7)',
+    );
+  }
+  if (present.length === OWNER_SIGNATURE_FIELDS.length && !isKeyBearingDid(entry.did)) {
+    throw new HapError('OWNER_SIGNATURE_INVALID', `co-signing DID ${entry.did} is not key-bearing`);
+  }
+}
+
+/**
+ * Full mandate verification: decode, check `version`, verify the AS
+ * signature, check expiry, validate `mandate_owners` shape.
+ *
+ * Deliberately does NOT verify any `mandate_owners` co-signature — that is
+ * `verifyOwnerSignature` in `owner-signature.ts`, a separate trust axis the
+ * caller opts into.
+ *
+ * @throws HapError `VERSION_UNSUPPORTED` for anything other than `"0.7"`.
+ * @throws Error (`INVALID_SIGNATURE:` / `TTL_EXPIRED:` / `MALFORMED_MANDATE:`
+ * prefixed, or `OWNER_SIGNATURE_INVALID` as a HapError) on any other failure.
+ */
+export async function verifyMandate(
+  blob: string,
+  opts?: { trustedIssuers?: readonly string[]; now?: number },
+): Promise<MandatePayload> {
+  const mandate = decodeMandateBlob(blob);
+
+  if (mandate.payload.version !== PROTOCOL_VERSION) {
+    throw new HapError(
+      'VERSION_UNSUPPORTED',
+      `mandate version ${JSON.stringify(mandate.payload.version)} is not verifiable by this implementation ` +
+        `(verifies ${PROTOCOL_VERSION} only — re-issue the mandate)`,
+    );
+  }
+
+  await verifyMandateSignature(mandate, opts);
+  checkMandateExpiry(mandate.payload, opts?.now);
+  validateMandateOwners(mandate.payload);
+
+  return mandate.payload;
 }

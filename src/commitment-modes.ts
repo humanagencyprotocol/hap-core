@@ -28,24 +28,3 @@ export function allowedCommitmentModes(profile: AgentProfile): readonly Signable
 export function isCommitmentModeAllowed(profile: AgentProfile, mode: string): boolean {
   return isSignable(mode) && allowedCommitmentModes(profile).includes(mode);
 }
-
-/**
- * Authoring check for a profile's `commitment_modes` declaration — for
- * hap-profiles CI, an authoring tool or a test. Like `validateBoundsRequiredFor`
- * it is not wired into profile loading; enforcement reads the declaration
- * fail-closed through `allowedCommitmentModes`. Empty array = nothing to fix.
- */
-export function validateCommitmentModes(profile: AgentProfile): string[] {
-  const declared = (profile as { commitment_modes?: unknown }).commitment_modes;
-  if (declared === undefined) return [];
-  if (!Array.isArray(declared)) return ['commitment_modes must be a list of modes.'];
-  const errors: string[] = [];
-  if (declared.length === 0) errors.push('commitment_modes is empty — no mandate could ever be signed under this profile.');
-  const seen = new Set<unknown>();
-  for (const m of declared) {
-    if (!isSignable(m)) errors.push(`commitment_modes: "${String(m)}" is not a mode a signer can choose (${SIGNABLE_COMMITMENT_MODES.join(', ')}).`);
-    if (seen.has(m)) errors.push(`commitment_modes: "${String(m)}" appears twice.`);
-    seen.add(m);
-  }
-  return errors;
-}
