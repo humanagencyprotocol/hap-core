@@ -359,7 +359,24 @@ export interface ContentBinding {
    * Absent → the binding applies to every gated action under the profile.
    */
   appliesTo?: string[];
+  /**
+   * v2 only — what kind of value each bound field holds, so a verifier (or any
+   * view) can collect and show it without guessing from the field's name:
+   * - `text`  — one string (an email body);
+   * - `list`  — an array of strings (recipients);
+   * - `files` — the sealed fingerprints of documents sent by reference:
+   *   `[{ filename, sha256 }]` — never the bytes. A verifier asks for the
+   *   files themselves and computes each SHA-256 locally.
+   *
+   * A hint only: it never changes what is hashed. Keys MUST be a subset of
+   * {@link fields}; a field without an entry is unspecified (a verifier may
+   * offer a choice, as before).
+   */
+  field_kinds?: Record<string, ContentFieldKind>;
 }
+
+/** See {@link ContentBinding.field_kinds}. */
+export type ContentFieldKind = 'text' | 'list' | 'files';
 
 /**
  * Scope field definition within a profile (renamed from `ProfileContextField`

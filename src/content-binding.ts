@@ -31,7 +31,7 @@
 
 import { createHash } from 'crypto';
 import { canonicalize } from './canonicalize';
-import type { ContentBinding } from './types';
+import type { ContentBinding, ContentFieldKind } from './types';
 
 /**
  * Canonicalize free text per the v0.5 'text' rule. Idempotent.
@@ -248,4 +248,29 @@ export function computeFieldsContentHash(
   args: Record<string, unknown>,
 ): string {
   return computeContentHash(binding, selectBoundFields(binding, args));
+}
+
+// ─── Field kinds (display / verification hint) ───────────────────────────────
+
+const FIELD_KINDS = new Set<ContentFieldKind>(['text', 'list', 'files']);
+
+/**
+ * Why a binding's `field_kinds` is malformed, or null when it is fine (or
+ * absent). For profile validation — a malformed hint is a profile error, not
+ * a call-time refusal, because it never changes what is hashed.
+ */
+export function invalidFieldKindsReason(binding: ContentBinding): string | null {
+  const kinds = binding.field_kinds;
+  if (kinds === undefined) return null;
+  if (!kinds || typeof kinds !== 'object' || Array.isArray(kinds)) return 'field_kinds must be an object';
+  for (const [field, kind] of Object.entries(kinds)) {
+    if (!(binding.fields ?? []).includes(field)) return `field_kinds names "${field}", which is not in fields`;
+    if (!FIELD_KINDS.has(kind)) return `field_kinds.${field} must be one of text, list, files`;
+  }
+  return null;
+}
+
+/** The bound fields declared as `files` — sealed document fingerprints. */
+export function filesFields(binding: ContentBinding): string[] {
+  return Object.entries(binding.field_kinds ?? {}).filter(([, k]) => k === 'files').map(([f]) => f);
 }
