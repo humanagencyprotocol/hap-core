@@ -4,7 +4,7 @@ Core types, cryptographic primitives, and verification logic for the [Human Agen
 
 **v0.7 vocabulary** — the wire renames *attestation* → **mandate**, *execution
 receipt* → **mandate ticket**, *context* → **scope**, and *Decision Owner* →
-**Mandate Owner** (protocol.md → *Migration from v0.6*). This package issues
+**Mandate Owner** (protocol.md → *Migration from v0.6*). This package
 issues `version: "0.8"` and verifies `"0.8"` and `"0.7"` artifacts, each under its own rules (v0.8 is a re-grant release; see CHANGELOG 0.13.0) — there is no backward-compat
 verify path for v0.5/v0.6; a v0.6 mandate fails verification with
 `VERSION_UNSUPPORTED` and must be re-issued. See the rename table below.
