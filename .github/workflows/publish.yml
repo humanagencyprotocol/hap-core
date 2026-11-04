@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: humanagencyprotocol/hap-protocol
-          ref: 6bee578af9cda55f56df581acc51f047b28abb2f
+          ref: ec81c52d299046af8a268359c197cb2fdd6026d0
           path: .hap-protocol
           sparse-checkout: content
 
