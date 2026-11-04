@@ -1,5 +1,91 @@
 # Changelog
 
+## 0.13.0 — unreleased (v0.8 wire)
+
+HAP v0.8 — a **re-grant release** (protocol.md → *Migration from v0.7*). No
+field is renamed or retired; every new signed field is optional or
+conditional. This package now **issues `version: "0.8"`** and **verifies
+`"0.8"` and `"0.7"`**, each under its own rules (*Version negotiation*, rule
+4): a v0.7 artifact stays verifiable as evidence, a v0.8 Authority Server
+issues no tickets against it.
+
+### Versions
+
+- `PROTOCOL_VERSION` is `"0.8"`; `SUPPORTED_VERSIONS` is `["0.8", "0.7"]`
+  (what a Gatekeeper sends as `supported_versions`); new `ISSUABLE_VERSIONS`
+  (`["0.8"]`) is the default of `negotiateVersion`, so a v0.8 issuer refuses a
+  request that does not support 0.8. An AS that bridges the transition passes
+  the wider set explicitly. New `assertSupportedVersion`, `isSupportedVersion`.
+
+### Signed objects
+
+- Mandate payload: `above_cap_approvals` (present exactly with
+  `above_cap_approvers`; Mandate rule 10) — `validateAboveCapFields`.
+- Owner-signed projection: `binding`, `signing_surface`, `subjects_disclosed`
+  (always present under 0.8), `above_cap_approvals` with the other two;
+  `buildMandateProjection` reconstructs per the mandate's version.
+- `HAP-approval`: `approver_did`, `action`, `action_type`,
+  `proposal_content_hash` (0.8). `verifyApproval` checks `approver_did`.
+- Ticket: `idempotencyKey`, `proposalContentHash`, `approvalSignatures`.
+  `verifyTicketSignature` enforces the shape rules (no `typ`, no
+  `mandate_id`/`issued_at`, required fields). New `verifyTicketAgainstRequest`
+  (`TICKET_REQUEST_MISMATCH`), `reconstructApproval`, `verifyTicketApprovals`,
+  `approvalsSufficient`.
+- New `ticket-projection.ts`: `HAP-ticket-projection` — build, sign, verify,
+  and `verifyProjectionOwner` against the mandate.
+- New `verifier-policy.ts`: `HAP-verifier-policy` evaluation with the codes
+  the specification's table assigns (`PolicyError`).
+
+### Proposals
+
+- New `proposal-content.ts`: `computeProposalContentHash` (JCS → sha256),
+  `encryptProposalContent` / `decryptProposalContent` with the pinned
+  construction (AES-256-GCM, IV ‖ ct ‖ tag; HPKE base mode DHKEM-X25519 /
+  HKDF-SHA256 / AES-256-GCM, empty info and AAD) on `@hpke/core`;
+  `checkProposalReaders`. New dependency `@hpke/core`.
+
+### Issuance and execution checks (`issuance.ts`)
+
+- `computeExecutionContextHash`, `boundReadFields`, `wireExecutionContext`,
+  `checkExecutionValues` (finite, non-negative; `_` keys refused),
+  `missingSumFields`, `checkBoundsValues` (`maximum`, numeric type, enum),
+  `checkGroupCeilings` (`GROUP_CAP_EXCEEDED`, enum order), `validateAboveCapConfig`,
+  `capsExceeded`.
+- Gatekeeper `verify`: accepts 0.7 and 0.8 mandates; refuses a non-numeric or
+  negative value a bound reads (`MALFORMED_TICKET_REQUEST`); refuses an
+  absent amount under a governing `cumulative_sum` bound (`BOUND_EXCEEDED`,
+  v0.8 "a missing amount fails safe") unless an above-cap cap reads the field.
+
+### Profiles
+
+- `validateProfile`: `maximum` must be a number, `enforcedBy` must be
+  `"gatekeeper"`, `disclose_fields` only names fields a bound reads, a
+  version-2 `content_binding` with `kind: "text"` is invalid; an entry
+  `review_above_cap` in `commitment_modes` is ignored (alone it is malformed).
+- `isCommitmentModeAllowed(profile, "review_above_cap")` is true iff
+  `automatic` is admitted (Commitment Modes, rule 8).
+- Types: `enforcedBy` on a bounds field; `CommitmentMode`, `ProtocolVersion`.
+
+### Canonicalization
+
+- A string with a lone surrogate is refused, never signed (RFC 8785 / I-JSON).
+
+### Error codes
+
+Added: `COMMITMENT_MODE_NOT_ALLOWED`, `GROUP_CAP_EXCEEDED`,
+`APPROVAL_IMPOSSIBLE`, `PROPOSAL_CONTENT_MISMATCH`, `PROPOSAL_WITHDRAWN`,
+`CONTENT_BINDING_INCOMPLETE`, `TICKET_REQUEST_MISMATCH`, `POLICY_UNMET`,
+`PROPOSAL_NOT_ENCRYPTED`, `DECIDER_INVALID`, `PROPOSAL_ALREADY_DECIDED`,
+`PROPOSAL_APPROVERS_INVALID`. None retired.
+
+### Conformance
+
+Every `content/0.8/vectors/*` reproduces byte for byte (payload signatures
+incl. the review-path ticket, the public projection and the JCS edge cases;
+proposal encryption; profile hashes; canonical bounds and scope), and every
+`required-refusals.json` row is decided here or named AS-only in the test.
+The v0.7 signature vectors still pass through the same functions.
+
 ## 0.12.0 — 2026-10-08
 
 **BREAKING.** HAP v0.7 wire — the vocabulary rename (protocol.md →

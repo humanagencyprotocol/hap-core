@@ -46,9 +46,18 @@ describe('allowedCommitmentModes', () => {
     expect(isCommitmentModeAllowed(p, 'automatic')).toBe(false);
   });
 
-  it('never allows a value that is not a signable mode, declared or not', () => {
-    expect(isCommitmentModeAllowed(base, 'review_above_cap')).toBe(false);
+  it('never allows a value that is not a mode, declared or not', () => {
     expect(isCommitmentModeAllowed(withModes(['review', 'nonsense']), 'nonsense')).toBe(false);
+    expect(isCommitmentModeAllowed(base, 'nonsense')).toBe(false);
+  });
+
+  it('review_above_cap is admitted if and only if automatic is (v0.8, Commitment Modes rule 8)', () => {
+    expect(isCommitmentModeAllowed(base, 'review_above_cap')).toBe(true);
+    expect(isCommitmentModeAllowed(withModes(['automatic']), 'review_above_cap')).toBe(true);
+    expect(isCommitmentModeAllowed(withModes(['review']), 'review_above_cap')).toBe(false);
+    // An entry review_above_cap in the list is ignored: it admits nothing by itself.
+    expect(isCommitmentModeAllowed(withModes(['review', 'review_above_cap']), 'review_above_cap')).toBe(false);
+    expect(allowedCommitmentModes(withModes(['review', 'review_above_cap']))).toEqual(['review']);
   });
 });
 

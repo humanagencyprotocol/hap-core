@@ -84,10 +84,15 @@ export interface Subject {
   verified_at?: number;
 }
 
-/** protocol.md → *Mandate Payload (v0.7)*. */
+/** The protocol version an artifact was issued under. This package verifies
+ * each under its own rules (protocol.md → *Version negotiation*, rule 4). */
+export type ProtocolVersion = '0.8' | '0.7';
+
+/** protocol.md → *Mandate Payload (v0.8)*; a `"0.7"` payload is the same shape
+ * without `above_cap_approvals` and without the v0.8 owner-signed fields. */
 export interface MandatePayload {
   mandate_id: string;
-  version: '0.7';
+  version: ProtocolVersion;
   profile_id: string;
   /** Hash of the canonical bounds string. */
   bounds_hash: string;
@@ -104,10 +109,16 @@ export interface MandatePayload {
   /** Exactly one entry in v0.7 (Mandate rule 7). */
   mandate_owners: MandateOwnerEntry[];
   gate_content_hashes: Record<string, string>;
-  commitment_mode: 'automatic' | 'review' | 'review_above_cap';
-  /** Required, together with `above_cap_approvers`, iff `commitment_mode === "review_above_cap"`. */
+  commitment_mode: CommitmentMode;
+  /** Present together with `above_cap_approvers` and (v0.8) `above_cap_approvals`:
+   * under `review_above_cap`, or `review` in a group with approval-kind caps
+   * the owner's mandate can reach (protocol.md → *Group roles*, rule 7). */
   above_cap_caps?: Record<string, number>;
   above_cap_approvers?: string[];
+  /** v0.8 — how many distinct `above_cap_approvers`, other than the Mandate
+   * Owner, must approve. Integer ≥ 1. Present exactly when
+   * `above_cap_approvers` is (Mandate rule 10). A v0.7 mandate carries none. */
+  above_cap_approvals?: number;
   /**
    * Present iff the mandate carries an encrypted-intent disclosure object
    * (companion spec `intent-disclosure@0.1`) — `sha256:`-prefixed hash
@@ -290,6 +301,15 @@ export interface ProfileBoundsField {
    * min(value, maximum). Absent → no ceiling.
    */
   maximum?: number;
+  /**
+   * v0.8 (Bounds Schema rule 11) — a bound only the Gatekeeper enforces, such
+   * as a read window whose actions produce no ticket. The Authority Server
+   * still verifies the value at issuance (`maximum`, enum membership, any
+   * group ceiling) and never reads it at ticket time. A group cap on such a
+   * bound is always hard, and the signed value is the ceiling (*Group
+   * ceilings*).
+   */
+  enforcedBy?: 'gatekeeper';
 }
 
 /**
@@ -446,6 +466,9 @@ export type ExecutionContextFieldDef = DeclaredFieldDef | CumulativeFieldDef;
  */
 export type SignableCommitmentMode = 'automatic' | 'review';
 
+/** Every commitment mode a signed mandate can carry. */
+export type CommitmentMode = SignableCommitmentMode | 'review_above_cap';
+
 /** protocol.md → *Owner Signatures* → "Where the requirement lives" — the
  * profile-floor tier: `minBinding` names the weakest `OwnerSignatureBinding`
  * this profile accepts for a co-signing owner. */
@@ -504,8 +527,13 @@ export interface AgentProfile {
    * a mandate screen offers only the listed modes. Fail-closed: a declared
    * list with no valid entry allows nothing — a malformed declaration never
    * widens what a profile allows. See {@link allowedCommitmentModes}.
+   *
+   * v0.8 (Commitment Modes, rule 8): `review_above_cap` is admitted if and
+   * only if `automatic` is listed; an entry `review_above_cap` in the list is
+   * ignored, and a list whose only entry is it admits nothing and is
+   * malformed (`PROFILE_INVALID`).
    */
-  commitment_modes?: readonly SignableCommitmentMode[];
+  commitment_modes?: readonly CommitmentMode[];
 
   /**
    * The bounds schema — the enforceable parameters (protocol.md → *Bounds

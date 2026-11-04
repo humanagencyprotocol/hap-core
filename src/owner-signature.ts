@@ -1,11 +1,7 @@
 /**
- * Owner Signatures (v0.7) — the `HAP-mandate-projection` object, the
- * `HAP-approval` object, and their verification.
- *
- * Renamed from `mandate.ts` (protocol.md → *Migration from v0.6*: the
- * owner-signed projection's `typ` moves from `"HAP-mandate"` to
- * `"HAP-mandate-projection"`, disambiguating it from the AS-signed mandate
- * itself, which now legitimately owns the name `"HAP-mandate"`).
+ * Owner Signatures — the `HAP-mandate-projection` object, the
+ * `HAP-approval` object, and their verification (v0.8; v0.7 artifacts
+ * verified under their own field lists).
  *
  * The human signs BEFORE the AS does, so they cannot sign the finished
  * mandate (`mandate_id`/`issued_at` do not exist yet). They sign a mandate
@@ -15,6 +11,13 @@
  * with the key carried in the owner's DID. No side channel, no second
  * fetch, no key directory. See protocol.md → "Owner Signatures".
  *
+ * v0.8 adds to the projection what a compromised AS could otherwise restate:
+ * `binding` and `signing_surface` (how the owner signed), `subjects_disclosed`
+ * (whether the name is attached), and `above_cap_approvals` (how many
+ * approvers). The approval gains `approver_did` (who decided) and the
+ * operation it is for (`action`, `action_type`), and always signs the
+ * proposal's content fingerprint beside the bound subset.
+ *
  * Verification here requires NO trust in the AS. What it cannot do is tell
  * the verifier WHOSE key signed — confirming the DID belongs to the
  * expected person is the out-of-band step (protocol.md → "Verification
@@ -22,7 +25,10 @@
  */
 
 import * as ed from '@noble/ed25519';
-import type { Mandate, MandatePayload, MandateOwnerEntry, OwnerSignatureBinding, ProfileOwnerSignatureFloor } from './types';
+import type {
+  Mandate, MandatePayload, MandateOwnerEntry, OwnerSignatureBinding, ProfileOwnerSignatureFloor,
+  ProtocolVersion, SigningSurface, CommitmentMode,
+} from './types';
 import { canonicalize } from './canonicalize';
 import { decodeDidKey } from './did-key';
 import { toBase64Url, fromBase64Url } from './base64url';
@@ -35,7 +41,7 @@ import type { HapErrorCode } from './errors';
 export interface MandateProjection {
   typ: 'HAP-mandate-projection';
   /** Projection/canonicalization version. A verifier MUST pin it. */
-  version: '0.7';
+  version: ProtocolVersion;
   profile_id: string;
   /** Covered deliberately: the owner signs the profile's BYTES, not only its id. */
   profile_hash: string;
@@ -48,30 +54,47 @@ export interface MandateProjection {
   /** Included iff the mandate carries one — binds ciphertext AND the
    * frozen approver set, the swap this mechanism exists to stop. */
   intent_disclosure_hash?: string;
-  commitment_mode: string;
-  /** Included together, iff `commitment_mode === "review_above_cap"`. */
+  commitment_mode: CommitmentMode;
+  /** Included together, iff the mandate carries them (v0.8: under
+   * `review_above_cap`, or `review` in a group with approval-kind caps;
+   * v0.7: under `review_above_cap`). */
   above_cap_caps?: Record<string, number>;
   above_cap_approvers?: string[];
+  /** v0.8 only, with the other two. */
+  above_cap_approvals?: number;
   /** Included iff the mandate narrows the profile's disclose_fields. */
   disclose_fields?: string[];
   /** The replay defence: the human signs how long the authority lives. */
   expires_at: number;
   nonce: string;
+  /** v0.8, always present: MUST equal the `mandate_owners` entry's values. */
+  binding?: OwnerSignatureBinding | string;
+  signing_surface?: SigningSurface | string;
+  /** v0.8, always present: `true` exactly when the mandate carries a
+   * `subjects` entry for the owner. */
+  subjects_disclosed?: boolean;
 }
 
-/** Per-action approval, signed by the owner in `review` mode. Signing a
- * `reject` matters as much as a `commit`: a rejection the AS can discard is
- * a rejection that never happened. */
+/** Per-action approval, signed by the decider. Signing a `reject` matters as
+ * much as a `commit`: a rejection the AS can discard is a rejection that
+ * never happened. */
 export interface ApprovalObject {
   typ: 'HAP-approval';
-  version: '0.7';
+  version: ProtocolVersion;
+  /** v0.8 — who decided: the Mandate Owner in `review`, or an above-cap approver. */
+  approver_did?: string;
   proposal_id: string;
-  /** Renamed from `attestation_id` in v0.7. */
   mandate_id: string;
+  /** v0.8 — the operation the arguments are for, exactly as the ticket carries them. */
+  action?: string;
+  action_type?: string;
   decision: 'commit' | 'reject';
-  /** What was approved: the ticket's contentHash where the profile binds
-   * content; otherwise sha256 over the JCS of the proposal's argument set. */
+  /** The ticket's contentHash where a content binding applies to the action;
+   * otherwise equal to `proposal_content_hash` (v0.8) / the JCS hash of the
+   * proposal's arguments (v0.7). */
   content_hash: string;
+  /** v0.8, always present — the proposal's content fingerprint. */
+  proposal_content_hash?: string;
   decided_at: number;
   nonce: string;
 }
@@ -97,13 +120,12 @@ function decodeOrThrow(signature: string, code: HapErrorCode): Uint8Array {
 
 /**
  * Rebuild the projection a given `mandate_owners` entry signed, from the
- * mandate's own signed fields. Field absence is defined, not incidental:
- * `intent_disclosure_hash`, `above_cap_caps`/`above_cap_approvers`, and
- * `disclose_fields` are included iff the mandate carries them.
+ * mandate's own signed fields, under the mandate's own `version`. Field
+ * absence is defined, not incidental.
  */
 export function buildMandateProjection(
   payload: MandatePayload,
-  entry: Pick<MandateOwnerEntry, 'did' | 'nonce'>,
+  entry: Pick<MandateOwnerEntry, 'did' | 'nonce' | 'binding' | 'signing_surface'>,
 ): MandateProjection {
   const {
     profile_id, profile_hash, bounds_hash, scope_hash, execution_context_hash,
@@ -115,9 +137,10 @@ export function buildMandateProjection(
       'mandate projection requires profile_hash, bounds_hash, scope_hash and commitment_mode',
     );
   }
+  const version: ProtocolVersion = payload.version === '0.7' ? '0.7' : '0.8';
   const projection: MandateProjection = {
     typ: 'HAP-mandate-projection',
-    version: '0.7',
+    version,
     profile_id,
     profile_hash,
     owner_did: entry.did,
@@ -132,23 +155,44 @@ export function buildMandateProjection(
   if (payload.intent_disclosure_hash !== undefined) {
     projection.intent_disclosure_hash = payload.intent_disclosure_hash;
   }
-  if (payload.commitment_mode === 'review_above_cap') {
-    projection.above_cap_caps = payload.above_cap_caps;
-    projection.above_cap_approvers = payload.above_cap_approvers;
+  if (version === '0.7') {
+    if (payload.commitment_mode === 'review_above_cap') {
+      projection.above_cap_caps = payload.above_cap_caps;
+      projection.above_cap_approvers = payload.above_cap_approvers;
+    }
+  } else {
+    // v0.8: the three above-cap fields are projection fields exactly when the
+    // mandate carries them — review_above_cap, or review in a group with
+    // approval-kind caps (Group roles, rule 7) — always together.
+    if (payload.above_cap_approvers !== undefined) {
+      projection.above_cap_caps = payload.above_cap_caps;
+      projection.above_cap_approvers = payload.above_cap_approvers;
+      projection.above_cap_approvals = payload.above_cap_approvals;
+    }
   }
   if (payload.disclose_fields !== undefined) {
     projection.disclose_fields = payload.disclose_fields;
   }
+  if (version === '0.8') {
+    if (entry.binding === undefined || entry.signing_surface === undefined) {
+      throw new OwnerSignatureError(
+        'OWNER_SIGNATURE_INVALID',
+        'a v0.8 projection requires the entry\'s binding and signing_surface',
+      );
+    }
+    projection.binding = entry.binding;
+    projection.signing_surface = entry.signing_surface;
+    projection.subjects_disclosed = (payload.subjects ?? []).some((s) => s.did === entry.did);
+  }
   return projection;
 }
 
-/** The exact bytes an owner signs: RFC 8785 (JCS) canonical UTF-8. Renamed
- * from `mandateSigningBytes` in v0.7. */
+/** The exact bytes an owner signs: RFC 8785 (JCS) canonical UTF-8. */
 export function projectionSigningBytes(projection: MandateProjection): Uint8Array {
   return new TextEncoder().encode(canonicalize(projection));
 }
 
-/** The exact bytes an owner signs for a per-action approval. */
+/** The exact bytes a decider signs for a per-action approval. */
 export function approvalSigningBytes(approval: ApprovalObject): Uint8Array {
   return new TextEncoder().encode(canonicalize(approval));
 }
@@ -227,11 +271,14 @@ export async function verifyOwnerSignatures(mandate: Mandate): Promise<MandateOw
 
 /** Verify an approval signature against a signer's key-bearing DID. */
 export async function verifyApproval(approval: ApprovalObject, signature: string, signerDid: string): Promise<void> {
+  if (approval.version === '0.8' && approval.approver_did !== signerDid) {
+    throw new OwnerSignatureError('APPROVAL_SIGNATURE_INVALID', `approval names approver ${approval.approver_did}, verified under ${signerDid}`);
+  }
   let publicKey: Uint8Array;
   try {
     publicKey = decodeDidKey(signerDid);
   } catch (err) {
-    throw new OwnerSignatureError('OWNER_SIGNATURE_INVALID', (err as Error).message);
+    throw new OwnerSignatureError('APPROVAL_SIGNATURE_INVALID', (err as Error).message);
   }
   const ok = await ed.verifyAsync(decodeOrThrow(signature, 'APPROVAL_SIGNATURE_INVALID'), approvalSigningBytes(approval), publicKey).catch(() => false);
   if (!ok) {
@@ -240,20 +287,20 @@ export async function verifyApproval(approval: ApprovalObject, signature: string
 }
 
 /** Signature-assurance ranking for `OwnerSignatureBinding`, weakest first —
- * protocol.md → *Owner Signatures* → "binding" table ordering (raw < webauthn < eudi). */
-const BINDING_RANK: Record<OwnerSignatureBinding, number> = { raw: 0, webauthn: 1, eudi: 2 };
+ * protocol.md → *Owner Signatures* → "binding" table ordering (raw < webauthn < eudi).
+ * A binding the verifier does not know ranks as `raw` (satisfies no minimum
+ * above it). */
+export const BINDING_RANK: Record<OwnerSignatureBinding, number> = { raw: 0, webauthn: 1, eudi: 2 };
+
+export function bindingRank(binding: string | undefined): number {
+  return BINDING_RANK[binding as OwnerSignatureBinding] ?? 0;
+}
 
 /**
  * Enforce a profile's `ownerSignature` floor (protocol.md → *Owner
  * Signatures* → "Where the requirement lives" — the profile-floor tier,
  * checkable without trusting the AS: `profile_id`/`profile_hash` are in the
  * signed payload AND in the owner-signed projection).
- *
- * An unknown `binding` value is treated as rank 0 (weakest) rather than
- * rejected outright — "an AS MUST NOT reject a mandate_owners entry solely
- * because it does not recognize its binding value" extends naturally to a
- * verifier ranking it, since crediting an unrecognized binding with
- * unearned strength would be the more dangerous failure mode.
  *
  * @throws OwnerSignatureError `OWNER_SIGNATURE_REQUIRED` when the floor is
  * unmet — "MUST fail, not warn" (protocol.md, same section).
@@ -272,7 +319,7 @@ export function checkOwnerSignatureRequirement(
     );
   }
   const minRank = floor.minBinding ? BINDING_RANK[floor.minBinding] : 0;
-  const haveRank = BINDING_RANK[entry!.binding as OwnerSignatureBinding] ?? 0;
+  const haveRank = bindingRank(entry!.binding);
   if (haveRank < minRank) {
     throw new OwnerSignatureError(
       'OWNER_SIGNATURE_REQUIRED',

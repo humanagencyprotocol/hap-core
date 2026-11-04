@@ -4,9 +4,10 @@
  * Renamed from `attestation.ts` (protocol.md → *Migration from v0.6*:
  * `header.typ: "HAP-attestation"` → `"HAP-mandate"`, `attestation_id` →
  * `mandate_id`). v0.3's frame-hash path and v0.4's dual frame/bounds
- * verification are retired with the rest of pre-v0.5 — this module issues
- * and verifies `version: "0.7"` mandates only (CLAUDE.md "Decided by the
- * owner": no backward-compat verify path for 0.5/0.6).
+ * verification are retired with the rest of pre-v0.5. This module issues
+ * `version: "0.8"` mandates and verifies `"0.8"` and `"0.7"` ones, each
+ * under its own rules (protocol.md → *Version negotiation*, rule 4): v0.8
+ * is a re-grant release, and a v0.7 artifact stays verifiable as evidence.
  */
 
 import { createHash } from 'crypto';
@@ -15,7 +16,7 @@ import { canonicalize } from './canonicalize';
 import { toBase64Url, fromBase64Url } from './base64url';
 import { decodeDidKey, isKeyBearingDid } from './did-key';
 import { HapError } from './errors';
-import { PROTOCOL_VERSION } from './versions';
+import { assertSupportedVersion, SUPPORTED_VERSIONS } from './versions';
 import type { Mandate, MandateHeader, MandatePayload } from './types';
 
 /** Clock-skew tolerance (Mandate rule 9): `issued_at`/`expires_at` checks
@@ -162,7 +163,7 @@ export function validateMandateOwners(payload: MandatePayload): void {
   if (!Array.isArray(owners) || owners.length !== 1) {
     throw new HapError(
       'MALFORMED_MANDATE',
-      `mandate_owners MUST contain exactly one entry in v0.7, got ${Array.isArray(owners) ? owners.length : typeof owners}`,
+      `mandate_owners MUST contain exactly one entry (Mandate rule 7), got ${Array.isArray(owners) ? owners.length : typeof owners}`,
     );
   }
   const entry = owners[0];
@@ -185,14 +186,56 @@ export function validateMandateOwners(payload: MandatePayload): void {
 }
 
 /**
+ * The above-cap fields travel together (Mandate rule 10; *Group roles*,
+ * rule 7). Under v0.8 `above_cap_approvals` is present exactly when
+ * `above_cap_approvers` is, an integer ≥ 1; under v0.7 there is no count and
+ * caps + approvers are present exactly under `review_above_cap`.
+ *
+ * @throws HapError `MALFORMED_MANDATE`
+ */
+export function validateAboveCapFields(payload: MandatePayload): void {
+  const hasCaps = payload.above_cap_caps !== undefined;
+  const hasApprovers = payload.above_cap_approvers !== undefined;
+  const hasCount = payload.above_cap_approvals !== undefined;
+  if (hasCaps !== hasApprovers) {
+    throw new HapError('MALFORMED_MANDATE', 'above_cap_caps and above_cap_approvers are present together or absent together');
+  }
+  if (payload.commitment_mode === 'review_above_cap' && !hasApprovers) {
+    throw new HapError('MALFORMED_MANDATE', 'a review_above_cap mandate MUST carry above_cap_caps and above_cap_approvers');
+  }
+  if (payload.version === '0.7') {
+    if (hasCount) {
+      throw new HapError('MALFORMED_MANDATE', 'a v0.7 mandate carries no above_cap_approvals');
+    }
+    if (hasApprovers && payload.commitment_mode !== 'review_above_cap') {
+      throw new HapError('MALFORMED_MANDATE', 'a v0.7 mandate carries above-cap fields only under review_above_cap');
+    }
+    return;
+  }
+  if (hasApprovers !== hasCount) {
+    throw new HapError('MALFORMED_MANDATE', 'above_cap_approvals is present exactly when above_cap_approvers is (Mandate rule 10)');
+  }
+  if (hasCount) {
+    const n = payload.above_cap_approvals as unknown;
+    if (typeof n !== 'number' || !Number.isInteger(n) || n < 1) {
+      throw new HapError('MALFORMED_MANDATE', `above_cap_approvals MUST be an integer >= 1, got ${JSON.stringify(n)}`);
+    }
+  }
+  if (hasApprovers && payload.commitment_mode === 'automatic') {
+    throw new HapError('MALFORMED_MANDATE', 'an automatic mandate carries no above-cap fields');
+  }
+}
+
+/**
  * Full mandate verification: decode, check `version`, verify the AS
- * signature, check expiry, validate `mandate_owners` shape.
+ * signature, check expiry, validate `mandate_owners` shape and the above-cap
+ * fields.
  *
  * Deliberately does NOT verify any `mandate_owners` co-signature — that is
  * `verifyOwnerSignature` in `owner-signature.ts`, a separate trust axis the
  * caller opts into.
  *
- * @throws HapError `VERSION_UNSUPPORTED` for anything other than `"0.7"`.
+ * @throws HapError `VERSION_UNSUPPORTED` for a version outside {@link SUPPORTED_VERSIONS}.
  * @throws Error (`INVALID_SIGNATURE:` / `TTL_EXPIRED:` / `MALFORMED_MANDATE:`
  * prefixed, or `OWNER_SIGNATURE_INVALID` as a HapError) on any other failure.
  */
@@ -202,17 +245,12 @@ export async function verifyMandate(
 ): Promise<MandatePayload> {
   const mandate = decodeMandateBlob(blob);
 
-  if (mandate.payload.version !== PROTOCOL_VERSION) {
-    throw new HapError(
-      'VERSION_UNSUPPORTED',
-      `mandate version ${JSON.stringify(mandate.payload.version)} is not verifiable by this implementation ` +
-        `(verifies ${PROTOCOL_VERSION} only — re-issue the mandate)`,
-    );
-  }
+  assertSupportedVersion(mandate.payload.version, 'mandate');
 
   await verifyMandateSignature(mandate, opts);
   checkMandateExpiry(mandate.payload, opts?.now);
   validateMandateOwners(mandate.payload);
+  validateAboveCapFields(mandate.payload);
 
   return mandate.payload;
 }

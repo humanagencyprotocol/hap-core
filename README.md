@@ -4,8 +4,8 @@ Core types, cryptographic primitives, and verification logic for the [Human Agen
 
 **v0.7 vocabulary** — the wire renames *attestation* → **mandate**, *execution
 receipt* → **mandate ticket**, *context* → **scope**, and *Decision Owner* →
-**Mandate Owner** (protocol.md → *Migration from v0.6*). This package issues
-and verifies `version: "0.7"` artifacts only — there is no backward-compat
+**Mandate Owner** (protocol.md → *Migration from v0.6*). This package
+issues `version: "0.8"` and verifies `"0.8"` and `"0.7"` artifacts, each under its own rules (v0.8 is a re-grant release; see CHANGELOG 0.13.0) — there is no backward-compat
 verify path for v0.5/v0.6; a v0.6 mandate fails verification with
 `VERSION_UNSUPPORTED` and must be re-issued. See the rename table below.
 
@@ -123,7 +123,7 @@ Gatekeeper no longer enforces cumulative bounds locally.
 ## Conformance vectors
 
 `npm test` consumes the spec's published conformance vectors directly from
-`content/0.7/vectors/*.json` (a sibling checkout of
+`content/0.8/vectors/*.json` and `content/0.7/vectors/*.json` (a sibling checkout of
 [hap-protocol](https://github.com/humanagencyprotocol/hap-protocol) — see
 `test/vectors/_spec-dir.ts`), rather than keeping a copy of their values in
 this repo. If that sibling checkout is absent, the vector tests skip locally

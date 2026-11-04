@@ -1,6 +1,6 @@
 {
   "name": "@humanagencyp/hap-core",
-  "version": "0.12.1",
+  "version": "0.13.0",
   "description": "Core types, cryptographic primitives, and verification logic for the Human Agency Protocol",
   "license": "MIT",
   "repository": {
@@ -33,6 +33,7 @@
     "release:major": "pnpm version major && git push --follow-tags"
   },
   "dependencies": {
+    "@hpke/core": "1.9.0",
     "@noble/ed25519": "^2.1.0"
   },
   "devDependencies": {

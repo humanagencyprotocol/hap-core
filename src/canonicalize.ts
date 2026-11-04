@@ -31,6 +31,9 @@
  * conformance test pins a (payload → canonical bytes) vector that any other
  * implementation can check against.
  */
+/** A high surrogate not followed by a low one, or a low one not preceded by a high one. */
+const LONE_SURROGATE = /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/;
+
 export function canonicalize(value: unknown): string {
   if (value === undefined) {
     throw new Error('canonicalize: undefined is not serializable');
@@ -41,6 +44,12 @@ export function canonicalize(value: unknown): string {
 
   // Primitives: string, finite number, boolean, null — JSON.stringify is already
   // canonical (RFC 8259 string escaping, ECMAScript number formatting).
+  if (typeof value === 'string' && LONE_SURROGATE.test(value)) {
+    // RFC 8785 requires I-JSON, which forbids a lone surrogate. JSON.stringify
+    // would escape it as \udXXX and sign bytes no other serializer produces;
+    // the protocol says refuse, never sign (Signing Canonicalization, rule 5).
+    throw new Error('canonicalize: string contains a lone surrogate and cannot be signed');
+  }
   if (value === null || typeof value !== 'object') {
     return JSON.stringify(value);
   }
