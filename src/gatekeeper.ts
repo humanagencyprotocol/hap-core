@@ -1,5 +1,6 @@
 /**
- * Gatekeeper — local (Phase 1) verification for bounded execution (v0.7).
+ * Gatekeeper — local (Phase 1) verification for bounded execution (v0.8;
+ * v0.7 mandates verified under their own rules).
  *
  * protocol.md → *Validation Steps* (Phase 1, never reaches the wire):
  *   1. Resolve profile from bounds.profile
@@ -24,12 +25,13 @@
  * frame-based path is retired entirely (CLAUDE.md "Decided by the owner").
  */
 
-import { decodeMandateBlob, verifyMandateSignature, checkMandateExpiry, validateMandateOwners } from './mandate';
+import { decodeMandateBlob, verifyMandateSignature, checkMandateExpiry, validateMandateOwners, validateAboveCapFields } from './mandate';
+import { checkExecutionValues, missingSumFields } from './issuance';
 import { canonicalBounds, canonicalScope, computeBoundsHash, computeScopeHash, CanonicalValueError } from './frame';
 import { computeProfileHash } from './profile';
 import { getProfile } from './profiles';
 import { HapError, type HapErrorCode } from './errors';
-import { PROTOCOL_VERSION } from './versions';
+import { isSupportedVersion, SUPPORTED_VERSIONS } from './versions';
 import type {
   GatekeeperRequest,
   GatekeeperResult,
@@ -112,8 +114,9 @@ export async function verify(request: GatekeeperRequest, opts: VerifyOptions = {
 
   // 3. Verify every mandate blob.
   const errors: GatekeeperError[] = [];
+  const verifiedPayloads: MandatePayload[] = [];
   for (const blob of request.mandates) {
-    const mandateErrors = await verifyOneMandate(blob, {
+    const { errors: mandateErrors, payload } = await verifyOneMandate(blob, {
       expectedBoundsHash,
       expectedScopeHash,
       expectedProfileHash,
@@ -121,6 +124,7 @@ export async function verify(request: GatekeeperRequest, opts: VerifyOptions = {
       now,
     });
     errors.push(...mandateErrors);
+    if (payload) verifiedPayloads.push(payload);
   }
   if (errors.length > 0) {
     return { approved: false, errors };
@@ -144,7 +148,37 @@ export async function verify(request: GatekeeperRequest, opts: VerifyOptions = {
     }
   }
 
-  // 5. per_transaction bounds and enum capability flags, locally.
+  // 5. Every value a bound reads is a finite, non-negative number
+  // (Validation Steps, step 8; v0.8) — before any bound is compared.
+  try {
+    checkExecutionValues(request.execution, profile);
+  } catch (err) {
+    return { approved: false, errors: [{ code: codeFromThrown(err), message: (err as Error).message }] };
+  }
+  // A cumulative_sum bound that governs this action type and reads an absent
+  // field is refused locally too — unless an above-cap approval is in play:
+  // where a mandate caps that field, an absent value is "above the cap" and
+  // the AS routes it to approval (Ticket Issuance, stage 7).
+  if (actionType !== undefined) {
+    const capped = new Set<string>();
+    for (const p of verifiedPayloads) {
+      for (const name of Object.keys(p.above_cap_caps ?? {})) {
+        const bt = profile.boundsSchema?.fields[name]?.boundType;
+        if (bt && bt.kind === 'per_transaction') capped.add(bt.of);
+      }
+    }
+    const missing = missingSumFields(request.execution, profile, actionType).filter((m) => !capped.has(m.field));
+    if (missing.length > 0) {
+      return {
+        approved: false,
+        errors: missing.map(({ bound, field }) => ({
+          code: 'BOUND_EXCEEDED' as const,
+          field,
+          message: `Bound "${bound}" governs "${actionType}" and reads "${field}", but this call exposes no ${field}. Refusing: an action without an amount would consume nothing of the limit (v0.8: a missing amount fails safe).`,
+        })),
+      };
+    }
+  }
   const boundsErrors = checkBounds(request, profile, actionType);
   if (boundsErrors.length > 0) {
     return { approved: false, errors: boundsErrors };
@@ -197,7 +231,16 @@ function codeFromThrown(err: unknown): HapErrorCode {
   return 'MALFORMED_MANDATE';
 }
 
-async function verifyOneMandate(blob: string, opts: MandateCheckOptions): Promise<GatekeeperError[]> {
+async function verifyOneMandate(
+  blob: string,
+  opts: MandateCheckOptions,
+): Promise<{ errors: GatekeeperError[]; payload?: MandatePayload }> {
+  const errors = await verifyOneMandateErrors(blob, opts);
+  if (errors.length > 0) return { errors };
+  return { errors, payload: decodeMandateBlob(blob).payload };
+}
+
+async function verifyOneMandateErrors(blob: string, opts: MandateCheckOptions): Promise<GatekeeperError[]> {
   let mandate: Mandate;
   try {
     mandate = decodeMandateBlob(blob);
@@ -205,10 +248,10 @@ async function verifyOneMandate(blob: string, opts: MandateCheckOptions): Promis
     return [{ code: 'MALFORMED_MANDATE', message: (err as Error).message }];
   }
 
-  if (mandate.payload.version !== PROTOCOL_VERSION) {
+  if (!isSupportedVersion(mandate.payload.version)) {
     return [{
       code: 'VERSION_UNSUPPORTED',
-      message: `mandate version ${JSON.stringify(mandate.payload.version)} is not verifiable by this Gatekeeper (verifies ${PROTOCOL_VERSION} only)`,
+      message: `mandate version ${JSON.stringify(mandate.payload.version)} is not verifiable by this Gatekeeper (verifies [${SUPPORTED_VERSIONS.join(', ')}])`,
     }];
   }
 
@@ -226,6 +269,7 @@ async function verifyOneMandate(blob: string, opts: MandateCheckOptions): Promis
 
   try {
     validateMandateOwners(mandate.payload);
+    validateAboveCapFields(mandate.payload);
   } catch (err) {
     return [{ code: codeFromThrown(err), message: (err as Error).message }];
   }

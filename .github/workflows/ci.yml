@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    # Normative data (content/0.7/vectors/*.json) lives in the spec repo, not
+    # Normative data (content/0.8/vectors/*.json and 0.7) lives in the spec repo, not
     # here (vectors/README.md: "the reference core library is required to
     # consume these files in its tests rather than carry its own copies").
     # The spec repo and hap-profiles are checked out next to hap-core, and

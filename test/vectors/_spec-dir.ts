@@ -20,12 +20,16 @@ import { join } from 'node:path';
 /** `../content` relative to the hap-core package root, or `$HAP_SPEC_DIR`. */
 export const SPEC_DIR = process.env.HAP_SPEC_DIR ?? fileURLToPath(new URL('../../../content', import.meta.url));
 
-export const VECTORS_DIR = join(SPEC_DIR, '0.7', 'vectors');
+/** The published v0.8 vector set — what this package issues. */
+export const VECTORS_DIR = join(SPEC_DIR, '0.8', 'vectors');
+/** The v0.7 set — artifacts this package still verifies as evidence
+ * (protocol.md → *Version negotiation*, rule 4). */
+export const VECTORS_DIR_07 = join(SPEC_DIR, '0.7', 'vectors');
 
 export const HAP_PROFILES_DIR =
   process.env.HAP_PROFILES_DIR ?? fileURLToPath(new URL('../../../hap-profiles', import.meta.url));
 
-export const haveVectors = existsSync(VECTORS_DIR);
+export const haveVectors = existsSync(VECTORS_DIR) && existsSync(VECTORS_DIR_07);
 
 /**
  * In CI, a missing spec checkout is a setup bug, not "nothing to test here" —

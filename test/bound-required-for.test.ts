@@ -113,17 +113,24 @@ describe('per_transaction bound requiredFor', () => {
     }
   });
 
-  it('an unlisted action type with no value keeps passing (today\'s behaviour)', async () => {
+  it('an unlisted action type with no value is still refused by the sum bound that governs it (v0.8: a missing amount fails safe)', async () => {
     // amount_max's requiredFor is ['charge', 'refund'] — 'subscribe' is not
-    // listed, so a subscribe call with no amount must keep behaving exactly
-    // as it did before this change.
+    // listed, so requiredFor keeps its presence-based meaning for it. But
+    // amount_daily_max is a cumulative_sum bound with no appliesTo, so it
+    // governs every action type, and an absent amount would consume nothing
+    // of the limit (Ticket Issuance, stage 7; Validation Steps, step 8).
     const r = await check(GUARDED, { action_type: 'subscribe' });
-    expect(r.approved).toBe(true);
+    expect(r.approved).toBe(false);
+    if (!r.approved) {
+      expect(r.errors[0].code).toBe('BOUND_EXCEEDED');
+      expect(r.errors[0].message).toMatch(/amount_daily_max/);
+    }
   });
 
-  it('a profile without requiredFor keeps its previous (skip-on-absence) behaviour', async () => {
+  it('a profile without requiredFor is refused the same way once a sum bound governs the action (v0.8)', async () => {
     const r = await check(LEGACY, { currency: 'EUR', action_type: 'charge' });
-    expect(r.approved).toBe(true);
+    expect(r.approved).toBe(false);
+    if (!r.approved) expect(r.errors[0].code).toBe('BOUND_EXCEEDED');
   });
 
   it('a profile without requiredFor is byte-identical in its approval for a normal in-bounds call', async () => {

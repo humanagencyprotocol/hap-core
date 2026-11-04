@@ -182,6 +182,9 @@ export function validateProfile(profile: AgentProfile): ProfileValidationError[]
       }
       const seen = new Set<unknown>();
       for (const m of declaredModes) {
+        // Rule 8: an entry review_above_cap is ignored — the mode follows from
+        // automatic alone — so it is neither an error nor an admission.
+        if (m === 'review_above_cap') continue;
         if (!(SIGNABLE_COMMITMENT_MODES as readonly string[]).includes(m as string)) {
           errors.push({
             code: 'PROFILE_INVALID',
@@ -203,6 +206,48 @@ export function validateProfile(profile: AgentProfile): ProfileValidationError[]
       code: 'PROFILE_INVALID',
       field: 'commitment_modes',
       message: 'commitment_modes declares no mode this profile can actually use.',
+    });
+  }
+
+  // ── v0.8: maximum, enforcedBy, disclose_fields, content_binding ─────────
+  if (boundsSchema) {
+    const readFields = new Set<string>();
+    for (const [fieldName, fieldDef] of Object.entries(boundsSchema.fields)) {
+      const bt = fieldDef.boundType;
+      if (bt && (bt.kind === 'per_transaction' || bt.kind === 'cumulative_sum')) readFields.add(bt.of);
+      const max = (fieldDef as { maximum?: unknown }).maximum;
+      if (max !== undefined && (typeof max !== 'number' || !Number.isFinite(max))) {
+        errors.push({
+          code: 'PROFILE_INVALID',
+          field: fieldName,
+          message: `Bounds field "${fieldName}": maximum MUST be a number (Bounds Schema rule 9).`,
+        });
+      }
+      const enforcedBy = (fieldDef as { enforcedBy?: unknown }).enforcedBy;
+      if (enforcedBy !== undefined && enforcedBy !== 'gatekeeper') {
+        errors.push({
+          code: 'PROFILE_INVALID',
+          field: fieldName,
+          message: `Bounds field "${fieldName}": enforcedBy MUST be "gatekeeper" when present (Bounds Schema rule 11).`,
+        });
+      }
+    }
+    for (const f of profile.disclose_fields ?? []) {
+      if (!readFields.has(f)) {
+        errors.push({
+          code: 'PROFILE_INVALID',
+          field: 'disclose_fields',
+          message: `disclose_fields names "${f}", which no bound reads — only what a ticket carries can be disclosed.`,
+        });
+      }
+    }
+  }
+  const binding = profile.content_binding;
+  if (binding && String(binding.version) === '2' && binding.kind === 'text') {
+    errors.push({
+      code: 'PROFILE_INVALID',
+      field: 'content_binding',
+      message: 'A version-2 content_binding is defined for kind "jcs" only; kind "text" is invalid.',
     });
   }
 
