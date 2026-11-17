@@ -1,0 +1,149 @@
+{
+  "suite": "device-keys/encoding",
+  "description": "base64url, signed bytes, entry hash, key id",
+  "cases": [
+    {
+      "id": "b64u-decode-ok",
+      "op": "b64u.decode",
+      "input": {
+        "text": "AQID_-A"
+      },
+      "expect": {
+        "hex": "010203ffe0"
+      }
+    },
+    {
+      "id": "b64u-padding-refused",
+      "op": "b64u.decode",
+      "input": {
+        "text": "AQID_-A="
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "b64u-standard-alphabet-refused",
+      "op": "b64u.decode",
+      "input": {
+        "text": "AQID/+A"
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "b64u-non-canonical-trailing-bits",
+      "op": "b64u.decode",
+      "input": {
+        "text": "AQIE_-B"
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "b64u-bad-length",
+      "op": "b64u.decode",
+      "input": {
+        "text": "A"
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "signed-bytes-exclude-sig-sigs-checks",
+      "op": "signed_bytes",
+      "input": {
+        "object": {
+          "z": 1,
+          "a": [
+            "é",
+            {
+              "b": null,
+              "a": true
+            }
+          ],
+          "typ": "x",
+          "v": 1,
+          "sigs": [
+            {
+              "by": "x"
+            }
+          ],
+          "checks": [],
+          "sig": "dropped"
+        }
+      },
+      "expect": {
+        "bytes_utf8": "{\"a\":[\"é\",{\"a\":true,\"b\":null}],\"typ\":\"x\",\"v\":1,\"z\":1}",
+        "hash": "sha256:87b283c340e5453c409c9e0209b7cc27801578005e8c48238a2caff94825dd66"
+      }
+    },
+    {
+      "id": "entry-hash",
+      "description": "hash of main entry 0",
+      "op": "signed_bytes",
+      "input": {
+        "object": {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 0,
+          "prev": null,
+          "op": "genesis",
+          "device": {
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "sign_pub": "iojj3XQJ8ZX9UtstPLpdcspnCb8dlBIb83SIAbQPb1w",
+            "read_pub": "gYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYE",
+            "kind": "gateway",
+            "label": "Alice's MacBook",
+            "keystore": "software",
+            "check": {
+              "type": "platform",
+              "pub": "BKbGn9Q-WQfL35JuZ6A_sqHxAhbQygdlFrrSDQqlSjY8BYyCGka8bsVPqjulnqUvMoT8yMr98U7eIPCJBME6a-0"
+            }
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794000000,
+          "signer": "root",
+          "sigs": [
+            {
+              "by": "root",
+              "sig": "LMyUxOfLY_VS_fuh7U4mtUc3a7-Wr1byFk3U42YuJAC0pmIT_IG0qQk6EuE3JvKxsIsB9EiZTD8kPq1bVCGrDQ"
+            },
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sig": "jD122UX3alwMol4xJcBNQVQHlcIepCzuaXlx9GwCD_aTUfJgOBG5EFw7PbXkXDBz15OJQymHHW67311qodiwDA"
+            }
+          ],
+          "checks": [
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "check": {
+                "signature": "MEYCIQCPZMKJ_RwSBycTlZTXWyebIFww9DdIjgxeXk6JdPExAgIhALbAYkYpp_k7qTGJRKhmdWDZ7fWgI4UKUfKg0yibliwj"
+              }
+            }
+          ]
+        }
+      },
+      "expect": {
+        "hash": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6"
+      }
+    },
+    {
+      "id": "key-id",
+      "op": "key_id",
+      "input": {
+        "sign_pub_hex": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+      },
+      "expect": {
+        "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4"
+      }
+    }
+  ]
+}

@@ -1,0 +1,4134 @@
+{
+  "suite": "device-keys/chain",
+  "description": "Plan 3.3: chain verification. All chains use expected_root_did = fixtures.root_did unless the case gives another. Inputs: chain = {ref:\"main\", count, append} (first `count` entries of fixtures.chains.main, then `append`) or {entries}.",
+  "fixtures": {
+    "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+    "chains": {
+      "main": [
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 0,
+          "prev": null,
+          "op": "genesis",
+          "device": {
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "sign_pub": "iojj3XQJ8ZX9UtstPLpdcspnCb8dlBIb83SIAbQPb1w",
+            "read_pub": "gYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYE",
+            "kind": "gateway",
+            "label": "Alice's MacBook",
+            "keystore": "software",
+            "check": {
+              "type": "platform",
+              "pub": "BKbGn9Q-WQfL35JuZ6A_sqHxAhbQygdlFrrSDQqlSjY8BYyCGka8bsVPqjulnqUvMoT8yMr98U7eIPCJBME6a-0"
+            }
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794000000,
+          "signer": "root",
+          "sigs": [
+            {
+              "by": "root",
+              "sig": "LMyUxOfLY_VS_fuh7U4mtUc3a7-Wr1byFk3U42YuJAC0pmIT_IG0qQk6EuE3JvKxsIsB9EiZTD8kPq1bVCGrDQ"
+            },
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sig": "jD122UX3alwMol4xJcBNQVQHlcIepCzuaXlx9GwCD_aTUfJgOBG5EFw7PbXkXDBz15OJQymHHW67311qodiwDA"
+            }
+          ],
+          "checks": [
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "check": {
+                "signature": "MEYCIQCPZMKJ_RwSBycTlZTXWyebIFww9DdIjgxeXk6JdPExAgIhALbAYkYpp_k7qTGJRKhmdWDZ7fWgI4UKUfKg0yibliwj"
+              }
+            }
+          ]
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 1,
+          "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+          "op": "add",
+          "device": {
+            "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+            "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+            "kind": "approve-app",
+            "label": "Alice's iPhone",
+            "keystore": "platform",
+            "check": {
+              "type": "webauthn",
+              "rp_id": "approve.suveren.ai",
+              "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+              "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+            }
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794000001,
+          "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+          "sigs": [
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+            },
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+            }
+          ],
+          "checks": [
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "check": {
+                "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS"
+              }
+            },
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "check": {
+                "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+              }
+            }
+          ]
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 2,
+          "prev": "sha256:64b8f50544eed3260e89ca6716be14a6e0416fceb45dec55e3f3b657e2c6ffc4",
+          "op": "add",
+          "device": {
+            "key_id": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+            "sign_pub": "7UkoxijRwsbq6QM4kFmVYSlZJzpcY_k2NsFGFKyHN9E",
+            "read_pub": "g4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4M",
+            "kind": "gateway",
+            "label": "Office PC",
+            "keystore": "software",
+            "check": null
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": {
+            "note_from_future": [
+              1,
+              2
+            ],
+            "linked": {
+              "kind": "x"
+            }
+          },
+          "created_at": 1794000002,
+          "signer": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+          "sigs": [
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "sig": "EXNVl11Q1LbxO3UCJKxM6PlMtpDOUlAD9IWIbHLpr6MPt_V9AeUczetcLQOmq8OclwisrINNkYAA9F7CHxhSBA"
+            },
+            {
+              "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+              "sig": "eIlO-Q_4UPa1i1f1qbWXrxuO0DEeHK4jXbRUvluDPCFzDGp-y2dloCZQPXxntdeyCLeEsLoDnxNWD_ZqzZgwBw"
+            }
+          ],
+          "checks": [
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "check": {
+                "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiV3FnRTZFWFJoUEN1c0FSU0lyYUFZTlNiNHBWb1ZmZW9NY3NUU1lEX3BtdyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                "signature": "MEQCICCTlh8PfLQ2eKc6VflxtUmO-qnE2dkiXIPp-6crVx3XAiAZjYV2rY1eTcAyYyvv_Eylva0ZHbkjmFNvTxYlw0QEBg"
+              }
+            }
+          ]
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 3,
+          "prev": "sha256:5aa804e845d184f0aeb0045222b68060d49be2956855f7a831cb134980ffa66c",
+          "op": "set",
+          "device": null,
+          "target": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+          "check": {
+            "type": "platform",
+            "pub": "BIFa7QD3ImQvKol9LZUS_Pld7l40j4QtflI8GWsYNddB_8tmM3jICpEoqXN6QzbYYB9mTgMhlHRuPrizqWVC8bA"
+          },
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794000003,
+          "signer": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+          "sigs": [
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "sig": "1l4wpVe_66mkdwveucCLjn1knlM6_2X5dmW9__aHC4k4XFdtUemiXLw7qHm7q7ih-zjwtudJkIb23K0EqdlgCQ"
+            }
+          ],
+          "checks": [
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "check": {
+                "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiNkdzUktSdF9idlpuczdSWTY4VE00bWVBRWVNdW9TcHBSSmljYm96TDJXdyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                "signature": "MEQCICV8JJ0ZQvmaqxxktkOyU4pqJuJDFnHJYEm0Q6C276WBAiBxmDcGiZcLPsaRoFo8_v-wAztRa1ocDUQ4jVr6ksTtaw"
+              }
+            },
+            {
+              "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+              "check": {
+                "signature": "MEYCIQDKzRfsJyNvLtntkulfyyvuld-l5EDbZ8hs10_4F5SwHgIhAPc8xPY57k66qtIMD31QcbMGDq8EXMKro07Ig3CuAgkA"
+              }
+            }
+          ]
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 4,
+          "prev": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+          "op": "remove",
+          "device": null,
+          "target": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794000004,
+          "signer": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+          "sigs": [
+            {
+              "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+              "sig": "s69MDix2URiLekXlgP4VlA4wWpxWEbJAJQB0v5JO6dIt65xz-EMsUhrEKASW3Y0pty4kHBOLHk0m8jF27eaRDQ"
+            }
+          ],
+          "checks": []
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 5,
+          "prev": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+          "op": "rotate-root",
+          "device": null,
+          "target": null,
+          "check": null,
+          "new_root": "X5zabI4zdS5TUzdizNqAfiBrWx8-X-TLRrXNcoquhlY",
+          "ext": null,
+          "created_at": 1794000005,
+          "signer": "root",
+          "sigs": [
+            {
+              "by": "root",
+              "sig": "ev7Raq5EisW3jXwZ_28SCLuqH7eqJF_rtKT5x_YzkLTcYXqqA-pyGLULoljHcKtn3fAGd2nHTBb2Wm030qpYCg"
+            },
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "sig": "bSzgaiLtEAV3JcoVhlYukCAU_fBeyBEKa-DPm2OW4A2jHR3-LDq-e6gQkL-ru9e_5zHy96jp1YZpXO7lCYauAw"
+            }
+          ],
+          "checks": [
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "check": {
+                "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiNmlBYkNTVl9jcWxBdHg2Y0hjLWoydUw2bWtKWkZOdmVSUU91Z2pLVU1wTSIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                "signature": "MEUCIQCCz17kFUKWGhNnYf_xVk94raXSRBlle_pEjClyJlaOHwIgMe6N5m5oz_I2jCrInCYmRKgX8Hr2g0ffq6khfIRvFds"
+              }
+            }
+          ]
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 6,
+          "prev": "sha256:ea201b09257f72a940b71e9c1dcfa3dae2fa9a425914dbde4503ae8232943293",
+          "op": "add",
+          "device": {
+            "key_id": "xblA7T9lw5GWXegpX8XSX0dPpXtI026xCtNjuFOcG3k",
+            "sign_pub": "ypOsFwUYcHHWe4PH_w7-gQjo7EUwV113JoeTM9vavnw",
+            "read_pub": "hISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhIQ",
+            "kind": "gateway",
+            "label": "Laptop 2",
+            "keystore": "software",
+            "check": null
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794000006,
+          "signer": "root",
+          "sigs": [
+            {
+              "by": "root",
+              "sig": "A_3mHG_wkH8OD8OKg1BHh6BQ7A1MErmJPkuTlwvIPzU1wkGWKjy_LGPv-5S2zacfC_KR6cdFDQWkLzrsUyYIAg"
+            },
+            {
+              "by": "xblA7T9lw5GWXegpX8XSX0dPpXtI026xCtNjuFOcG3k",
+              "sig": "0K26bs0RqKIgLvoQ1Wu9XAqFsXvT-e1Ywq2Xxfk8hRyTBeaMnBtNcXxcYgwG5MVIXflCmN8VvQ_BPzwcmCB7Cw"
+            }
+          ],
+          "checks": []
+        }
+      ]
+    },
+    "devices": {
+      "G": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+      "P": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+      "H": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+      "Q": "xblA7T9lw5GWXegpX8XSX0dPpXtI026xCtNjuFOcG3k"
+    }
+  },
+  "cases": [
+    {
+      "id": "main-1-genesis",
+      "description": "genesis with a device that has a platform check key",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1
+        }
+      },
+      "expect": {
+        "ok": {
+          "head": {
+            "seq": 0,
+            "hash": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6"
+          },
+          "active": [
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4"
+          ],
+          "granting": [
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4"
+          ],
+          "root_pub": "jcbYQAtyaEekz1LUcagxyFjV6KI9kdqrdEOLbPQxTl8"
+        }
+      }
+    },
+    {
+      "id": "main-2-add-by-granting-device",
+      "description": "add by a granting device: its signature and its check, plus the joiner's signature and check",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 2
+        }
+      },
+      "expect": {
+        "ok": {
+          "head": {
+            "seq": 1,
+            "hash": "sha256:64b8f50544eed3260e89ca6716be14a6e0416fceb45dec55e3f3b657e2c6ffc4"
+          },
+          "active": [
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc"
+          ],
+          "granting": [
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc"
+          ],
+          "root_pub": "jcbYQAtyaEekz1LUcagxyFjV6KI9kdqrdEOLbPQxTl8"
+        }
+      }
+    },
+    {
+      "id": "main-3-add-no-check-device-with-ext",
+      "description": "add of a device without a check key, by the phone; entry carries ext with members this verifier does not know",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 3
+        }
+      },
+      "expect": {
+        "ok": {
+          "head": {
+            "seq": 2,
+            "hash": "sha256:5aa804e845d184f0aeb0045222b68060d49be2956855f7a831cb134980ffa66c"
+          },
+          "active": [
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk"
+          ],
+          "granting": [
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc"
+          ],
+          "root_pub": "jcbYQAtyaEekz1LUcagxyFjV6KI9kdqrdEOLbPQxTl8"
+        }
+      }
+    },
+    {
+      "id": "main-4-set-check",
+      "description": "set gives the device a check key; the new key proves possession",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 4
+        }
+      },
+      "expect": {
+        "ok": {
+          "head": {
+            "seq": 3,
+            "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c"
+          },
+          "active": [
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk"
+          ],
+          "granting": [
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk"
+          ],
+          "root_pub": "jcbYQAtyaEekz1LUcagxyFjV6KI9kdqrdEOLbPQxTl8"
+        }
+      }
+    },
+    {
+      "id": "main-5-remove-self",
+      "description": "a device removes itself with its signature alone",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        }
+      },
+      "expect": {
+        "ok": {
+          "head": {
+            "seq": 4,
+            "hash": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1"
+          },
+          "active": [
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc"
+          ],
+          "granting": [
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc"
+          ],
+          "root_pub": "jcbYQAtyaEekz1LUcagxyFjV6KI9kdqrdEOLbPQxTl8"
+        }
+      }
+    },
+    {
+      "id": "main-6-rotate-root",
+      "description": "rotate-root: the root key in force and a granting device with its check",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 6
+        }
+      },
+      "expect": {
+        "ok": {
+          "head": {
+            "seq": 5,
+            "hash": "sha256:ea201b09257f72a940b71e9c1dcfa3dae2fa9a425914dbde4503ae8232943293"
+          },
+          "active": [
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc"
+          ],
+          "granting": [
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc"
+          ],
+          "root_pub": "X5zabI4zdS5TUzdizNqAfiBrWx8-X-TLRrXNcoquhlY"
+        }
+      }
+    },
+    {
+      "id": "main-7-add-by-new-root",
+      "description": "after rotate-root, \"root\" means the new root key",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 7
+        }
+      },
+      "expect": {
+        "ok": {
+          "head": {
+            "seq": 6,
+            "hash": "sha256:0781107ec882bb60fe209bcc73feabb0c4da138caf1767033c497a985f07c90f"
+          },
+          "active": [
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "xblA7T9lw5GWXegpX8XSX0dPpXtI026xCtNjuFOcG3k"
+          ],
+          "granting": [
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc"
+          ],
+          "root_pub": "X5zabI4zdS5TUzdizNqAfiBrWx8-X-TLRrXNcoquhlY"
+        }
+      }
+    },
+    {
+      "id": "stored-head-extension",
+      "description": "the stored head is an ancestor of the chain: accepted",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 7
+        },
+        "stored_head": {
+          "seq": 3,
+          "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c"
+        }
+      },
+      "expect": {
+        "ok": {
+          "head": {
+            "seq": 6,
+            "hash": "sha256:0781107ec882bb60fe209bcc73feabb0c4da138caf1767033c497a985f07c90f"
+          },
+          "active": [
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "xblA7T9lw5GWXegpX8XSX0dPpXtI026xCtNjuFOcG3k"
+          ],
+          "granting": [
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc"
+          ],
+          "root_pub": "X5zabI4zdS5TUzdizNqAfiBrWx8-X-TLRrXNcoquhlY"
+        }
+      }
+    },
+    {
+      "id": "rotate-root-old-root-signs-after",
+      "description": "an entry signed by the EARLIER root key after the rotation is refused",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 6,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 6,
+              "prev": "sha256:ea201b09257f72a940b71e9c1dcfa3dae2fa9a425914dbde4503ae8232943293",
+              "op": "add",
+              "device": {
+                "key_id": "xblA7T9lw5GWXegpX8XSX0dPpXtI026xCtNjuFOcG3k",
+                "sign_pub": "ypOsFwUYcHHWe4PH_w7-gQjo7EUwV113JoeTM9vavnw",
+                "read_pub": "hISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhIQ",
+                "kind": "gateway",
+                "label": "Laptop 2",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000006,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "C7vdhkZodrBdhsJ_rqxLeyTl1uNNeZn9q6zN7jRtFnreuLuloZBa3rWZpm26qLtJw9yi4mLA52tBKkqZkW6FAg"
+                },
+                {
+                  "by": "xblA7T9lw5GWXegpX8XSX0dPpXtI026xCtNjuFOcG3k",
+                  "sig": "0K26bs0RqKIgLvoQ1Wu9XAqFsXvT-e1Ywq2Xxfk8hRyTBeaMnBtNcXxcYgwG5MVIXflCmN8VvQ_BPzwcmCB7Cw"
+                }
+              ],
+              "checks": []
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "NOT_AUTHORISED"
+      }
+    },
+    {
+      "id": "rotate-root-without-granting-device",
+      "description": "rotate-root signed by the root alone",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 5,
+              "prev": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+              "op": "rotate-root",
+              "device": null,
+              "target": null,
+              "check": null,
+              "new_root": "X5zabI4zdS5TUzdizNqAfiBrWx8-X-TLRrXNcoquhlY",
+              "ext": null,
+              "created_at": 1794000005,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "ev7Raq5EisW3jXwZ_28SCLuqH7eqJF_rtKT5x_YzkLTcYXqqA-pyGLULoljHcKtn3fAGd2nHTBb2Wm030qpYCg"
+                }
+              ],
+              "checks": []
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "NOT_AUTHORISED"
+      }
+    },
+    {
+      "id": "rotate-root-co-signer-without-check",
+      "description": "rotate-root whose co-signing device made no check",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 5,
+              "prev": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+              "op": "rotate-root",
+              "device": null,
+              "target": null,
+              "check": null,
+              "new_root": "X5zabI4zdS5TUzdizNqAfiBrWx8-X-TLRrXNcoquhlY",
+              "ext": null,
+              "created_at": 1794000005,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "ev7Raq5EisW3jXwZ_28SCLuqH7eqJF_rtKT5x_YzkLTcYXqqA-pyGLULoljHcKtn3fAGd2nHTBb2Wm030qpYCg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "bSzgaiLtEAV3JcoVhlYukCAU_fBeyBEKa-DPm2OW4A2jHR3-LDq-e6gQkL-ru9e_5zHy96jp1YZpXO7lCYauAw"
+                }
+              ],
+              "checks": []
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "rotate-root-to-used-key",
+      "description": "rotate-root to the key already in force",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 5,
+              "prev": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+              "op": "rotate-root",
+              "device": null,
+              "target": null,
+              "check": null,
+              "new_root": "jcbYQAtyaEekz1LUcagxyFjV6KI9kdqrdEOLbPQxTl8",
+              "ext": null,
+              "created_at": 1794000005,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "xRk6X0eUg1bTud0HBYV4tcawUyqCwXtH623X7uFlZMPNrlUB35BQwI9jCsOlGbddMUGBhkrtNiN9MvgicPE_BA"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "OomJbhmpfnFFtBrJlyBTuzkz55In6IJ8OubBjb51iCScu9LkAJT3oZexc2adDV4PG6BVJPr6G62MXLOa64u7DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiRUZJSy1sWVFIRDgzZ3lHZFk5WTRCaGQ1cTVCWGJNNG1fSnpndFFtUHZ6cyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIQCLW3urM3NGuYwvHTtEpVp7ysDh6Ob-K0IXO7crsBp1rwIgQgVTptUsG6hfvfM81N5quM4cPlgoirpve2hvqposMWc"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "KEY_REUSED"
+      }
+    },
+    {
+      "id": "malformed-extra-member",
+      "description": "an entry with an extra member `note` is invalid",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+                  }
+                }
+              ],
+              "note": "x"
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "malformed-missing-member",
+      "description": "an entry without `ext`",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "malformed-unknown-typ",
+      "description": "unknown typ",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entryx",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "malformed-unknown-v",
+      "description": "unknown v is refused (DEC-49 only drops forward-compatibility rules)",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 2,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "malformed-label-too-long",
+      "description": "device label of 65 characters",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "7VfoEeB81PLsug6xG2ydSC0mOi5pOsCWcTs8OJp8v5Y_uklV36yg-VA2ifJ2ILdX0fIPrA_M_7PWdlvmU_LkDw"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "K4KtlBOqhfQ1fe26vcY1UoNxSdrsERvzz_Zh1OrcHwv2qmRbmwIGfCPCylQTqBG0lDAhcG-JelEXdYXvQYMZCw"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEQCIG9Q4G5HcMbYWWbnNDcTnCfL8GwGqPREXkUNi96yMOC6AiBVilLcsu1-cKvTV_lb43PTOh-0h9UR-XVBZGr48dGABQ"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiUVZ2dzkxNlBvemFaM28tTHlUMWl6ZFZDTG81Y1JzU08wLTMwYXpDNnZHZyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIQC-4dgTtEYbqDfXpsGtmoIdOpZIPfi8b_J0vnbuLO9OaAIgIgsbwoZeINqyqiRl1ICNes42Wr7Tmc9xBXwqxBFc3bQ"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "malformed-device-on-remove",
+      "description": "remove must carry device: null",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "remove",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "DOY0CDjkROqr-cs1kIwxWtkW_NtT_Ri4SwnLW8Z2zrSKFyMED3_TuUlJeicL3V6zPWfzv0eXaSL89Mafl_ChBw"
+                }
+              ],
+              "checks": []
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "malformed-empty-chain",
+      "description": "no entries",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 0
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "wrong-root",
+      "description": "entries of another root DID",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 2
+        },
+        "expected_root_did": "did:key:z6Mkr8zqp7Zyq9hyDURFPZimwk4zuiSxhCwm7CeGdfHxH4AH"
+      },
+      "expect": {
+        "error": "WRONG_ROOT"
+      }
+    },
+    {
+      "id": "bad-seq",
+      "description": "seq does not equal the position",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 5,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "YO-2vt1MUpQtvRkWNTIKL59XxzCVKOmN-P1R32VusDcjZqhVpay0UPzekVZeuk2lPWZMEfH8XfVkp9miyY9eDQ"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "qDDS7kybT38CA3E86gdoGbzqu36jkiAyBOjz7_qBNaK3PWh4_eAcaWxAd-GJYKmudDe4cF3mrYb9NyABJVNbAw"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQD-KO896bDiA1VOhwcXJHKl2yuXY3BLqHN2gai-JRJlXwIhANtYEgQi64tS1fdYgC7cnnsAnUFjBZSW4PWKoIPqHoJz"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiZGxMdmFEX3hmSW1sYzZSZExkRVZ3YnBaZjVLTWIzcXpSbjROcDlqUG5acyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIARTEqaK3BBWvJsI2BRKp-OL479Zbv7wVgn6K3yI-PntAiEAgBjqWOJIACyMqsy9Js0bKJFZOw0shdkdx5hLhwEeFQY"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "BAD_SEQ"
+      }
+    },
+    {
+      "id": "bad-prev",
+      "description": "prev is not the hash of the entry before",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:64b8f50544eed3260e89ca6716be14a6e0416fceb45dec55e3f3b657e2c6ffc4",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "P6HecuXP4u0DnBYpU77ZnXbp1OlaSS7017E8S3lhrPGPwdwRvxIJKQUTWvH2WaHoZV4Eh16ez8lR7UK0dszOAQ"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "GUMW9sqeW8NHLcKfAjEL70jeDeTZF1Mt6ijUE7IfwPDeQyHHxA7dQc-ftPicI3bIHHnmSCwlU2_uCLrqJUyMCg"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEUCIGVGjrqW23rJkbji7LQUYox7TJ8OBm75oHVGF3dYadycAiEA-gFOI7B4QhMN8aOGtpV8jVfE456_FHqSC8cDmwdjIrY"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoieGU3YXQ4Z0g3dTVramVlQVpuSTJUdUF3bHV4VTBUTG4wbUF1cmd2S245dyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEQCICXM8K9waNgsWLdc9J0rwMc34V72Cm9PsgUCPb34rwQYAiAiq74cbUdfa0tYLMdXuSGtcbGBr_jSJUhXK-YTM_7l0A"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "BAD_PREV"
+      }
+    },
+    {
+      "id": "bad-op-second-genesis",
+      "description": "genesis at seq 1",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "genesis",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "nzUSsEU3oUDRz4Kk1FIeca3I_RnfftA5p1-kyMX_67WVnMVS22ZP6aJwOazbpD-uwCAz8ASIJaYIOBU7Htq0Dg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "8ZBnkgCESoYoEYKZx3lE8p712NPwD3xhtFFAM6yjhSgbyzPK9OpblQOYDUAhLHWbvhHjhY-vX4rGoKTByDEBDQ"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiT3lTelFyd3NYZDJINzN5b1NVR190RlkxUXA3ekx0QlZIRzhzd3N1MkNtVSIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIQDHvuuKjptZNdn-y3h0kW23N6xUk999UrnvAbKeIxeX-wIgP4ygeTqZQrPwkcEvpMivsAzblWny8nEEjpAhQ6w07Ls"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "BAD_OP"
+      }
+    },
+    {
+      "id": "bad-op-first-not-genesis",
+      "description": "the first entry is an add",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 0,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 0,
+              "prev": null,
+              "op": "add",
+              "device": {
+                "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                "sign_pub": "iojj3XQJ8ZX9UtstPLpdcspnCb8dlBIb83SIAbQPb1w",
+                "read_pub": "gYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYE",
+                "kind": "gateway",
+                "label": "Alice's MacBook",
+                "keystore": "software",
+                "check": {
+                  "type": "platform",
+                  "pub": "BKbGn9Q-WQfL35JuZ6A_sqHxAhbQygdlFrrSDQqlSjY8BYyCGka8bsVPqjulnqUvMoT8yMr98U7eIPCJBME6a-0"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000000,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "SU146devK3jQCkanj2mOt7KbEd6VqYBR069YNF0byngALstfKlQVCrVUOBdwsQmxw17beWgmHotrKaWVsKxwBw"
+                },
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "PzchOMoiJib05VenJgj-BTtrXSwQ2XAAFP7O2qeC4PoLgMc5ef3dfFeg9OzCgyQ0Qlf8UuqVr5nYYLPiIpBTBQ"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEUCICw2UodoyePvXGsoU9psI94VcfVnolfOYq5itSL3NRZCAiEA_asSB42qDJLkV9GGXPTaAbzL2OF11KneXzekDE9m8Hc"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "BAD_OP"
+      }
+    },
+    {
+      "id": "bad-key-id",
+      "description": "key_id is not base64url(sha256(sign_pub))",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "CQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQk",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "IIy4wywIxDD_bbA2dp4CpNydpNuDI4-LnsH4LLL5l5nwC8WFYTu4wf7nkPs7BHINBaS8-eJ108Pl-t-F-6ZADg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "mvSKam3NtUsZpRisuBC24z4qGjPZmY3OL6AFKQy0o18lejOWdDM6ZznrI8Skz6lsAvmNgM0J9P55OzStT55zBg"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEUCIAzboafj68Z-HTGL7ztgA4LlwCbg6Q_oWrGENIX8Ko5sAiEA5usdNSOZ1MfBY5Lckqoy70W28guvigr3yuYLE_o3KYU"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiRVRQR2ZFU1RDZEo2QnI3bGt3SUx6QjRvYUVuYUdYZXRoR29IUkM5ejk5MCIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIQDwnS4asyHtEGBs_v-hAT7sIiLLxKraoQD2nR5i7vwZQAIgU2NB6OcRYDiIjOPjZdaTTSrTsL-KCFTBk4nny9EG3sE"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "BAD_KEY_ID"
+      }
+    },
+    {
+      "id": "key-reused-read-pub",
+      "description": "the new device reuses the reading key of an earlier device",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "gYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYE",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "np5jvcrIybSlKH4Ycu4WVUpj7vP9-F-ZuOaGL-TbuKp4LsRTJVSt5l6ydWDtvaSvg85uWtq_n4zE0xMqwl3RBg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "yYx7UebQDEIbuu7Q18bA8NmUzg-xjumAZWgrnaFChe_MsPKciPUl0f2Uyq67iYzJXZeKgQDCpdKp50TahPJYCg"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQD0OasYrdB9dtaunf-MHPrt2LFlqn_bgOPxaOEZKUyI3gIhAPALfnjVsrFRuc-41zi02Oc0T_2l7zKtrpghy6EGmMB8"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoic3JXbnlNWGZXU204V1h5T3BkYXc2akhTM3RBMzU0ZVJXX01qU1pwZmdmcyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEQCIDDxfRNjWUcWdxkNHY2loZhxHwVV5sqBuFFIbZFsWwNyAiBjrpSq6eq4N-MDELk8wkt6xDU7pTnAP2UKd7PKVazedw"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "KEY_REUSED"
+      }
+    },
+    {
+      "id": "key-reused-after-removal",
+      "description": "a removed device's keys cannot be admitted again",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 5,
+              "prev": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+              "op": "add",
+              "device": {
+                "key_id": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                "sign_pub": "7UkoxijRwsbq6QM4kFmVYSlZJzpcY_k2NsFGFKyHN9E",
+                "read_pub": "g4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4M",
+                "kind": "gateway",
+                "label": "Office PC again",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000005,
+              "signer": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "sigs": [
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "QtsaLf0wLlgbM8laL-Jp_zANvTUTUzUg5JuMssmQnmxUD1W0JILNMJ--Ehy7neGOQgLQF_jjeHd1wgVZYDNtBw"
+                },
+                {
+                  "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                  "sig": "VlRGu4S3znLTryQdzmpIO8GhVk3vEVv6v1aeXE9vBv2MRdsCAwdq-he6NcZHm7jdYSCC38vCQwZ6cs5HVLjWDQ"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiUGt5ZklVYWpSeGNIaUZWdG5iaTlLbXRmekdZT2NlTlVkWGg2S3Z3SVFuQSIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEYCIQCm1oZr-Jc4ZAZwtccE3YGrxO0iYL_HUWLPQXing9pSpgIhAIpFv8mQ6z8pr-R-rdDCsL4igweX7mG5JBleUwVgnVuz"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "KEY_REUSED"
+      }
+    },
+    {
+      "id": "no-possession-device-signature",
+      "description": "the new device did not sign",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQC-pc_vgHsSrxNdQVIgioO9TPDudFBC8zqbuNXbbCW6JgIhAIcXf453gioBCxtbed7V3EXSlQPLNwhKJYgae-8uz5b0"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEYCIQC7V2Z2H43XhkwYM2S0fEzcUhRc323h6v0Ibq0sg5pmZgIhAMRAA-_rKu8Jq0B6jNbglSYOCchRYeH_ugm_shN1srOE"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "NO_POSSESSION"
+      }
+    },
+    {
+      "id": "no-possession-device-check",
+      "description": "the new device has a check key but made no check",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEUCIAjHDEY0S64qhE5_KupG83Pe8sS8mqVYcnX-IerR-4pLAiEA8zkIQ7eYcBdPT-FtXK_R6LhHVWS1lXZTOZDZdNLlCKQ"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "NO_POSSESSION"
+      }
+    },
+    {
+      "id": "no-possession-device-check-wrong-object",
+      "description": "the new device's check is over another object",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEUCIQCKogJdK2-Miz_dq0Og-2JJ-CFp_N03yBqItiQQ_p0FKgIgR36gxgPs_Jg8HUeJTO2idqYvg76uZAKIipRQdF9Gpyk"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiVUtNNm40Ry01RVVxRUdmZlJFeGhXWnQ5TTB1cVlnV2lxU0wzZHNtM1djWSIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIHANl5JaVJWJwSBS2-SX592XC0KnFn13VHgtrKQGGlgQAiEAo5eRLTqa7wkgEu89yNtqI3kG1bJ3wKH28yoEnndyTo4"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "NO_POSSESSION"
+      }
+    },
+    {
+      "id": "not-authorised-unknown-signer",
+      "description": "signer is not an active device",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "BQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU",
+              "sigs": [
+                {
+                  "by": "BQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU",
+                  "sig": "X2xLqUrQ_xyMJHTZH-UfA0RnH7y3YYxRjQkLa96_F7CuyY14XrZma6V0FyRa12nhOWrfROCz4DnlEBMiFROOBA"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "jm_RDR9wkUxrDl5laeLaGAWkYTMBO7Xpj55JyWTKr5c_acGSZZQ9ph_BAuaaDvLCJQN7U8PgC8TNLiLORcplDA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiTGdfUjR4N1hsT3RLak4xTFFFRUIzWmZBYkhOQ2lLbHdDUHBVTzN0X0kzUSIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIHp55WV-KbRjhzI_a9PqyKyiIrIDODrsyVwney0srvi9AiEA0Rp1gN8yULH6DT-VqjmzUGpL0AHp2zAphI_6yb1hUDo"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "NOT_AUTHORISED"
+      }
+    },
+    {
+      "id": "not-authorised-wrong-signer-signature",
+      "description": "the admitter's signature is by another key",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQDMHaQSQRFsfjCp62ZguNQSW8JcamT5hV6p46Y3D2pvTQIhAMh115LcdvajNzaSjieOhBENUORAiabq5Fcq0NTphB3u"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEQCIFfXyGttZ26qRkICfbNb-okq7-op2JJ4u2xxgggjAubPAiAQhBS031EpeFwxJ9_N_3Abh7oaReZT-HiM7aFzcW5ElQ"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "NOT_AUTHORISED"
+      }
+    },
+    {
+      "id": "not-authorised-removed-device",
+      "description": "a removed device admits a device",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 5,
+              "prev": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+              "op": "add",
+              "device": {
+                "key_id": "xblA7T9lw5GWXegpX8XSX0dPpXtI026xCtNjuFOcG3k",
+                "sign_pub": "ypOsFwUYcHHWe4PH_w7-gQjo7EUwV113JoeTM9vavnw",
+                "read_pub": "hISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhIQ",
+                "kind": "gateway",
+                "label": "Laptop 2",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000005,
+              "signer": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+              "sigs": [
+                {
+                  "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                  "sig": "cNNu_knh9-d_Aalc2YvgXMaAWkJWTCNzccAPtcTI7oN228DXpImeBnsPRz--isqk_Mtu87huTsRIgFGeITsuCg"
+                },
+                {
+                  "by": "xblA7T9lw5GWXegpX8XSX0dPpXtI026xCtNjuFOcG3k",
+                  "sig": "rlhrnfg64D5sYN4lr3PnzmDlvR1LVNaAyjXikEyQy11_o97TTR9_rOOIM9RyCNfFLdctK7XhEEdrBYFPnmcCDg"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                  "check": {
+                    "signature": "MEYCIQDpx61pfeDKKciNoDNBsFP4dzZBCJ0d15i-sZLRRmBNpwIhAIZb780160OR_AeTOOi-R-bXfQqN5upJW5hsYMG7s4LI"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "NOT_AUTHORISED"
+      }
+    },
+    {
+      "id": "not-authorised-reset-not-by-root",
+      "description": "reset must be signed by the root key",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "reset",
+              "device": {
+                "key_id": "xblA7T9lw5GWXegpX8XSX0dPpXtI026xCtNjuFOcG3k",
+                "sign_pub": "ypOsFwUYcHHWe4PH_w7-gQjo7EUwV113JoeTM9vavnw",
+                "read_pub": "hISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhIQ",
+                "kind": "gateway",
+                "label": "Laptop 2",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "DWTPL5OMdFOcoUFPGUSgMo77WuFKY4u2g4fdiryq0z7LdImbLS608Vj7F7rW7_minj0qhqy0JXUnQJ3JCZ7sBQ"
+                },
+                {
+                  "by": "xblA7T9lw5GWXegpX8XSX0dPpXtI026xCtNjuFOcG3k",
+                  "sig": "oNA-qPhJcaKw42-E6RZqVLUyR7BaP25grTy1XW-UpdNCpeuIEudsBwf5G069kxIGQrGyYcfw0oJdjUVQz2dBDw"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEUCIH8Z6AUWY4EO8OroebKV3Cir3sN6C6NOoa9i7-0vS-ROAiEA_J06GX45eysCMGTqjyGyI0R_kP25o74PfZmY32LTQAE"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "NOT_AUTHORISED"
+      }
+    },
+    {
+      "id": "check-required-add-without-check",
+      "description": "a granting device signs an add with its device key and no check",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIBApi8EUA14mbV1hVTYhzc4MQ36tw6CfA-6bz_AkH-NTAiEA3yWuSLKLNsZt5qFxJ-mV8E7L3i5KKPxgLPf_a6un0MM"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "check-required-check-over-other-object",
+      "description": "the admitter's check is over another object",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEQCID0gwTjtZx71jm-8V4HjSZfyylLREkQ8-rkb4VWpLG-sAiBcR0FnenpN4qBNjAdXMuIzGoqQ139RP09RBrzb1v-iAg"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIG4rstpJ_-WoN86Axsj0msGV_kI6-wszBTr4kW2JO0qvAiEA5GfaFJoL_abfWs6sOpESGjmoNlXRKQBLtb-H6uYKWQU"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "check-required-device-without-check-key",
+      "description": "a device without a check key removes another device",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 3,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 3,
+              "prev": "sha256:5aa804e845d184f0aeb0045222b68060d49be2956855f7a831cb134980ffa66c",
+              "op": "remove",
+              "device": null,
+              "target": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000003,
+              "signer": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+              "sigs": [
+                {
+                  "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                  "sig": "J-E-ggiWQkpu3ybO57CInoO4kY92RqdWsy4sz0KI8v571BN-WmWteiWQPjzz8ig6E5Xylz-oOf8XF8C2BtomDw"
+                }
+              ],
+              "checks": []
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "bad-target-unknown",
+      "description": "remove of a key id that was never in the chain",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 2,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 2,
+              "prev": "sha256:64b8f50544eed3260e89ca6716be14a6e0416fceb45dec55e3f3b657e2c6ffc4",
+              "op": "remove",
+              "device": null,
+              "target": "BgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgY",
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000002,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "oKs7ReL2ivB0IUfZAocqcGjUCp9n7wckRQSNYbbtAqcYmYhssQfuLp-v6sRsQrg0RFg33D2-XezCkRcZrVuwBw"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQDjqLzHGbo4rMHem13_o5rFYZ73pVopUZAAD-8X7gzijwIhAJLfsxsj3qP07mm3fJE1YCMPhvbMdYZIxjBuSRYE2-1k"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "BAD_TARGET"
+      }
+    },
+    {
+      "id": "bad-target-already-removed",
+      "description": "remove of a device already removed",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 5,
+              "prev": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+              "op": "remove",
+              "device": null,
+              "target": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000005,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "F4dM3HZTIhToxkOeNl5M5UEUeCYjP9alTKzsEJOVc4ZyAQl9yVkzM2NgejRyT_z499vYiZ8VScjQYgoiun-yCA"
+                }
+              ],
+              "checks": []
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "BAD_TARGET"
+      }
+    },
+    {
+      "id": "no-possession-set-without-new-check",
+      "description": "set gives a device a check key it did not prove",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 3,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 3,
+              "prev": "sha256:5aa804e845d184f0aeb0045222b68060d49be2956855f7a831cb134980ffa66c",
+              "op": "set",
+              "device": null,
+              "target": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+              "check": {
+                "type": "platform",
+                "pub": "BIFa7QD3ImQvKol9LZUS_Pld7l40j4QtflI8GWsYNddB_8tmM3jICpEoqXN6QzbYYB9mTgMhlHRuPrizqWVC8bA"
+              },
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000003,
+              "signer": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "sigs": [
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "1l4wpVe_66mkdwveucCLjn1knlM6_2X5dmW9__aHC4k4XFdtUemiXLw7qHm7q7ih-zjwtudJkIb23K0EqdlgCQ"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiNkdzUktSdF9idlpuczdSWTY4VE00bWVBRWVNdW9TcHBSSmljYm96TDJXdyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEYCIQCUeURZQItdgEK2MZRxLTIMEe1AT5UrBH1Myg9HdzQVtQIhAKybx6LGuek_F1Orp8kVdfd0MK-jFBHCr2mHPuucOUyX"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "NO_POSSESSION"
+      }
+    },
+    {
+      "id": "check-required-self-set",
+      "description": "a device cannot give itself a check key with its own signature alone",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 3,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 3,
+              "prev": "sha256:5aa804e845d184f0aeb0045222b68060d49be2956855f7a831cb134980ffa66c",
+              "op": "set",
+              "device": null,
+              "target": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+              "check": {
+                "type": "platform",
+                "pub": "BIFa7QD3ImQvKol9LZUS_Pld7l40j4QtflI8GWsYNddB_8tmM3jICpEoqXN6QzbYYB9mTgMhlHRuPrizqWVC8bA"
+              },
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000003,
+              "signer": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+              "sigs": [
+                {
+                  "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                  "sig": "h7z8Ls5y9vV__2wszJt3EbauggwbcgKCDhIewWRCDCxLqdO-Vpbm62owIzH4YVZ9VwGeonrhNMc2ATaomiviCQ"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                  "check": {
+                    "signature": "MEQCIETfrOUdej74IiqVnQoboipQigNRjnMpz3VRC5z51i6FAiAHIY6F134sXzkKcUGO7MH4IxuOPDO_1zraNbrB22glug"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "reset-removes-all-earlier-devices",
+      "description": "reset by the root: every earlier device is removed, the new device admitted; no granting device is required afterwards",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 5,
+              "prev": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+              "op": "reset",
+              "device": {
+                "key_id": "xblA7T9lw5GWXegpX8XSX0dPpXtI026xCtNjuFOcG3k",
+                "sign_pub": "ypOsFwUYcHHWe4PH_w7-gQjo7EUwV113JoeTM9vavnw",
+                "read_pub": "hISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhIQ",
+                "kind": "gateway",
+                "label": "Laptop 2",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000005,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "RErAiv36YqQehfvOk8yQghgL-Ypiw8RC5DFmya9vQJRNTe3t1IrOAjLPWQIjSKms_RgTg0WboeR0xWo1HyqBAw"
+                },
+                {
+                  "by": "xblA7T9lw5GWXegpX8XSX0dPpXtI026xCtNjuFOcG3k",
+                  "sig": "KcoaonFtYMak4WhI9VYfU2YRiiSA7HNbcaeG3HGDYj6o_37bJ0Eg3P4tW9lx4r8ojqde3R-DEpnH0QpRAe_tAw"
+                }
+              ],
+              "checks": []
+            }
+          ]
+        }
+      },
+      "expect": {
+        "ok": {
+          "head": {
+            "seq": 5,
+            "hash": "sha256:bb02cc7533609848e57261bdb5b841afb8bd6771210859566fd5864bee73eeb8"
+          },
+          "active": [
+            "xblA7T9lw5GWXegpX8XSX0dPpXtI026xCtNjuFOcG3k"
+          ],
+          "granting": [],
+          "root_pub": "jcbYQAtyaEekz1LUcagxyFjV6KI9kdqrdEOLbPQxTl8"
+        }
+      }
+    },
+    {
+      "id": "no-granting-device-remove-last",
+      "description": "the last granting device removes itself",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "entries": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 0,
+              "prev": null,
+              "op": "genesis",
+              "device": {
+                "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                "sign_pub": "iojj3XQJ8ZX9UtstPLpdcspnCb8dlBIb83SIAbQPb1w",
+                "read_pub": "gYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYE",
+                "kind": "gateway",
+                "label": "Alice's MacBook",
+                "keystore": "software",
+                "check": {
+                  "type": "platform",
+                  "pub": "BKbGn9Q-WQfL35JuZ6A_sqHxAhbQygdlFrrSDQqlSjY8BYyCGka8bsVPqjulnqUvMoT8yMr98U7eIPCJBME6a-0"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000000,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "LMyUxOfLY_VS_fuh7U4mtUc3a7-Wr1byFk3U42YuJAC0pmIT_IG0qQk6EuE3JvKxsIsB9EiZTD8kPq1bVCGrDQ"
+                },
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "jD122UX3alwMol4xJcBNQVQHlcIepCzuaXlx9GwCD_aTUfJgOBG5EFw7PbXkXDBz15OJQymHHW67311qodiwDA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEUCIAyZQ-Jsi0Isgfh_pFzCpePYNqnQOOImQdAex_GxMQGNAiEA1Lf7HyqPffHBJl4i-EA2bTD1wzDZ7QmcJQHhHZTYjnw"
+                  }
+                }
+              ]
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                "sign_pub": "7UkoxijRwsbq6QM4kFmVYSlZJzpcY_k2NsFGFKyHN9E",
+                "read_pub": "g4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4M",
+                "kind": "gateway",
+                "label": "Office PC",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "VFT42Rqn-Xjottx4MRLMQaChpJEQiipqAotZFocCgsPc_WI5iUCN7DWXgHYnJ7KtxJFAvVr8NcKJxEpGPP8bDA"
+                },
+                {
+                  "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                  "sig": "KXPHsS9rm8NYOYrtNEP_JsS48A1mesLm_W1Ciz7Sj7tmRaYnVt-o02wrv_g2WQH4DPLVRRh5-X9lV8PAzfgFDQ"
+                }
+              ],
+              "checks": []
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 2,
+              "prev": "sha256:698829d2d781a0cc0be3f48c772665244b24f05d21963748fb9c8aa779d353f5",
+              "op": "remove",
+              "device": null,
+              "target": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000002,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "H4MywMIiQI9iQtSF1Uk0XjS9wKds3C5mPeDNhcneG5zvffXKCdQk_9gLoFfVwHeFtaO0tJN17MlhDEC_8edQDA"
+                }
+              ],
+              "checks": []
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "NO_GRANTING_DEVICE"
+      }
+    },
+    {
+      "id": "no-granting-device-root-removes-last",
+      "description": "even the root cannot remove the last granting device",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "entries": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 0,
+              "prev": null,
+              "op": "genesis",
+              "device": {
+                "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                "sign_pub": "iojj3XQJ8ZX9UtstPLpdcspnCb8dlBIb83SIAbQPb1w",
+                "read_pub": "gYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYE",
+                "kind": "gateway",
+                "label": "Alice's MacBook",
+                "keystore": "software",
+                "check": {
+                  "type": "platform",
+                  "pub": "BKbGn9Q-WQfL35JuZ6A_sqHxAhbQygdlFrrSDQqlSjY8BYyCGka8bsVPqjulnqUvMoT8yMr98U7eIPCJBME6a-0"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000000,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "LMyUxOfLY_VS_fuh7U4mtUc3a7-Wr1byFk3U42YuJAC0pmIT_IG0qQk6EuE3JvKxsIsB9EiZTD8kPq1bVCGrDQ"
+                },
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "jD122UX3alwMol4xJcBNQVQHlcIepCzuaXlx9GwCD_aTUfJgOBG5EFw7PbXkXDBz15OJQymHHW67311qodiwDA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEUCIAyZQ-Jsi0Isgfh_pFzCpePYNqnQOOImQdAex_GxMQGNAiEA1Lf7HyqPffHBJl4i-EA2bTD1wzDZ7QmcJQHhHZTYjnw"
+                  }
+                }
+              ]
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                "sign_pub": "7UkoxijRwsbq6QM4kFmVYSlZJzpcY_k2NsFGFKyHN9E",
+                "read_pub": "g4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4M",
+                "kind": "gateway",
+                "label": "Office PC",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "VFT42Rqn-Xjottx4MRLMQaChpJEQiipqAotZFocCgsPc_WI5iUCN7DWXgHYnJ7KtxJFAvVr8NcKJxEpGPP8bDA"
+                },
+                {
+                  "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                  "sig": "KXPHsS9rm8NYOYrtNEP_JsS48A1mesLm_W1Ciz7Sj7tmRaYnVt-o02wrv_g2WQH4DPLVRRh5-X9lV8PAzfgFDQ"
+                }
+              ],
+              "checks": []
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 2,
+              "prev": "sha256:698829d2d781a0cc0be3f48c772665244b24f05d21963748fb9c8aa779d353f5",
+              "op": "remove",
+              "device": null,
+              "target": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000002,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "jhsECuunOxcQFRpO0TFmVZGUsnde8IzuKPOgVyMj2YeTpIqX5vVPbqwt6XCDMyr7E8_SyKAn9ZV6i_OtcuLYBA"
+                }
+              ],
+              "checks": []
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "NO_GRANTING_DEVICE"
+      }
+    },
+    {
+      "id": "no-granting-device-drop-check",
+      "description": "the last granting device drops its check key",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "entries": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 0,
+              "prev": null,
+              "op": "genesis",
+              "device": {
+                "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                "sign_pub": "iojj3XQJ8ZX9UtstPLpdcspnCb8dlBIb83SIAbQPb1w",
+                "read_pub": "gYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYE",
+                "kind": "gateway",
+                "label": "Alice's MacBook",
+                "keystore": "software",
+                "check": {
+                  "type": "platform",
+                  "pub": "BKbGn9Q-WQfL35JuZ6A_sqHxAhbQygdlFrrSDQqlSjY8BYyCGka8bsVPqjulnqUvMoT8yMr98U7eIPCJBME6a-0"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000000,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "LMyUxOfLY_VS_fuh7U4mtUc3a7-Wr1byFk3U42YuJAC0pmIT_IG0qQk6EuE3JvKxsIsB9EiZTD8kPq1bVCGrDQ"
+                },
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "jD122UX3alwMol4xJcBNQVQHlcIepCzuaXlx9GwCD_aTUfJgOBG5EFw7PbXkXDBz15OJQymHHW67311qodiwDA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEUCIAyZQ-Jsi0Isgfh_pFzCpePYNqnQOOImQdAex_GxMQGNAiEA1Lf7HyqPffHBJl4i-EA2bTD1wzDZ7QmcJQHhHZTYjnw"
+                  }
+                }
+              ]
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                "sign_pub": "7UkoxijRwsbq6QM4kFmVYSlZJzpcY_k2NsFGFKyHN9E",
+                "read_pub": "g4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4M",
+                "kind": "gateway",
+                "label": "Office PC",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "VFT42Rqn-Xjottx4MRLMQaChpJEQiipqAotZFocCgsPc_WI5iUCN7DWXgHYnJ7KtxJFAvVr8NcKJxEpGPP8bDA"
+                },
+                {
+                  "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                  "sig": "KXPHsS9rm8NYOYrtNEP_JsS48A1mesLm_W1Ciz7Sj7tmRaYnVt-o02wrv_g2WQH4DPLVRRh5-X9lV8PAzfgFDQ"
+                }
+              ],
+              "checks": []
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 2,
+              "prev": "sha256:698829d2d781a0cc0be3f48c772665244b24f05d21963748fb9c8aa779d353f5",
+              "op": "set",
+              "device": null,
+              "target": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000002,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "JoYh6gbBhdPDQmat9WtImfa5C86Ts6eGfGQSDTYmS-hdIkz9FOPh-cx2sDlEP-UkMRXxsfVxu_p18RXoCqPIDQ"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEQCIGr2XUuqbohikModMyUfsh3xd_ADPMWTG73G1mVaSa3-AiA8loCcwx58lj7dCji-2ucE31UDBd8JVfNPuVxANTm-6A"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "NO_GRANTING_DEVICE"
+      }
+    },
+    {
+      "id": "chain-without-granting-device-changed-by-root",
+      "description": "a chain that never had a granting device is changed by the root key alone",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "entries": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 0,
+              "prev": null,
+              "op": "genesis",
+              "device": {
+                "key_id": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                "sign_pub": "7UkoxijRwsbq6QM4kFmVYSlZJzpcY_k2NsFGFKyHN9E",
+                "read_pub": "g4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4M",
+                "kind": "gateway",
+                "label": "Office PC",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000000,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "O5EAcIfOmxf7l_isYwU9WPq-vgFw-_DznfXwlvPsKIoeScyoV8PLbUZ0Yk4RxE3Vkr5yq2Z57rfaPipQc0CHBg"
+                },
+                {
+                  "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                  "sig": "sMuZ3MBV_8dCar-PNtb2j1ekSBlq6WuBL7o7zOOQk3ALDItJ3KOkU-U-cjcJZQ5kj0XK1mAbBvt59iccRqSJBA"
+                }
+              ],
+              "checks": []
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:087b9894dd11811020f068d93203636e707f3e421d3aa2de467d60861be85aab",
+              "op": "remove",
+              "device": null,
+              "target": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "3MoMSRswI2weBaTFwicN9_Plupnhb3aY8SMoky8D26oMkSE6LyeUOijRkAQv_TDMjVHUt5ysvbAySOAwEKGoAQ"
+                }
+              ],
+              "checks": []
+            }
+          ]
+        }
+      },
+      "expect": {
+        "ok": {
+          "head": {
+            "seq": 1,
+            "hash": "sha256:20fa9d0baadeea584a3a9e3c5a233e7b17c1150f3fa4accc9f99054f274464ff"
+          },
+          "active": [],
+          "granting": [],
+          "root_pub": "jcbYQAtyaEekz1LUcagxyFjV6KI9kdqrdEOLbPQxTl8"
+        }
+      }
+    },
+    {
+      "id": "five-active-devices",
+      "description": "five active devices are allowed",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "entries": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 0,
+              "prev": null,
+              "op": "genesis",
+              "device": {
+                "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                "sign_pub": "iojj3XQJ8ZX9UtstPLpdcspnCb8dlBIb83SIAbQPb1w",
+                "read_pub": "gYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYE",
+                "kind": "gateway",
+                "label": "Alice's MacBook",
+                "keystore": "software",
+                "check": {
+                  "type": "platform",
+                  "pub": "BKbGn9Q-WQfL35JuZ6A_sqHxAhbQygdlFrrSDQqlSjY8BYyCGka8bsVPqjulnqUvMoT8yMr98U7eIPCJBME6a-0"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000000,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "LMyUxOfLY_VS_fuh7U4mtUc3a7-Wr1byFk3U42YuJAC0pmIT_IG0qQk6EuE3JvKxsIsB9EiZTD8kPq1bVCGrDQ"
+                },
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "jD122UX3alwMol4xJcBNQVQHlcIepCzuaXlx9GwCD_aTUfJgOBG5EFw7PbXkXDBz15OJQymHHW67311qodiwDA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEQCIDRRwtl4E_31QgBJ8DoyingR1nV_LApIU1fBuG6uq3OEAiAxjyOz21t9x4877_8bfJmsUpsmOJgSsuyzCqgTcvaXYA"
+                  }
+                }
+              ]
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "UG7xh510jOBxOw3QHaMq0qSxzpe1qFL_GIAMHlKYI3Y",
+                "sign_pub": "Q6cucUQBdi32a2jCbfvfJoKq7J8kdOykYT5CSg-6_Tw",
+                "read_pub": "ioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioo",
+                "kind": "gateway",
+                "label": "Device 10",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "2bGGr7DrJEt9w33zUPgfcgiQ8D7RwQtlMKnET92I350wNjVmHX4X2D7jdOyDY-IMS7a9k818PSt4BV1HzvFtDg"
+                },
+                {
+                  "by": "UG7xh510jOBxOw3QHaMq0qSxzpe1qFL_GIAMHlKYI3Y",
+                  "sig": "qvK5Mj2WlbV_UqB0E9jqr0gvQYRZjeqf8Ppcc5kkJx332d6d7W6Aa2jD02WQGTWVqEJQzoXWIcwwfwuKbqM8CQ"
+                }
+              ],
+              "checks": []
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 2,
+              "prev": "sha256:ddd36e414c2b15a800e42c8dcd6fb1c8086281f5b5963b7255ce9c867ec9d45a",
+              "op": "add",
+              "device": {
+                "key_id": "_fcqCI8Y9zmejFK85EhEFQH3WaWVqGmA5dmkIqAeXVU",
+                "sign_pub": "Zr5-Myx6RTMyvZ0Kf32wVfXF7xoGraZtmLOftoEMRzo",
+                "read_pub": "i4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4s",
+                "kind": "gateway",
+                "label": "Device 11",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000002,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "LCZu_FtFIpp0tUIho5UMYfPFTKn_XcZ0rNEo-WbLSfzAEx2FU-xS0Yjpy93DHRbG6COxspxWVIVb1miYCci8BQ"
+                },
+                {
+                  "by": "_fcqCI8Y9zmejFK85EhEFQH3WaWVqGmA5dmkIqAeXVU",
+                  "sig": "62A8L7pJXIGaGiaOn8DihnaKVkU4gVf6_Z4fgI-AjH2gqKCF6amHzfknoiFrnIaJkLPc3vscGpa8Boqywt23BQ"
+                }
+              ],
+              "checks": []
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 3,
+              "prev": "sha256:c4bf98bf5e3ae11e6f6453ad2f57c635080b0275cc1545a2bdcbff2bdfca64eb",
+              "op": "add",
+              "device": {
+                "key_id": "7SPYUxJaOs_yeC3d-E4BjryFlC6_Mo_xKHICpHmWQgc",
+                "sign_pub": "C1E62bSSQBXKCQLtB5BE06xdvsIwbwaUjBDajrbjny0",
+                "read_pub": "jIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIw",
+                "kind": "gateway",
+                "label": "Device 12",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000003,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "fakSqq1ra1DbnecdDcWsrVwj_73C9HWVL8mp4o7jPhM_fO4oXP1jQG0oMXkbecROUBXQCn9e_l6nZTWFe_pSBw"
+                },
+                {
+                  "by": "7SPYUxJaOs_yeC3d-E4BjryFlC6_Mo_xKHICpHmWQgc",
+                  "sig": "wlLu5eCgg1VoYpVe_K0NKK-GL3I3U5HK5qbnUlQBY6JST_VlGiSFl3XH00-buIoa8_A7NtnfBslubHlezK1YBg"
+                }
+              ],
+              "checks": []
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 4,
+              "prev": "sha256:85aefe551c99a29a6c14d01ea1e4c228d36695301f770eb67b225da4d6323d0d",
+              "op": "add",
+              "device": {
+                "key_id": "3v5jMPePzBHv0PsoYU8NKde2DW5mwlwcWw-Y_lBfyLs",
+                "sign_pub": "kaKKC3Q4FZOk2UaVeSCJJq_IrYLIg5t2RDWbnrqaSzo",
+                "read_pub": "jY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY0",
+                "kind": "gateway",
+                "label": "Device 13",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000004,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "kvNu5uCQVDpES8jIStq3h0ApB7Mix9tPGHyo59H6R9ag4W_ImJhL1h2ZoVuJpKcapHVOmKQx-W8NN91GwNoDDw"
+                },
+                {
+                  "by": "3v5jMPePzBHv0PsoYU8NKde2DW5mwlwcWw-Y_lBfyLs",
+                  "sig": "1EjG_HsiAT5IGT0LsMNIDbNoSPxXeXJUSjQd8zZcT95nPIyW4_S76XgK4pmaavN8sWOcBUJm_xsf2lGBQ14_BA"
+                }
+              ],
+              "checks": []
+            }
+          ]
+        }
+      },
+      "expect": {
+        "ok": {
+          "head": {
+            "seq": 4,
+            "hash": "sha256:0bcbce03f98b8603dd5119117def22c8c0c7d765d3bcb3b5a2cb7e573b9b2f8f"
+          },
+          "active": [
+            "3v5jMPePzBHv0PsoYU8NKde2DW5mwlwcWw-Y_lBfyLs",
+            "7SPYUxJaOs_yeC3d-E4BjryFlC6_Mo_xKHICpHmWQgc",
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "UG7xh510jOBxOw3QHaMq0qSxzpe1qFL_GIAMHlKYI3Y",
+            "_fcqCI8Y9zmejFK85EhEFQH3WaWVqGmA5dmkIqAeXVU"
+          ],
+          "granting": [
+            "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4"
+          ],
+          "root_pub": "jcbYQAtyaEekz1LUcagxyFjV6KI9kdqrdEOLbPQxTl8"
+        }
+      }
+    },
+    {
+      "id": "too-many-devices",
+      "description": "a sixth active device",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "entries": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 0,
+              "prev": null,
+              "op": "genesis",
+              "device": {
+                "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                "sign_pub": "iojj3XQJ8ZX9UtstPLpdcspnCb8dlBIb83SIAbQPb1w",
+                "read_pub": "gYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYE",
+                "kind": "gateway",
+                "label": "Alice's MacBook",
+                "keystore": "software",
+                "check": {
+                  "type": "platform",
+                  "pub": "BKbGn9Q-WQfL35JuZ6A_sqHxAhbQygdlFrrSDQqlSjY8BYyCGka8bsVPqjulnqUvMoT8yMr98U7eIPCJBME6a-0"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000000,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "LMyUxOfLY_VS_fuh7U4mtUc3a7-Wr1byFk3U42YuJAC0pmIT_IG0qQk6EuE3JvKxsIsB9EiZTD8kPq1bVCGrDQ"
+                },
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "jD122UX3alwMol4xJcBNQVQHlcIepCzuaXlx9GwCD_aTUfJgOBG5EFw7PbXkXDBz15OJQymHHW67311qodiwDA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEQCIDRRwtl4E_31QgBJ8DoyingR1nV_LApIU1fBuG6uq3OEAiAxjyOz21t9x4877_8bfJmsUpsmOJgSsuyzCqgTcvaXYA"
+                  }
+                }
+              ]
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "UG7xh510jOBxOw3QHaMq0qSxzpe1qFL_GIAMHlKYI3Y",
+                "sign_pub": "Q6cucUQBdi32a2jCbfvfJoKq7J8kdOykYT5CSg-6_Tw",
+                "read_pub": "ioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioo",
+                "kind": "gateway",
+                "label": "Device 10",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "2bGGr7DrJEt9w33zUPgfcgiQ8D7RwQtlMKnET92I350wNjVmHX4X2D7jdOyDY-IMS7a9k818PSt4BV1HzvFtDg"
+                },
+                {
+                  "by": "UG7xh510jOBxOw3QHaMq0qSxzpe1qFL_GIAMHlKYI3Y",
+                  "sig": "qvK5Mj2WlbV_UqB0E9jqr0gvQYRZjeqf8Ppcc5kkJx332d6d7W6Aa2jD02WQGTWVqEJQzoXWIcwwfwuKbqM8CQ"
+                }
+              ],
+              "checks": []
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 2,
+              "prev": "sha256:ddd36e414c2b15a800e42c8dcd6fb1c8086281f5b5963b7255ce9c867ec9d45a",
+              "op": "add",
+              "device": {
+                "key_id": "_fcqCI8Y9zmejFK85EhEFQH3WaWVqGmA5dmkIqAeXVU",
+                "sign_pub": "Zr5-Myx6RTMyvZ0Kf32wVfXF7xoGraZtmLOftoEMRzo",
+                "read_pub": "i4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4s",
+                "kind": "gateway",
+                "label": "Device 11",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000002,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "LCZu_FtFIpp0tUIho5UMYfPFTKn_XcZ0rNEo-WbLSfzAEx2FU-xS0Yjpy93DHRbG6COxspxWVIVb1miYCci8BQ"
+                },
+                {
+                  "by": "_fcqCI8Y9zmejFK85EhEFQH3WaWVqGmA5dmkIqAeXVU",
+                  "sig": "62A8L7pJXIGaGiaOn8DihnaKVkU4gVf6_Z4fgI-AjH2gqKCF6amHzfknoiFrnIaJkLPc3vscGpa8Boqywt23BQ"
+                }
+              ],
+              "checks": []
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 3,
+              "prev": "sha256:c4bf98bf5e3ae11e6f6453ad2f57c635080b0275cc1545a2bdcbff2bdfca64eb",
+              "op": "add",
+              "device": {
+                "key_id": "7SPYUxJaOs_yeC3d-E4BjryFlC6_Mo_xKHICpHmWQgc",
+                "sign_pub": "C1E62bSSQBXKCQLtB5BE06xdvsIwbwaUjBDajrbjny0",
+                "read_pub": "jIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIw",
+                "kind": "gateway",
+                "label": "Device 12",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000003,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "fakSqq1ra1DbnecdDcWsrVwj_73C9HWVL8mp4o7jPhM_fO4oXP1jQG0oMXkbecROUBXQCn9e_l6nZTWFe_pSBw"
+                },
+                {
+                  "by": "7SPYUxJaOs_yeC3d-E4BjryFlC6_Mo_xKHICpHmWQgc",
+                  "sig": "wlLu5eCgg1VoYpVe_K0NKK-GL3I3U5HK5qbnUlQBY6JST_VlGiSFl3XH00-buIoa8_A7NtnfBslubHlezK1YBg"
+                }
+              ],
+              "checks": []
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 4,
+              "prev": "sha256:85aefe551c99a29a6c14d01ea1e4c228d36695301f770eb67b225da4d6323d0d",
+              "op": "add",
+              "device": {
+                "key_id": "3v5jMPePzBHv0PsoYU8NKde2DW5mwlwcWw-Y_lBfyLs",
+                "sign_pub": "kaKKC3Q4FZOk2UaVeSCJJq_IrYLIg5t2RDWbnrqaSzo",
+                "read_pub": "jY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY0",
+                "kind": "gateway",
+                "label": "Device 13",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000004,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "kvNu5uCQVDpES8jIStq3h0ApB7Mix9tPGHyo59H6R9ag4W_ImJhL1h2ZoVuJpKcapHVOmKQx-W8NN91GwNoDDw"
+                },
+                {
+                  "by": "3v5jMPePzBHv0PsoYU8NKde2DW5mwlwcWw-Y_lBfyLs",
+                  "sig": "1EjG_HsiAT5IGT0LsMNIDbNoSPxXeXJUSjQd8zZcT95nPIyW4_S76XgK4pmaavN8sWOcBUJm_xsf2lGBQ14_BA"
+                }
+              ],
+              "checks": []
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 5,
+              "prev": "sha256:0bcbce03f98b8603dd5119117def22c8c0c7d765d3bcb3b5a2cb7e573b9b2f8f",
+              "op": "add",
+              "device": {
+                "key_id": "UhaKnBksbRU6Lwsc5PQUTNQO-dhq0_78f0yqGtta6Wk",
+                "sign_pub": "C-71qeZ55qPhNP4ng3v_MsfLX11E6gm8sOVCutakwMw",
+                "read_pub": "jo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo4",
+                "kind": "gateway",
+                "label": "Device 14",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000005,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "s5vp6Y_fKNxml1D6nRK8R4EHnDXTYAelr0-2lWRyP0IRDfWMbIgEdevjWNcl6Wd51UHF6yB4dbtmG_wCE_8jDA"
+                },
+                {
+                  "by": "UhaKnBksbRU6Lwsc5PQUTNQO-dhq0_78f0yqGtta6Wk",
+                  "sig": "2cGM-Qhx3v-JJumyinEv92By2DfMxT03azGxkpo0FKrWKbILamJvVqE3tjNZHvxmOi4uujKP6fHC3mx92hVzBg"
+                }
+              ],
+              "checks": []
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "TOO_MANY_DEVICES"
+      }
+    },
+    {
+      "id": "rollback",
+      "description": "the verifier stored seq 6, the chain served has 4 entries",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 4
+        },
+        "stored_head": {
+          "seq": 6,
+          "hash": "sha256:0781107ec882bb60fe209bcc73feabb0c4da138caf1767033c497a985f07c90f"
+        }
+      },
+      "expect": {
+        "error": "ROLLBACK"
+      }
+    },
+    {
+      "id": "rollback-empty",
+      "description": "the AS serves nothing but a head is stored",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 0
+        },
+        "stored_head": {
+          "seq": 0,
+          "hash": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6"
+        }
+      },
+      "expect": {
+        "error": "ROLLBACK"
+      }
+    },
+    {
+      "id": "fork",
+      "description": "the entry at the stored head's seq is a different entry",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "entries": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 0,
+              "prev": null,
+              "op": "genesis",
+              "device": {
+                "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                "sign_pub": "iojj3XQJ8ZX9UtstPLpdcspnCb8dlBIb83SIAbQPb1w",
+                "read_pub": "gYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYE",
+                "kind": "gateway",
+                "label": "Alice's MacBook",
+                "keystore": "software",
+                "check": {
+                  "type": "platform",
+                  "pub": "BKbGn9Q-WQfL35JuZ6A_sqHxAhbQygdlFrrSDQqlSjY8BYyCGka8bsVPqjulnqUvMoT8yMr98U7eIPCJBME6a-0"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000000,
+              "signer": "root",
+              "sigs": [
+                {
+                  "by": "root",
+                  "sig": "LMyUxOfLY_VS_fuh7U4mtUc3a7-Wr1byFk3U42YuJAC0pmIT_IG0qQk6EuE3JvKxsIsB9EiZTD8kPq1bVCGrDQ"
+                },
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "jD122UX3alwMol4xJcBNQVQHlcIepCzuaXlx9GwCD_aTUfJgOBG5EFw7PbXkXDBz15OJQymHHW67311qodiwDA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQCPZMKJ_RwSBycTlZTXWyebIFww9DdIjgxeXk6JdPExAgIhALbAYkYpp_k7qTGJRKhmdWDZ7fWgI4UKUfKg0yibliwj"
+                  }
+                }
+              ]
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+                  }
+                }
+              ]
+            },
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 2,
+              "prev": "sha256:64b8f50544eed3260e89ca6716be14a6e0416fceb45dec55e3f3b657e2c6ffc4",
+              "op": "add",
+              "device": {
+                "key_id": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                "sign_pub": "7UkoxijRwsbq6QM4kFmVYSlZJzpcY_k2NsFGFKyHN9E",
+                "read_pub": "g4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4M",
+                "kind": "gateway",
+                "label": "Fork device",
+                "keystore": "software",
+                "check": null
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000002,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "_vQV2ZTUVLj-SxOpvUYFoVnR9EpGzb1JKtYYA6Ops5fhz61n8NBLtKa-TKJ1YoGyE4TR3FZvAYUSqN-lua2hAQ"
+                },
+                {
+                  "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                  "sig": "xn4mfdWTXf2XnzIQC6XHK7yAbRFC1VkWLRKixpX-K00LN5iiehfTtM2mE438tKyCZ82_5uLWL93Tzgi1nm5rBw"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQDZDHEY401b3TkOas98IZ4YFOWdro3wYtGs9bIeczmvYwIhAK3kZXpdbsc2-AUKcDmhPlHbRo0ZE8fyuOY9CnhvxLsH"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "stored_head": {
+          "seq": 2,
+          "hash": "sha256:5aa804e845d184f0aeb0045222b68060d49be2956855f7a831cb134980ffa66c"
+        }
+      },
+      "expect": {
+        "error": "FORK"
+      }
+    },
+    {
+      "id": "stored-head-empty-object",
+      "description": "a malformed stored head must not switch the rollback and fork checks off",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 3
+        },
+        "stored_head": {}
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "stored-head-without-hash",
+      "description": "a malformed stored head must not switch the rollback and fork checks off",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 3
+        },
+        "stored_head": {
+          "seq": 1
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "stored-head-without-seq",
+      "description": "a malformed stored head must not switch the rollback and fork checks off",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 3
+        },
+        "stored_head": {
+          "hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "stored-head-negative-seq",
+      "description": "a malformed stored head must not switch the rollback and fork checks off",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 3
+        },
+        "stored_head": {
+          "seq": -1,
+          "hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "stored-head-fractional-seq",
+      "description": "a malformed stored head must not switch the rollback and fork checks off",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 3
+        },
+        "stored_head": {
+          "seq": 1.5,
+          "hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "stored-head-uppercase-hash",
+      "description": "a malformed stored head must not switch the rollback and fork checks off",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 3
+        },
+        "stored_head": {
+          "seq": 1,
+          "hash": "sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "extra-signature",
+      "description": "a signature by a device this entry does not need (self-removal of H by H, plus G)",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 4,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 4,
+              "prev": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+              "op": "remove",
+              "device": null,
+              "target": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000004,
+              "signer": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+              "sigs": [
+                {
+                  "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                  "sig": "s69MDix2URiLekXlgP4VlA4wWpxWEbJAJQB0v5JO6dIt65xz-EMsUhrEKASW3Y0pty4kHBOLHk0m8jF27eaRDQ"
+                },
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "s69MDix2URiLekXlgP4VlA4wWpxWEbJAJQB0v5JO6dIt65xz-EMsUhrEKASW3Y0pty4kHBOLHk0m8jF27eaRDQ"
+                }
+              ],
+              "checks": []
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "extra-check",
+      "description": "a check this entry does not need (self-removal needs none)",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 4,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 4,
+              "prev": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+              "op": "remove",
+              "device": null,
+              "target": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000004,
+              "signer": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+              "sigs": [
+                {
+                  "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+                  "sig": "s69MDix2URiLekXlgP4VlA4wWpxWEbJAJQB0v5JO6dIt65xz-EMsUhrEKASW3Y0pty4kHBOLHk0m8jF27eaRDQ"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "oversized-check-proof",
+      "description": "a check proof string of 5000 characters",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "check-proof-extra-member-type",
+      "description": "a check proof member that is not a string",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS",
+                    "extra": {
+                      "a": 1
+                    }
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "label-zero-width-space",
+      "description": "device label with U+200B",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Office​PC",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "label-bidi-override",
+      "description": "device label with U+202E",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Office‮PC",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "label-tag-character",
+      "description": "device label with U+E0041",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Office󠁁PC",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "read-pub-equals-sign-pub",
+      "description": "one device record with the same key as signing and reading key",
+      "op": "chain.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 1,
+          "append": [
+            {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    }
+  ]
+}

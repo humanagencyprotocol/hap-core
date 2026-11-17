@@ -1,0 +1,56 @@
+{
+  "suite": "device-keys/der",
+  "description": "Strict DER ECDSA signature parsing",
+  "cases": [
+    {
+      "id": "der-roundtrip-high-bit",
+      "op": "ecdsa.der_to_raw",
+      "input": {
+        "der_hex": "304502201111111111111111111111111111111111111111111111111111111111111111022100f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2"
+      },
+      "expect": {
+        "raw_hex": "1111111111111111111111111111111111111111111111111111111111111111f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2"
+      }
+    },
+    {
+      "id": "der-leading-zero-r",
+      "op": "ecdsa.der_to_raw",
+      "input": {
+        "der_hex": "3043021e111111111111111111111111111111111111111111111111111111111111022100f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2"
+      },
+      "expect": {
+        "raw_hex": "0000111111111111111111111111111111111111111111111111111111111111f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2"
+      }
+    },
+    {
+      "id": "der-non-minimal-padding",
+      "op": "ecdsa.der_to_raw",
+      "input": {
+        "der_hex": "30080202001102020011"
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "der-negative-integer",
+      "op": "ecdsa.der_to_raw",
+      "input": {
+        "der_hex": "3006020180020101"
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "der-trailing-bytes",
+      "op": "ecdsa.der_to_raw",
+      "input": {
+        "der_hex": "304502201111111111111111111111111111111111111111111111111111111111111111022100f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f200"
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "suite": "device-keys/ed25519-strict",
+  "description": "Plan section 2, rule 4. The small-order and non-canonical cases are accepted by a ZIP-215 verifier; they MUST be refused.",
+  "cases": [
+    {
+      "id": "rfc8032-test-1",
+      "description": "RFC 8032 7.1 TEST 1",
+      "op": "ed25519.verify",
+      "input": {
+        "public_key_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+        "message_hex": "",
+        "signature_hex": "e5564300c360ac729086e2cc806e828a84877f1eb8e5d974d873e065224901555fb8821590a33bacc61e39701cf9b46bd25bf5f0595bbe24655141438e7a100b"
+      },
+      "expect": {
+        "valid": true
+      }
+    },
+    {
+      "id": "rfc8032-test-2",
+      "description": "RFC 8032 7.1 TEST 2",
+      "op": "ed25519.verify",
+      "input": {
+        "public_key_hex": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+        "message_hex": "72",
+        "signature_hex": "92a009a9f0d4cab8720e820b5f642540a2b27b5416503f8fb3762223ebdb69da085ac1e43e15996e458f3613d0f11d8c387b2eaeb4302aeeb00d291612bb0c00"
+      },
+      "expect": {
+        "valid": true
+      }
+    },
+    {
+      "id": "non-canonical-S",
+      "description": "RFC 8032 TEST 1 with S replaced by S + L: same point equation, refused",
+      "op": "ed25519.verify",
+      "input": {
+        "public_key_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+        "message_hex": "",
+        "signature_hex": "e5564300c360ac729086e2cc806e828a84877f1eb8e5d974d873e065224901554c8c7872aa064e049dbb3013fbf29380d25bf5f0595bbe24655141438e7a101b"
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "tampered-message",
+      "op": "ed25519.verify",
+      "input": {
+        "public_key_hex": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+        "message_hex": "73",
+        "signature_hex": "92a009a9f0d4cab8720e820b5f642540a2b27b5416503f8fb3762223ebdb69da085ac1e43e15996e458f3613d0f11d8c387b2eaeb4302aeeb00d291612bb0c00"
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "small-order-key-identity",
+      "description": "public key = identity point, R = identity, S = 0: verifies any message under ZIP-215, refused here",
+      "op": "ed25519.verify",
+      "input": {
+        "public_key_hex": "0100000000000000000000000000000000000000000000000000000000000000",
+        "message_hex": "616263",
+        "signature_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "non-canonical-point-key",
+      "description": "public key = identity encoded with y = p + 1",
+      "op": "ed25519.verify",
+      "input": {
+        "public_key_hex": "eeffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f",
+        "message_hex": "616263",
+        "signature_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "small-order-key-order-4",
+      "description": "public key = point of order 4 (y = 0)",
+      "op": "ed25519.verify",
+      "input": {
+        "public_key_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+        "message_hex": "616263",
+        "signature_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "non-canonical-R",
+      "description": "RFC 8032 TEST 1 signature with R replaced by the non-canonical identity",
+      "op": "ed25519.verify",
+      "input": {
+        "public_key_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+        "message_hex": "",
+        "signature_hex": "eeffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "short-signature",
+      "op": "ed25519.verify",
+      "input": {
+        "public_key_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+        "message_hex": "",
+        "signature_hex": "564300c360ac729086e2cc806e828a84877f1eb8e5d974d873e065224901555fb8821590a33bacc61e39701cf9b46bd25bf5f0595bbe24655141438e7a100b"
+      },
+      "expect": {
+        "valid": false
+      }
+    }
+  ]
+}

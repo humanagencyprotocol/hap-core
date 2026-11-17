@@ -1,0 +1,104 @@
+{
+  "suite": "device-keys/recovery",
+  "description": "Plan 2.1",
+  "cases": [
+    {
+      "id": "derive-seed-00-0f",
+      "description": "seed 000102..0f",
+      "op": "recovery.derive",
+      "input": {
+        "code": "SV1-000G-40R4-0M30-E209-185G-R38E-1WGM-A"
+      },
+      "expect": {
+        "seed_hex": "000102030405060708090a0b0c0d0e0f",
+        "root_private_hex": "627d4244b73f79aef24faf231b41934a3c907492c078a070cb11328fe2f85407",
+        "root_public_hex": "8dc6d8400b726847a4cf52d471a831c858d5e8a23d91daab74438b6cf4314e5f",
+        "did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+      }
+    },
+    {
+      "id": "encode-seed-00-0f",
+      "op": "recovery.encode",
+      "input": {
+        "seed_hex": "000102030405060708090a0b0c0d0e0f"
+      },
+      "expect": {
+        "code": "SV1-000G-40R4-0M30-E209-185G-R38E-1WGM-A"
+      }
+    },
+    {
+      "id": "lowercase-and-spaces-accepted",
+      "op": "recovery.derive",
+      "input": {
+        "code": "sv1-000g 40r4 0m30 e209 185g r38e 1wgm a"
+      },
+      "expect": {
+        "seed_hex": "000102030405060708090a0b0c0d0e0f",
+        "root_private_hex": "627d4244b73f79aef24faf231b41934a3c907492c078a070cb11328fe2f85407",
+        "root_public_hex": "8dc6d8400b726847a4cf52d471a831c858d5e8a23d91daab74438b6cf4314e5f",
+        "did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+      }
+    },
+    {
+      "id": "encode-seed-ff",
+      "op": "recovery.encode",
+      "input": {
+        "seed_hex": "ffffffffffffffffffffffffffffffff"
+      },
+      "expect": {
+        "code": "SV1-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZTS-A"
+      }
+    },
+    {
+      "id": "checksum-detects-typo",
+      "op": "recovery.derive",
+      "input": {
+        "code": "SV1-020G-40R4-0M30-E209-185G-R38E-1WGM-A"
+      },
+      "expect": {
+        "error": "BAD_CHECKSUM"
+      }
+    },
+    {
+      "id": "prefix-required",
+      "op": "recovery.derive",
+      "input": {
+        "code": "000G-40R4-0M30-E209-185G-R38E-1WGM-A"
+      },
+      "expect": {
+        "error": "BAD_RECOVERY_CODE"
+      }
+    },
+    {
+      "id": "too-short",
+      "op": "recovery.derive",
+      "input": {
+        "code": "SV1-000G-40R4-0M30-E209-185G-R38E-1WGM"
+      },
+      "expect": {
+        "error": "BAD_RECOVERY_CODE"
+      }
+    },
+    {
+      "id": "letter-u-not-in-alphabet",
+      "op": "recovery.derive",
+      "input": {
+        "code": "SV1-0U0G-40R4-0M30-E209-185G-R38E-1WGM-A"
+      },
+      "expect": {
+        "error": "BAD_RECOVERY_CODE"
+      }
+    },
+    {
+      "id": "non-zero-pad-bit",
+      "description": "last character carries one pad bit, which must be zero",
+      "op": "recovery.derive",
+      "input": {
+        "code": "SV1-000G-40R4-0M30-E209-185G-R38E-1WGM-N"
+      },
+      "expect": {
+        "error": "BAD_RECOVERY_CODE"
+      }
+    }
+  ]
+}

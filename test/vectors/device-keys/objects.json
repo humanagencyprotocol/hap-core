@@ -1,0 +1,2586 @@
+{
+  "suite": "device-keys/objects",
+  "description": "Plan 4.1, 4.2, 4.4: sign-in, decision, mandate grant, receipt, verified against a prefix of the main chain (count = number of entries).",
+  "fixtures": {
+    "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+    "chains": {
+      "main": [
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 0,
+          "prev": null,
+          "op": "genesis",
+          "device": {
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "sign_pub": "iojj3XQJ8ZX9UtstPLpdcspnCb8dlBIb83SIAbQPb1w",
+            "read_pub": "gYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYE",
+            "kind": "gateway",
+            "label": "Alice's MacBook",
+            "keystore": "software",
+            "check": {
+              "type": "platform",
+              "pub": "BKbGn9Q-WQfL35JuZ6A_sqHxAhbQygdlFrrSDQqlSjY8BYyCGka8bsVPqjulnqUvMoT8yMr98U7eIPCJBME6a-0"
+            }
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794000000,
+          "signer": "root",
+          "sigs": [
+            {
+              "by": "root",
+              "sig": "LMyUxOfLY_VS_fuh7U4mtUc3a7-Wr1byFk3U42YuJAC0pmIT_IG0qQk6EuE3JvKxsIsB9EiZTD8kPq1bVCGrDQ"
+            },
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sig": "jD122UX3alwMol4xJcBNQVQHlcIepCzuaXlx9GwCD_aTUfJgOBG5EFw7PbXkXDBz15OJQymHHW67311qodiwDA"
+            }
+          ],
+          "checks": [
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "check": {
+                "signature": "MEYCIQCPZMKJ_RwSBycTlZTXWyebIFww9DdIjgxeXk6JdPExAgIhALbAYkYpp_k7qTGJRKhmdWDZ7fWgI4UKUfKg0yibliwj"
+              }
+            }
+          ]
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 1,
+          "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+          "op": "add",
+          "device": {
+            "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+            "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+            "kind": "approve-app",
+            "label": "Alice's iPhone",
+            "keystore": "platform",
+            "check": {
+              "type": "webauthn",
+              "rp_id": "approve.suveren.ai",
+              "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+              "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+            }
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794000001,
+          "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+          "sigs": [
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+            },
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+            }
+          ],
+          "checks": [
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "check": {
+                "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS"
+              }
+            },
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "check": {
+                "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+              }
+            }
+          ]
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 2,
+          "prev": "sha256:64b8f50544eed3260e89ca6716be14a6e0416fceb45dec55e3f3b657e2c6ffc4",
+          "op": "add",
+          "device": {
+            "key_id": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+            "sign_pub": "7UkoxijRwsbq6QM4kFmVYSlZJzpcY_k2NsFGFKyHN9E",
+            "read_pub": "g4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4M",
+            "kind": "gateway",
+            "label": "Office PC",
+            "keystore": "software",
+            "check": null
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": {
+            "note_from_future": [
+              1,
+              2
+            ],
+            "linked": {
+              "kind": "x"
+            }
+          },
+          "created_at": 1794000002,
+          "signer": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+          "sigs": [
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "sig": "EXNVl11Q1LbxO3UCJKxM6PlMtpDOUlAD9IWIbHLpr6MPt_V9AeUczetcLQOmq8OclwisrINNkYAA9F7CHxhSBA"
+            },
+            {
+              "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+              "sig": "eIlO-Q_4UPa1i1f1qbWXrxuO0DEeHK4jXbRUvluDPCFzDGp-y2dloCZQPXxntdeyCLeEsLoDnxNWD_ZqzZgwBw"
+            }
+          ],
+          "checks": [
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "check": {
+                "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiV3FnRTZFWFJoUEN1c0FSU0lyYUFZTlNiNHBWb1ZmZW9NY3NUU1lEX3BtdyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                "signature": "MEQCICCTlh8PfLQ2eKc6VflxtUmO-qnE2dkiXIPp-6crVx3XAiAZjYV2rY1eTcAyYyvv_Eylva0ZHbkjmFNvTxYlw0QEBg"
+              }
+            }
+          ]
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 3,
+          "prev": "sha256:5aa804e845d184f0aeb0045222b68060d49be2956855f7a831cb134980ffa66c",
+          "op": "set",
+          "device": null,
+          "target": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+          "check": {
+            "type": "platform",
+            "pub": "BIFa7QD3ImQvKol9LZUS_Pld7l40j4QtflI8GWsYNddB_8tmM3jICpEoqXN6QzbYYB9mTgMhlHRuPrizqWVC8bA"
+          },
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794000003,
+          "signer": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+          "sigs": [
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "sig": "1l4wpVe_66mkdwveucCLjn1knlM6_2X5dmW9__aHC4k4XFdtUemiXLw7qHm7q7ih-zjwtudJkIb23K0EqdlgCQ"
+            }
+          ],
+          "checks": [
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "check": {
+                "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiNkdzUktSdF9idlpuczdSWTY4VE00bWVBRWVNdW9TcHBSSmljYm96TDJXdyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                "signature": "MEQCICV8JJ0ZQvmaqxxktkOyU4pqJuJDFnHJYEm0Q6C276WBAiBxmDcGiZcLPsaRoFo8_v-wAztRa1ocDUQ4jVr6ksTtaw"
+              }
+            },
+            {
+              "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+              "check": {
+                "signature": "MEYCIQDKzRfsJyNvLtntkulfyyvuld-l5EDbZ8hs10_4F5SwHgIhAPc8xPY57k66qtIMD31QcbMGDq8EXMKro07Ig3CuAgkA"
+              }
+            }
+          ]
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 4,
+          "prev": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+          "op": "remove",
+          "device": null,
+          "target": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794000004,
+          "signer": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+          "sigs": [
+            {
+              "by": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+              "sig": "s69MDix2URiLekXlgP4VlA4wWpxWEbJAJQB0v5JO6dIt65xz-EMsUhrEKASW3Y0pty4kHBOLHk0m8jF27eaRDQ"
+            }
+          ],
+          "checks": []
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 5,
+          "prev": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+          "op": "rotate-root",
+          "device": null,
+          "target": null,
+          "check": null,
+          "new_root": "X5zabI4zdS5TUzdizNqAfiBrWx8-X-TLRrXNcoquhlY",
+          "ext": null,
+          "created_at": 1794000005,
+          "signer": "root",
+          "sigs": [
+            {
+              "by": "root",
+              "sig": "ev7Raq5EisW3jXwZ_28SCLuqH7eqJF_rtKT5x_YzkLTcYXqqA-pyGLULoljHcKtn3fAGd2nHTBb2Wm030qpYCg"
+            },
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "sig": "bSzgaiLtEAV3JcoVhlYukCAU_fBeyBEKa-DPm2OW4A2jHR3-LDq-e6gQkL-ru9e_5zHy96jp1YZpXO7lCYauAw"
+            }
+          ],
+          "checks": [
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "check": {
+                "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiNmlBYkNTVl9jcWxBdHg2Y0hjLWoydUw2bWtKWkZOdmVSUU91Z2pLVU1wTSIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                "signature": "MEUCIQCCz17kFUKWGhNnYf_xVk94raXSRBlle_pEjClyJlaOHwIgMe6N5m5oz_I2jCrInCYmRKgX8Hr2g0ffq6khfIRvFds"
+              }
+            }
+          ]
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 6,
+          "prev": "sha256:ea201b09257f72a940b71e9c1dcfa3dae2fa9a425914dbde4503ae8232943293",
+          "op": "add",
+          "device": {
+            "key_id": "xblA7T9lw5GWXegpX8XSX0dPpXtI026xCtNjuFOcG3k",
+            "sign_pub": "ypOsFwUYcHHWe4PH_w7-gQjo7EUwV113JoeTM9vavnw",
+            "read_pub": "hISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhIQ",
+            "kind": "gateway",
+            "label": "Laptop 2",
+            "keystore": "software",
+            "check": null
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794000006,
+          "signer": "root",
+          "sigs": [
+            {
+              "by": "root",
+              "sig": "A_3mHG_wkH8OD8OKg1BHh6BQ7A1MErmJPkuTlwvIPzU1wkGWKjy_LGPv-5S2zacfC_KR6cdFDQWkLzrsUyYIAg"
+            },
+            {
+              "by": "xblA7T9lw5GWXegpX8XSX0dPpXtI026xCtNjuFOcG3k",
+              "sig": "0K26bs0RqKIgLvoQ1Wu9XAqFsXvT-e1Ywq2Xxfk8hRyTBeaMnBtNcXxcYgwG5MVIXflCmN8VvQ_BPzwcmCB7Cw"
+            }
+          ],
+          "checks": []
+        }
+      ]
+    }
+  },
+  "cases": [
+    {
+      "id": "signin-valid-granting-device",
+      "description": "sign-in by an active device at the head",
+      "op": "signin.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "signin": {
+            "typ": "suveren-device-signin",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "nonce": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "issued_at": 1794000100
+          },
+          "sig": "hgIKapj3ETzGtw3xyStHKVEc874Soz3cjmt74tZt5FcsrtPba9GAVcF3JemO6pvVAMcLV0sr10rsOBSZcZ_qAA"
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "now": 1794000130
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "signin-valid-older-head",
+      "description": "the device names an older head that matches the chain",
+      "op": "signin.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "signin": {
+            "typ": "suveren-device-signin",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "nonce": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+            "chain_seq": 3,
+            "chain_head": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+            "issued_at": 1794000100
+          },
+          "sig": "Q3s0DdLRlBCbWpwufb-1ndHbjz68tSMlS_57iRm0a8Jzr3J3jA69BE9P-hcZfTNdmyndP1duKUzTHMf2HwVIAQ"
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "now": 1794000130
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "signin-removed-device",
+      "description": "the device was removed at seq 4",
+      "op": "signin.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "signin": {
+            "typ": "suveren-device-signin",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+            "nonce": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "issued_at": 1794000100
+          },
+          "sig": "q30ojdiDJhcmKuw_O1XrMV9kSRfeiJ6Nx5rbOsixKgdK82HMm_h3sDWABUayjh0Dlr7q-r9MxYuk3OeHRlp9BQ"
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "now": 1794000130
+      },
+      "expect": {
+        "error": "NOT_ACTIVE"
+      }
+    },
+    {
+      "id": "signin-wrong-aud",
+      "description": "aud is another Authority Server key",
+      "op": "signin.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "signin": {
+            "typ": "suveren-device-signin",
+            "v": 1,
+            "aud": "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+            "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "nonce": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "issued_at": 1794000100
+          },
+          "sig": "WH_Nnyc3kE2ZzkjyqG232vpUXV6khyn-1VoV34vf9FC3IWoaz652njvcMCmh8PJKZ87BdnMsBAxyZ2b_IeluDg"
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "now": 1794000130
+      },
+      "expect": {
+        "error": "BAD_AUD"
+      }
+    },
+    {
+      "id": "signin-stale",
+      "description": "issued_at 400 seconds before now",
+      "op": "signin.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "signin": {
+            "typ": "suveren-device-signin",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "nonce": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "issued_at": 1793999730
+          },
+          "sig": "9V12h2fmeUfMIEiK-eyD4zKF0Kyh-XXSV-bmwWARnmXhVdh3HBUtSCQb42_JoKbEeEIN7rqADz-KuJmY_VzqBw"
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "now": 1794000130
+      },
+      "expect": {
+        "error": "STALE"
+      }
+    },
+    {
+      "id": "signin-wrong-root",
+      "description": "root_did of another person",
+      "op": "signin.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "signin": {
+            "typ": "suveren-device-signin",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6Mkr8zqp7Zyq9hyDURFPZimwk4zuiSxhCwm7CeGdfHxH4AH",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "nonce": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "issued_at": 1794000100
+          },
+          "sig": "VgQC908pU2k-_hNuHjbe6u4EJDwkuqpByBX9fNQjCnBE_g1v90NM8CjTXVjH4Civmd8f_37vHD4TXMpb6siQBw"
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "now": 1794000130
+      },
+      "expect": {
+        "error": "WRONG_ROOT"
+      }
+    },
+    {
+      "id": "signin-fork",
+      "description": "the named head hash is not the chain's hash at that seq",
+      "op": "signin.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "signin": {
+            "typ": "suveren-device-signin",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "nonce": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+            "chain_seq": 4,
+            "chain_head": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+            "issued_at": 1794000100
+          },
+          "sig": "kKC3hcEUfq9zL7pG7Zu7YfF68ATeo9_Vn03scqVhGBi6VPDKzEILjjHpokk5sKuCjNouYJgD-NnGr9Tx7L1PDQ"
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "now": 1794000130
+      },
+      "expect": {
+        "error": "FORK"
+      }
+    },
+    {
+      "id": "signin-chain-ahead",
+      "description": "chain_seq is beyond the receiver's head",
+      "op": "signin.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "signin": {
+            "typ": "suveren-device-signin",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "nonce": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+            "chain_seq": 9,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "issued_at": 1794000100
+          },
+          "sig": "oGsd43sMpee3cn8P9HBi1RU3H8L_OZ1CpBr3rn1eCp8Tr0MvugaJ3an6bjSqDuo1BSzRals8d0qx6GZJWRhKBw"
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "now": 1794000130
+      },
+      "expect": {
+        "error": "CHAIN_AHEAD"
+      }
+    },
+    {
+      "id": "signin-signed-by-other-key",
+      "description": "signature made with another device's key",
+      "op": "signin.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "signin": {
+            "typ": "suveren-device-signin",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "nonce": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "issued_at": 1794000100
+          },
+          "sig": "NS0ZcZDYBVpN5JpVXFVfmJ0wCFDqjARheZGdkRM2H2H2qZ67eDqy_kiPWLccf9CfLypG9jmQR16MPQthVEoBBw"
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "now": 1794000130
+      },
+      "expect": {
+        "error": "BAD_SIGNATURE"
+      }
+    },
+    {
+      "id": "signin-extra-member",
+      "op": "signin.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "signin": {
+            "typ": "suveren-device-signin",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "nonce": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "issued_at": 1794000100,
+            "extra": 1
+          },
+          "sig": "qkWKrEyARJ0eGohNIvrRrlLLiYIZFL_Afu5G4oU2f4ugCd72C_Res18-HY5caSLV1FFGpmRpgAh4K8aRcVOPCA"
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "now": 1794000130
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "decision-commit-by-gateway-no-check",
+      "description": "every active device may commit, with no check",
+      "op": "decision.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "decision": {
+            "typ": "suveren-device-decision",
+            "v": 1,
+            "approver_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "proposal_id": "prop-1",
+            "mandate_id": "mand-1",
+            "action": "send_email",
+            "action_type": "send",
+            "decision": "commit",
+            "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "decided_at": 1794000200,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "1hXRMn0LaaiG5kXGBOQEmYHUatdkXLHRB9s9VtUzVuhGSgleypSOInKt_eYEgj9V5EJg7wQXi1-7sJgQAranBw"
+        },
+        "expect": {
+          "proposal_id": "prop-1",
+          "mandate_id": "mand-1",
+          "action": "send_email",
+          "action_type": "send",
+          "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "decision-commit-by-phone",
+      "description": "commit by the phone",
+      "op": "decision.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "decision": {
+            "typ": "suveren-device-decision",
+            "v": 1,
+            "approver_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "proposal_id": "prop-1",
+            "mandate_id": "mand-1",
+            "action": "send_email",
+            "action_type": "send",
+            "decision": "commit",
+            "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "decided_at": 1794000200,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "utrWFJC9NZzLPeTGUneuKKRhfmWyWk-LXJ6bXds7gJ5amxjUZLYXDDDmpEbuuLUwK_oeAL_x7CY9S8G86Br5CQ"
+        },
+        "expect": {
+          "proposal_id": "prop-1",
+          "mandate_id": "mand-1",
+          "action": "send_email",
+          "action_type": "send",
+          "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "decision-reject",
+      "description": "reject by any active device",
+      "op": "decision.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "decision": {
+            "typ": "suveren-device-decision",
+            "v": 1,
+            "approver_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "proposal_id": "prop-1",
+            "mandate_id": "mand-1",
+            "action": "send_email",
+            "action_type": "send",
+            "decision": "reject",
+            "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "decided_at": 1794000200,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "uzWN1QKfa3dZNGpS9H1OHttccPjghGt8c48x5OAu8CjyXF7OfymBV6XSfHuTMvJ_8IQr1zztlnLhtk10KJeNDw"
+        },
+        "expect": {
+          "proposal_id": "prop-1",
+          "mandate_id": "mand-1",
+          "action": "send_email",
+          "action_type": "send",
+          "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "decision-withdraw",
+      "description": "withdraw by any active device",
+      "op": "decision.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "decision": {
+            "typ": "suveren-device-decision",
+            "v": 1,
+            "approver_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "proposal_id": "prop-1",
+            "mandate_id": "mand-1",
+            "action": "send_email",
+            "action_type": "send",
+            "decision": "withdraw",
+            "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "decided_at": 1794000200,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "Uo72ZrxbGKDYJFVXAmUoBKKdWNoeue8Sh_hHCxm1lI0E0EPQRLqArlM0-UVTv3oND1kIHAdwKC8WbQQQIynJAA"
+        },
+        "expect": {
+          "proposal_id": "prop-1",
+          "mandate_id": "mand-1",
+          "action": "send_email",
+          "action_type": "send",
+          "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "decision-device-without-check-key",
+      "description": "a device without a check key still decides",
+      "op": "decision.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 3
+        },
+        "envelope": {
+          "decision": {
+            "typ": "suveren-device-decision",
+            "v": 1,
+            "approver_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+            "chain_seq": 2,
+            "chain_head": "sha256:5aa804e845d184f0aeb0045222b68060d49be2956855f7a831cb134980ffa66c",
+            "proposal_id": "prop-1",
+            "mandate_id": "mand-1",
+            "action": "send_email",
+            "action_type": "send",
+            "decision": "commit",
+            "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "decided_at": 1794000200,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "tJXWDKXeXhhc7LGUBT7xCrFPYInOyNp0m6xs6JzxVjidn5T4k3D4v5BxIj2wYICF41D4mTE6BYLQJQ3KOBVMDQ"
+        },
+        "expect": {
+          "proposal_id": "prop-1",
+          "mandate_id": "mand-1",
+          "action": "send_email",
+          "action_type": "send",
+          "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "decision-removed-device",
+      "description": "removed devices decide nothing",
+      "op": "decision.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "decision": {
+            "typ": "suveren-device-decision",
+            "v": 1,
+            "approver_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "proposal_id": "prop-1",
+            "mandate_id": "mand-1",
+            "action": "send_email",
+            "action_type": "send",
+            "decision": "commit",
+            "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "decided_at": 1794000200,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "031Zaqpastd3yfWzpbAbkshoyuCxQW1TX6bykKjKa9ZHSZ48xgzWgQMV9poVI5iTFZ_JpNFHnhhUhs5B06yjBw"
+        },
+        "expect": {
+          "proposal_id": "prop-1",
+          "mandate_id": "mand-1",
+          "action": "send_email",
+          "action_type": "send",
+          "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      },
+      "expect": {
+        "error": "NOT_ACTIVE"
+      }
+    },
+    {
+      "id": "decision-mismatch-proposal",
+      "description": "proposal_content_hash differs from the proposal's",
+      "op": "decision.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "decision": {
+            "typ": "suveren-device-decision",
+            "v": 1,
+            "approver_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "proposal_id": "prop-1",
+            "mandate_id": "mand-1",
+            "action": "send_email",
+            "action_type": "send",
+            "decision": "commit",
+            "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "decided_at": 1794000200,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "1hXRMn0LaaiG5kXGBOQEmYHUatdkXLHRB9s9VtUzVuhGSgleypSOInKt_eYEgj9V5EJg7wQXi1-7sJgQAranBw"
+        },
+        "expect": {
+          "proposal_id": "prop-1",
+          "mandate_id": "mand-1",
+          "action": "send_email",
+          "action_type": "send",
+          "proposal_content_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        }
+      },
+      "expect": {
+        "error": "PROPOSAL_MISMATCH"
+      }
+    },
+    {
+      "id": "decision-wrong-approver",
+      "description": "approver_did is not the chain's root DID",
+      "op": "decision.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "decision": {
+            "typ": "suveren-device-decision",
+            "v": 1,
+            "approver_did": "did:key:z6Mkr8zqp7Zyq9hyDURFPZimwk4zuiSxhCwm7CeGdfHxH4AH",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "proposal_id": "prop-1",
+            "mandate_id": "mand-1",
+            "action": "send_email",
+            "action_type": "send",
+            "decision": "commit",
+            "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "decided_at": 1794000200,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "cwvsA0B0xLXEoF_boZsuveImLC0ENR05bTXrmYIleamAL9BtrmMWMKJVbxvnt_m4RqKGB_Tn58G4k1W6Br5UBQ"
+        },
+        "expect": {
+          "proposal_id": "prop-1",
+          "mandate_id": "mand-1",
+          "action": "send_email",
+          "action_type": "send",
+          "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      },
+      "expect": {
+        "error": "WRONG_ROOT"
+      }
+    },
+    {
+      "id": "decision-bad-signature",
+      "description": "signature made by another device",
+      "op": "decision.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "decision": {
+            "typ": "suveren-device-decision",
+            "v": 1,
+            "approver_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "proposal_id": "prop-1",
+            "mandate_id": "mand-1",
+            "action": "send_email",
+            "action_type": "send",
+            "decision": "commit",
+            "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "decided_at": 1794000200,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "uqooUiHxERlmGynSJd8jZFwMgalG3s_sAbU4sFIrCiYCdy4feqEJtBDsa9IWXI8TCergfTNbEXYrG-WCP4LJAw"
+        },
+        "expect": {
+          "proposal_id": "prop-1",
+          "mandate_id": "mand-1",
+          "action": "send_email",
+          "action_type": "send",
+          "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      },
+      "expect": {
+        "error": "BAD_SIGNATURE"
+      }
+    },
+    {
+      "id": "decision-unknown-decision-value",
+      "description": "decision is not commit, reject or withdraw",
+      "op": "decision.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "decision": {
+            "typ": "suveren-device-decision",
+            "v": 1,
+            "approver_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "proposal_id": "prop-1",
+            "mandate_id": "mand-1",
+            "action": "send_email",
+            "action_type": "send",
+            "decision": "maybe",
+            "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "decided_at": 1794000200,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "0fTaOD7kIEYuFLnJNV7vY3Doyk0uw9cUUCq8UOsEwD6pwGDbzXH2mHSAqkwIng9rs0tmATlSg8LpTNTg_c8ABg"
+        },
+        "expect": {
+          "proposal_id": "prop-1",
+          "mandate_id": "mand-1",
+          "action": "send_email",
+          "action_type": "send",
+          "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "decision-older-head-accepted",
+      "description": "an older head that matches is accepted while the signer is still active",
+      "op": "decision.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "decision": {
+            "typ": "suveren-device-decision",
+            "v": 1,
+            "approver_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "chain_seq": 3,
+            "chain_head": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+            "proposal_id": "prop-1",
+            "mandate_id": "mand-1",
+            "action": "send_email",
+            "action_type": "send",
+            "decision": "commit",
+            "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "decided_at": 1794000200,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "GL9TZ0tzSN48xXLB9jaoKxU01p0MJit40Kn3Mfp4G06J5VLXPy0RY4WEViEhqu-_nIhxD0LerNGYsMd4rWIBCg"
+        },
+        "expect": {
+          "proposal_id": "prop-1",
+          "mandate_id": "mand-1",
+          "action": "send_email",
+          "action_type": "send",
+          "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "decision-device-not-yet-admitted-at-named-head",
+      "description": "the signer was admitted after the head it names",
+      "op": "decision.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "decision": {
+            "typ": "suveren-device-decision",
+            "v": 1,
+            "approver_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "chain_seq": 0,
+            "chain_head": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+            "proposal_id": "prop-1",
+            "mandate_id": "mand-1",
+            "action": "send_email",
+            "action_type": "send",
+            "decision": "commit",
+            "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "decided_at": 1794000200,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "4x0-aoKLKu4j3HUZAmNGRFBiC3Og9IZeLarNIICcP1q2_rEl4435MVlcXilt2rm4ZQ69oBFWJrltK5UnEqwMBQ"
+        },
+        "expect": {
+          "proposal_id": "prop-1",
+          "mandate_id": "mand-1",
+          "action": "send_email",
+          "action_type": "send",
+          "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      },
+      "expect": {
+        "error": "NOT_ACTIVE"
+      }
+    },
+    {
+      "id": "decision-fork",
+      "description": "named head hash differs",
+      "op": "decision.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "decision": {
+            "typ": "suveren-device-decision",
+            "v": 1,
+            "approver_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:5aa804e845d184f0aeb0045222b68060d49be2956855f7a831cb134980ffa66c",
+            "proposal_id": "prop-1",
+            "mandate_id": "mand-1",
+            "action": "send_email",
+            "action_type": "send",
+            "decision": "commit",
+            "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "decided_at": 1794000200,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "76ZbFFGafMFlnOlqhudbw40vdUea5mfPZsoenp3RoSyhKKgrbxIXgkLjWcuGJXq1pbFMRcjmdr_NlcE-EK9FDQ"
+        },
+        "expect": {
+          "proposal_id": "prop-1",
+          "mandate_id": "mand-1",
+          "action": "send_email",
+          "action_type": "send",
+          "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      },
+      "expect": {
+        "error": "FORK"
+      }
+    },
+    {
+      "id": "grant-by-computer-with-platform-check",
+      "description": "grant: device signature and platform check over the grant hash",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "grant",
+            "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "exKUkCsnsgdYhf-WUZvL7f7unts7v62wBDvO49b91m6w9s-9lrUkeqmIKZ6Vbt0Lv7xQOJiLddT73Q0483g1DA",
+          "check": {
+            "signature": "MEUCIARSSRyIGdGdwNhrQOUHhI5YuNb5I1psULuYW61tojl2AiEAv0g5_nDY9z1q_cdaj4-THAEU6SLY6XFih9bwmN9w5Vw"
+          }
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        },
+        "expect": {
+          "ops": [
+            "grant",
+            "change"
+          ],
+          "mandate_id": "mand-1",
+          "mandate_version": 2
+        }
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "grant-by-phone-with-webauthn-check",
+      "description": "grant by the phone with its passkey",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "change",
+            "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "mandate_id": "mand-1",
+            "mandate_version": 3,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "3HrS5pnwczI7JXXBpJJBat0xSGLQXlQV66Q9r1MvVbxzq6yQK8HtFM7LYmVHFmWtBUkHrkTwHCiCPa-d46mmCg",
+          "check": {
+            "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+            "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiNFo0UHV2SU83clFkUHVqbmZlQWxHYU1xbWJVVVBDeFdNTjNpeThwMktEYyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+            "signature": "MEUCIQDbJ_7R7qZ945sVHFEeQhxjlJ21C3TI-4miPRzE4I4WhAIgYqRM7D17qv_JqK79vBYlYb5xY8K2kUJsyiv4ftEE_0g"
+          }
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        },
+        "expect": {
+          "ops": [
+            "grant",
+            "change"
+          ],
+          "mandate_id": "mand-1",
+          "mandate_version": 3
+        }
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "grant-no-check",
+      "description": "device signature alone is refused",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "grant",
+            "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "exKUkCsnsgdYhf-WUZvL7f7unts7v62wBDvO49b91m6w9s-9lrUkeqmIKZ6Vbt0Lv7xQOJiLddT73Q0483g1DA"
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        },
+        "expect": {
+          "ops": [
+            "grant",
+            "change"
+          ],
+          "mandate_id": "mand-1",
+          "mandate_version": 2
+        }
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "grant-check-over-other-object",
+      "description": "check over another object",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "grant",
+            "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "exKUkCsnsgdYhf-WUZvL7f7unts7v62wBDvO49b91m6w9s-9lrUkeqmIKZ6Vbt0Lv7xQOJiLddT73Q0483g1DA",
+          "check": {
+            "signature": "MEUCIG2fi-vpALhvmnq-QW1dj43BT0RggyAjTprz0jzFH5-1AiEAgvahp_SgifMkv_DRyx2v2W8bLgTZeXfps6X0tCa1y5k"
+          }
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        },
+        "expect": {
+          "ops": [
+            "grant",
+            "change"
+          ],
+          "mandate_id": "mand-1",
+          "mandate_version": 2
+        }
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "grant-check-by-other-key",
+      "description": "check made with another device's check key",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "grant",
+            "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "exKUkCsnsgdYhf-WUZvL7f7unts7v62wBDvO49b91m6w9s-9lrUkeqmIKZ6Vbt0Lv7xQOJiLddT73Q0483g1DA",
+          "check": {
+            "signature": "MEUCIQDJ62yb-Y8je82EXRU8xXS3Pw91MjTUQ_R8u0ZzxAComQIgQF5ahuMocoDDR9QNStl8JkyGiPgYV-yguCo4F_3K_BM"
+          }
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        },
+        "expect": {
+          "ops": [
+            "grant",
+            "change"
+          ],
+          "mandate_id": "mand-1",
+          "mandate_version": 2
+        }
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "grant-device-without-check-key",
+      "description": "device H has no check key at seq 2",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 3
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "grant",
+            "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+            "chain_seq": 2,
+            "chain_head": "sha256:5aa804e845d184f0aeb0045222b68060d49be2956855f7a831cb134980ffa66c",
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "IxMVbR6fh87pvtvCuBMF4tJHWbPnYHXsdMUkiK40g6wEKd9HNsVUwaHv8HcjxO03-VxeZXy9DAgvPqTZT-bMBg",
+          "check": {
+            "signature": "MEYCIQCs0AHBdoO_pzbueVitlM6gXdvGd-ETXGE9vueVAa0izgIhAMfwrrrK7FdVzLByyVvJk_PryyZauPbmSIuJR60gxMRo"
+          }
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        },
+        "expect": {
+          "ops": [
+            "grant",
+            "change"
+          ],
+          "mandate_id": "mand-1",
+          "mandate_version": 2
+        }
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "grant-check-key-changed-since-named-head",
+      "description": "H got its check key at seq 3; a grant naming head 2 cannot use it",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 4
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "grant",
+            "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+            "chain_seq": 2,
+            "chain_head": "sha256:5aa804e845d184f0aeb0045222b68060d49be2956855f7a831cb134980ffa66c",
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "IxMVbR6fh87pvtvCuBMF4tJHWbPnYHXsdMUkiK40g6wEKd9HNsVUwaHv8HcjxO03-VxeZXy9DAgvPqTZT-bMBg",
+          "check": {
+            "signature": "MEQCICgriWy09diOVIrJbBUEdrHR3MLHqE_T9OonrcdoagKRAiBmah7rk54QTlK1L-jm2RY6GNXE6ui-je_dwclAS1cUUA"
+          }
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        },
+        "expect": {
+          "ops": [
+            "grant",
+            "change"
+          ],
+          "mandate_id": "mand-1",
+          "mandate_version": 2
+        }
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "grant-older-head-same-check-key",
+      "description": "older head, same check key then and now",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "grant",
+            "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "chain_seq": 3,
+            "chain_head": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "KiLtJnkp00Mp1dWj1dJ2etkm8k63yWU4meK4bPWnvRFDCv8jPjQnr-iM6dSJ7Ya9ESEfYJHoJLSu8MWtf-n6CQ",
+          "check": {
+            "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+            "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiN2ZNUDdWTnNqZlhGQm81cW1KZHJDakNqWkpnNTEwMlVqeUluQlBQU0VNbyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+            "signature": "MEQCIGRJbHW8kbTIL4PfjjsZq8zdoVTy3fy40C7g3uWyBXv1AiBuExTKk5AfVKmrkij83SF56q-6pTsZLGjaKpRzGWk38Q"
+          }
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        },
+        "expect": {
+          "ops": [
+            "grant",
+            "change"
+          ],
+          "mandate_id": "mand-1",
+          "mandate_version": 2
+        }
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "grant-revoke-without-check",
+      "description": "revoke by any active device needs no check",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 3
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "revoke",
+            "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+            "chain_seq": 2,
+            "chain_head": "sha256:5aa804e845d184f0aeb0045222b68060d49be2956855f7a831cb134980ffa66c",
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "6w5gF_QOKbydqOED6RxEsSJ-n1AXp8q2drVYmUIj3a7C3yPD6dBz9KTQRDUrbWTabe-i70uKYQ6D1JlsfLNFDg"
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        },
+        "expect": {
+          "ops": [
+            "revoke"
+          ],
+          "mandate_id": "mand-1",
+          "mandate_version": 2
+        }
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "grant-revoke-by-removed-device",
+      "description": "a removed device cannot revoke",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "revoke",
+            "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "qqUKraJOvCvZILPEnAHt3iP0VEvrD3EwLe6ouc8-V1IVMpw1OFatqyPDXGK2GpWrSzQzwuS-73CxIzZ_8AKECg"
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        },
+        "expect": {
+          "ops": [
+            "revoke"
+          ],
+          "mandate_id": "mand-1",
+          "mandate_version": 2
+        }
+      },
+      "expect": {
+        "error": "NOT_ACTIVE"
+      }
+    },
+    {
+      "id": "grant-mandate-field-differs",
+      "description": "the grant carries another bounds_hash than the mandate",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "grant",
+            "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "zFfwGwLfrjSqQTdRy_V4giXELwUoiV9BBaLMA0K_vi5u9KsKgVwtXS9COl6cE-Se7MBMrFiAG3UmoGFVc5IzAQ",
+          "check": {
+            "signature": "MEUCIQC7Q5HNRo3sX8drAB2diJW58EmbhOn6tyu-DfNaSm3LlgIgJvTWBLnh_c6rhZQW8hRpXFVOEgTMU2AHO_y7ffjFyO0"
+          }
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        },
+        "expect": {
+          "ops": [
+            "grant",
+            "change"
+          ],
+          "mandate_id": "mand-1",
+          "mandate_version": 2
+        }
+      },
+      "expect": {
+        "error": "GRANT_MISMATCH"
+      }
+    },
+    {
+      "id": "grant-wrong-owner",
+      "description": "owner_did is another person",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "grant",
+            "owner_did": "did:key:z6Mkr8zqp7Zyq9hyDURFPZimwk4zuiSxhCwm7CeGdfHxH4AH",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "OEFumu2XUopBKytv94yXmSltWUfauDkwyMDZKrgQ3A4TyFPtgNvngRo9iJA5Eqk6WYFijJkK8td8hWURrZ3mAg",
+          "check": {
+            "signature": "MEYCIQCNyiT4di0IQjFPOKO9Lc6PcxSrdJV5yrEtyHIBisTTlAIhALEpm2gDd3WcFrTx59IFwatzoGRvRt20nhvViKOc0HXI"
+          }
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        },
+        "expect": {
+          "ops": [
+            "grant",
+            "change"
+          ],
+          "mandate_id": "mand-1",
+          "mandate_version": 2
+        }
+      },
+      "expect": {
+        "error": "WRONG_ROOT"
+      }
+    },
+    {
+      "id": "grant-bad-signature",
+      "description": "device signature by another key",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "grant",
+            "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "S_T8beDEsve3dN0h1eJnHS9lzeJAz2ezOF5LGw68t2Y8ZKxNCE95R6BXRwhlSWrikXLJpLStx6sYJ5ufgPA3AQ",
+          "check": {
+            "signature": "MEUCIQDVUnbd6sd4d44LkpKXSBY87bvlX0eOwiYYiwN0XWHRsQIgVJUEJ0rg7qzLrgdszWNDBefX5Ha_P4zYJ6KpYJaHA04"
+          }
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        },
+        "expect": {
+          "ops": [
+            "grant",
+            "change"
+          ],
+          "mandate_id": "mand-1",
+          "mandate_version": 2
+        }
+      },
+      "expect": {
+        "error": "BAD_SIGNATURE"
+      }
+    },
+    {
+      "id": "grant-fork",
+      "description": "named head differs",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "grant",
+            "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "0bc6PUEXob7c2McRr8qD5IUS_K0bKqBKRDIcm9uKQqZnHmEjeSL-FfeGsZmRMGBl9YxnF4wXKyK-kOkMjs2QDA",
+          "check": {
+            "signature": "MEYCIQDkomncN6jY22BwcJtWeH-N-yXKiZC-QA8XFuRRbjK5TgIhAIlzT4UGBpJcl6i_tsM17kvZov-LiS8Cs37-_mrV0nd7"
+          }
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        },
+        "expect": {
+          "ops": [
+            "grant",
+            "change"
+          ],
+          "mandate_id": "mand-1",
+          "mandate_version": 2
+        }
+      },
+      "expect": {
+        "error": "FORK"
+      }
+    },
+    {
+      "id": "receipt-valid",
+      "description": "receipt signed by the receiving gateway, matches the grant",
+      "op": "receipt.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "receipt": {
+            "typ": "suveren-mandate-receipt",
+            "v": 1,
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "grant_hash": "sha256:87fdedea2877661acae9491a91d1cbd3ba1d57ef1113bb021118ca26756e4008",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "received_at": 1794000400
+          },
+          "sig": "5GOKwlPsRxjwODup8lBU4ZN0krmy6LLCFcv5wpr1OT6_PoT5zkBRL4-0vve-Ab-I6Gzi0YgvU_236DLT8kmqCw"
+        },
+        "grant": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000,
+          "typ": "suveren-mandate-grant",
+          "v": 1,
+          "op": "grant",
+          "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+          "chain_seq": 4,
+          "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+          "mandate_id": "mand-1",
+          "mandate_version": 2,
+          "granted_at": 1794000300,
+          "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+        },
+        "grant_mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        }
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "receipt-valid-without-grant",
+      "description": "receipt checked on its own",
+      "op": "receipt.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "receipt": {
+            "typ": "suveren-mandate-receipt",
+            "v": 1,
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "grant_hash": "sha256:87fdedea2877661acae9491a91d1cbd3ba1d57ef1113bb021118ca26756e4008",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "received_at": 1794000400
+          },
+          "sig": "5GOKwlPsRxjwODup8lBU4ZN0krmy6LLCFcv5wpr1OT6_PoT5zkBRL4-0vve-Ab-I6Gzi0YgvU_236DLT8kmqCw"
+        }
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "receipt-wrong-grant-hash",
+      "description": "grant_hash is of another grant",
+      "op": "receipt.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "receipt": {
+            "typ": "suveren-mandate-receipt",
+            "v": 1,
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "grant_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "received_at": 1794000400
+          },
+          "sig": "hrWaFp_CEQ8OQdzPzd2huYfMLXtNFmT4_DOKU1cazOtNP02wQ2ceb80cNArX6D-Lt3jPOQZ4ObWX8WT96FNQAg"
+        },
+        "grant": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000,
+          "typ": "suveren-mandate-grant",
+          "v": 1,
+          "op": "grant",
+          "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+          "chain_seq": 4,
+          "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+          "mandate_id": "mand-1",
+          "mandate_version": 2,
+          "granted_at": 1794000300,
+          "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+        },
+        "grant_mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        }
+      },
+      "expect": {
+        "error": "GRANT_MISMATCH"
+      }
+    },
+    {
+      "id": "receipt-wrong-version",
+      "description": "mandate_version differs from the grant",
+      "op": "receipt.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "receipt": {
+            "typ": "suveren-mandate-receipt",
+            "v": 1,
+            "mandate_id": "mand-1",
+            "mandate_version": 1,
+            "grant_hash": "sha256:87fdedea2877661acae9491a91d1cbd3ba1d57ef1113bb021118ca26756e4008",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "received_at": 1794000400
+          },
+          "sig": "wprLbYInFem4C1Jtz0CAB2EBtE_G8myUXaqzpTPHLoSJ30w5UCXGviABghmRGQb527z5JxOKcIV4wcX2yLj3DQ"
+        },
+        "grant": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000,
+          "typ": "suveren-mandate-grant",
+          "v": 1,
+          "op": "grant",
+          "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+          "chain_seq": 4,
+          "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+          "mandate_id": "mand-1",
+          "mandate_version": 2,
+          "granted_at": 1794000300,
+          "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+        },
+        "grant_mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        }
+      },
+      "expect": {
+        "error": "GRANT_MISMATCH"
+      }
+    },
+    {
+      "id": "receipt-removed-device",
+      "description": "receipt by a removed device",
+      "op": "receipt.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "receipt": {
+            "typ": "suveren-mandate-receipt",
+            "v": 1,
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "grant_hash": "sha256:87fdedea2877661acae9491a91d1cbd3ba1d57ef1113bb021118ca26756e4008",
+            "key_id": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "received_at": 1794000400
+          },
+          "sig": "gmW2jgiqFNgkoCkSDmDdUXVUgmXocsAWmXRRR38_yD-okFxum-sm0Rys8UJb-bVr8a5kAnvmPpEvvkctcBFgBg"
+        }
+      },
+      "expect": {
+        "error": "NOT_ACTIVE"
+      }
+    },
+    {
+      "id": "receipt-bad-signature",
+      "description": "signature by another key",
+      "op": "receipt.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "receipt": {
+            "typ": "suveren-mandate-receipt",
+            "v": 1,
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "grant_hash": "sha256:87fdedea2877661acae9491a91d1cbd3ba1d57ef1113bb021118ca26756e4008",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "received_at": 1794000400
+          },
+          "sig": "blIpWDbqWj3bxGSKFWMNeNj0DjJmP38yXIFyBbdkYpPMqHFxC1IXA1E0AVvU3OrzONz5PdSDZaC74ah-E_86Cw"
+        }
+      },
+      "expect": {
+        "error": "BAD_SIGNATURE"
+      }
+    },
+    {
+      "id": "grant-revoke-read-as-grant",
+      "description": "a revoke (no check needed) read by a caller that expects grant or change",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 3
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "revoke",
+            "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "ti6Gf6LzOv5i1daxZC4WIdVDMHhGsqV7iX5xCRm3Zwk",
+            "chain_seq": 2,
+            "chain_head": "sha256:5aa804e845d184f0aeb0045222b68060d49be2956855f7a831cb134980ffa66c",
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "6w5gF_QOKbydqOED6RxEsSJ-n1AXp8q2drVYmUIj3a7C3yPD6dBz9KTQRDUrbWTabe-i70uKYQ6D1JlsfLNFDg"
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        },
+        "expect": {
+          "ops": [
+            "grant",
+            "change"
+          ],
+          "mandate_id": "mand-1",
+          "mandate_version": 2
+        }
+      },
+      "expect": {
+        "error": "GRANT_MISMATCH"
+      }
+    },
+    {
+      "id": "grant-for-other-mandate-id",
+      "description": "a genuine grant of mand-1 presented for mand-2",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "grant",
+            "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "exKUkCsnsgdYhf-WUZvL7f7unts7v62wBDvO49b91m6w9s-9lrUkeqmIKZ6Vbt0Lv7xQOJiLddT73Q0483g1DA",
+          "check": {
+            "signature": "MEUCIARSSRyIGdGdwNhrQOUHhI5YuNb5I1psULuYW61tojl2AiEAv0g5_nDY9z1q_cdaj4-THAEU6SLY6XFih9bwmN9w5Vw"
+          }
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        },
+        "expect": {
+          "ops": [
+            "grant",
+            "change"
+          ],
+          "mandate_id": "mand-2",
+          "mandate_version": 2
+        }
+      },
+      "expect": {
+        "error": "GRANT_MISMATCH"
+      }
+    },
+    {
+      "id": "grant-for-other-version",
+      "description": "a genuine grant of version 2 presented for version 1",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "grant",
+            "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "exKUkCsnsgdYhf-WUZvL7f7unts7v62wBDvO49b91m6w9s-9lrUkeqmIKZ6Vbt0Lv7xQOJiLddT73Q0483g1DA",
+          "check": {
+            "signature": "MEUCIARSSRyIGdGdwNhrQOUHhI5YuNb5I1psULuYW61tojl2AiEAv0g5_nDY9z1q_cdaj4-THAEU6SLY6XFih9bwmN9w5Vw"
+          }
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        },
+        "expect": {
+          "ops": [
+            "grant",
+            "change"
+          ],
+          "mandate_id": "mand-1",
+          "mandate_version": 1
+        }
+      },
+      "expect": {
+        "error": "GRANT_MISMATCH"
+      }
+    },
+    {
+      "id": "grant-expect-missing",
+      "description": "the caller gives no expectation",
+      "op": "grant.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "grant": {
+            "profile_id": "email@0.9",
+            "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "commitment_mode": "review",
+            "above_cap_approvers": [
+              "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+            ],
+            "above_cap_approvals": 1,
+            "expires_at": 1794100000,
+            "typ": "suveren-mandate-grant",
+            "v": 1,
+            "op": "grant",
+            "owner_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "mandate_id": "mand-1",
+            "mandate_version": 2,
+            "granted_at": 1794000300,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "exKUkCsnsgdYhf-WUZvL7f7unts7v62wBDvO49b91m6w9s-9lrUkeqmIKZ6Vbt0Lv7xQOJiLddT73Q0483g1DA",
+          "check": {
+            "signature": "MEUCIARSSRyIGdGdwNhrQOUHhI5YuNb5I1psULuYW61tojl2AiEAv0g5_nDY9z1q_cdaj4-THAEU6SLY6XFih9bwmN9w5Vw"
+          }
+        },
+        "mandate_fields": {
+          "profile_id": "email@0.9",
+          "profile_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bounds_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "scope_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "commitment_mode": "review",
+          "above_cap_approvers": [
+            "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+          ],
+          "above_cap_approvals": 1,
+          "expires_at": 1794100000
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "decision-expect-missing",
+      "description": "the caller gives no expectation",
+      "op": "decision.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "decision": {
+            "typ": "suveren-device-decision",
+            "v": 1,
+            "approver_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "proposal_id": "prop-1",
+            "mandate_id": "mand-1",
+            "action": "send_email",
+            "action_type": "send",
+            "decision": "commit",
+            "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "decided_at": 1794000200,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "utrWFJC9NZzLPeTGUneuKKRhfmWyWk-LXJ6bXds7gJ5amxjUZLYXDDDmpEbuuLUwK_oeAL_x7CY9S8G86Br5CQ"
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "decision-expect-incomplete",
+      "description": "only some proposal members are given",
+      "op": "decision.verify",
+      "input": {
+        "chain": {
+          "ref": "main",
+          "count": 5
+        },
+        "envelope": {
+          "decision": {
+            "typ": "suveren-device-decision",
+            "v": 1,
+            "approver_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "chain_seq": 4,
+            "chain_head": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+            "proposal_id": "prop-1",
+            "mandate_id": "mand-1",
+            "action": "send_email",
+            "action_type": "send",
+            "decision": "commit",
+            "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "proposal_content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "decided_at": 1794000200,
+            "nonce": "MjIyMjIyMjIyMjIyMjIyMg"
+          },
+          "sig": "utrWFJC9NZzLPeTGUneuKKRhfmWyWk-LXJ6bXds7gJ5amxjUZLYXDDDmpEbuuLUwK_oeAL_x7CY9S8G86Br5CQ"
+        },
+        "expect": {
+          "proposal_id": "prop-1"
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    }
+  ]
+}

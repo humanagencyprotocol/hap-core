@@ -1,0 +1,398 @@
+{
+  "suite": "device-keys/checks",
+  "description": "Plan 3.1 checks: platform and webauthn. Encodings: DER signatures; platform pub = SEC1 uncompressed point, base64url; webauthn pub = COSE_Key CBOR, base64url.",
+  "cases": [
+    {
+      "id": "platform-valid",
+      "description": "ECDSA P-256 over the 32 digest bytes; DER signature; SEC1 uncompressed key",
+      "op": "check.verify",
+      "input": {
+        "check_key": {
+          "type": "platform",
+          "pub": "BIFa7QD3ImQvKol9LZUS_Pld7l40j4QtflI8GWsYNddB_8tmM3jICpEoqXN6QzbYYB9mTgMhlHRuPrizqWVC8bA"
+        },
+        "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+        "proof": {
+          "signature": "MEYCIQCNpCT3K7q_ktd5yQEx1-D-91zfvrEcgvHHalXgSjPL_AIhAI5xK5xPKqS781dQB_FEmuTQlVUccA3PuyyKW3FB23Mw"
+        }
+      },
+      "expect": {
+        "valid": true
+      }
+    },
+    {
+      "id": "platform-wrong-hash",
+      "description": "signature over another hash",
+      "op": "check.verify",
+      "input": {
+        "check_key": {
+          "type": "platform",
+          "pub": "BIFa7QD3ImQvKol9LZUS_Pld7l40j4QtflI8GWsYNddB_8tmM3jICpEoqXN6QzbYYB9mTgMhlHRuPrizqWVC8bA"
+        },
+        "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+        "proof": {
+          "signature": "MEUCIEqkHgCjxgWSec6aAckSqhbLK-05RDM7KM1gxA-1dDl6AiEAx1mzXOxExedIHclrr5COV6fPKoPx4ocJVMxsRzVRGMU"
+        }
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "platform-wrong-key",
+      "description": "signature by another key",
+      "op": "check.verify",
+      "input": {
+        "check_key": {
+          "type": "platform",
+          "pub": "BIFa7QD3ImQvKol9LZUS_Pld7l40j4QtflI8GWsYNddB_8tmM3jICpEoqXN6QzbYYB9mTgMhlHRuPrizqWVC8bA"
+        },
+        "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+        "proof": {
+          "signature": "MEUCIQCdAqxNfyz0geNs4S7SCOJO13BuOXvtoFZ1HTW7QWG7AgIgOnpBbQk1joukG6f6tq67VXknt1cDk2mSCR1ocdgD7v8"
+        }
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "platform-raw-signature-refused",
+      "description": "raw r||s is not accepted on the wire; DER only",
+      "op": "check.verify",
+      "input": {
+        "check_key": {
+          "type": "platform",
+          "pub": "BIFa7QD3ImQvKol9LZUS_Pld7l40j4QtflI8GWsYNddB_8tmM3jICpEoqXN6QzbYYB9mTgMhlHRuPrizqWVC8bA"
+        },
+        "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+        "proof": {
+          "signature": "QoK0oU8s75QqIwk0JH5-8q-2c9-lzeto8YJIkvvRgjWAmD5PXvxPKGNwefqiJB_OBhQuCeGdrDYE4YaN2U53Fg"
+        }
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "platform-der-trailing-byte",
+      "description": "DER with a trailing byte",
+      "op": "check.verify",
+      "input": {
+        "check_key": {
+          "type": "platform",
+          "pub": "BIFa7QD3ImQvKol9LZUS_Pld7l40j4QtflI8GWsYNddB_8tmM3jICpEoqXN6QzbYYB9mTgMhlHRuPrizqWVC8bA"
+        },
+        "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+        "proof": {
+          "signature": "MEUCIEKCtKFPLO-UKiMJNCR-fvKvtnPfpc3raPGCSJL70YI1AiEAgJg-T178TyhjcHn6oiQfzgYULgnhnaw2BOGGjdlOdxYA"
+        }
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "platform-missing-proof-member",
+      "description": "proof of the wrong type for a platform key",
+      "op": "check.verify",
+      "input": {
+        "check_key": {
+          "type": "platform",
+          "pub": "BIFa7QD3ImQvKol9LZUS_Pld7l40j4QtflI8GWsYNddB_8tmM3jICpEoqXN6QzbYYB9mTgMhlHRuPrizqWVC8bA"
+        },
+        "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+        "proof": {
+          "authenticatorData": "AA",
+          "clientDataJSON": "AA",
+          "signature": "AA"
+        }
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "platform-key-not-uncompressed",
+      "description": "pub is not a 65-byte 0x04 point",
+      "op": "check.verify",
+      "input": {
+        "check_key": {
+          "type": "platform",
+          "pub": "gVrtAPciZC8qiX0tlRL8-V3uXjSPhC1-UjwZaxg110H_y2YzeMgKkSipc3pDNthgH2ZOAyGUdG4-uLOpZULxsA"
+        },
+        "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+        "proof": {
+          "signature": "MEUCIBgxPMhC2Ndjap_1VhS65PfPZQlpLgBXf2XzhST95-KvAiEAsUuWIo0fRGgEbvEK2XMsjlOhqgfwfCN_urFJr8MQ6rI"
+        }
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "webauthn-valid",
+      "description": "passkey assertion: UP+UV, webauthn.get, challenge = hash bytes, ES256 over authData||sha256(clientDataJSON)",
+      "op": "check.verify",
+      "input": {
+        "check_key": {
+          "type": "webauthn",
+          "rp_id": "approve.suveren.ai",
+          "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+          "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+        },
+        "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+        "proof": {
+          "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiNkdzUktSdF9idlpuczdSWTY4VE00bWVBRWVNdW9TcHBSSmljYm96TDJXdyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+          "signature": "MEUCIDF2KrBo1gkLuH3huE4DI5f9e4YHG3qQXFMzW7lk0pN4AiEAsJZ4Z0exM8GvfCGB4tdnsixegA__W6A5tdqzhSWKhI8"
+        }
+      },
+      "expect": {
+        "valid": true
+      }
+    },
+    {
+      "id": "webauthn-no-uv",
+      "description": "user-verified flag not set (flags = UP only)",
+      "op": "check.verify",
+      "input": {
+        "check_key": {
+          "type": "webauthn",
+          "rp_id": "approve.suveren.ai",
+          "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+          "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+        },
+        "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+        "proof": {
+          "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34BAAAAAQ",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiNkdzUktSdF9idlpuczdSWTY4VE00bWVBRWVNdW9TcHBSSmljYm96TDJXdyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+          "signature": "MEUCIQDnUJzkhSgNgvFQR0PJtehRvi0VMRKqcTCZDooV1FluygIgCmNaggJ97z0BgwtwyadEt5-48x4riErBY4ZKath_xec"
+        }
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "webauthn-no-up",
+      "description": "user-present flag not set (flags = UV only)",
+      "op": "check.verify",
+      "input": {
+        "check_key": {
+          "type": "webauthn",
+          "rp_id": "approve.suveren.ai",
+          "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+          "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+        },
+        "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+        "proof": {
+          "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34EAAAAAQ",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiNkdzUktSdF9idlpuczdSWTY4VE00bWVBRWVNdW9TcHBSSmljYm96TDJXdyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+          "signature": "MEUCIQDECA5P66vQ4bC2_aiqxIoJup-hSG-cek7DCJD0AwLrMAIgJfEoi3Ei_zzgogjqc-SKsBgbSOnTU_Io1Ne8dVnryws"
+        }
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "webauthn-wrong-rp-hash",
+      "description": "rpIdHash is for another relying party",
+      "op": "check.verify",
+      "input": {
+        "check_key": {
+          "type": "webauthn",
+          "rp_id": "approve.suveren.ai",
+          "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+          "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+        },
+        "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+        "proof": {
+          "authenticatorData": "nBgN4M1pnueIl8R8_bPn7h11kG4xt3RqR0fepTaQmDcFAAAAAQ",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiNkdzUktSdF9idlpuczdSWTY4VE00bWVBRWVNdW9TcHBSSmljYm96TDJXdyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+          "signature": "MEUCIQDccBgOPWr3Z_RHb5tBQf4kVqKva_KNDfbNi7QPN2TOMgIgdclhC0bgP7wWGTkUtBmZRMJ4FhG70jHyfjbwbv5bOSg"
+        }
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "webauthn-wrong-type",
+      "description": "clientDataJSON.type is webauthn.create",
+      "op": "check.verify",
+      "input": {
+        "check_key": {
+          "type": "webauthn",
+          "rp_id": "approve.suveren.ai",
+          "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+          "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+        },
+        "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+        "proof": {
+          "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiNkdzUktSdF9idlpuczdSWTY4VE00bWVBRWVNdW9TcHBSSmljYm96TDJXdyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+          "signature": "MEUCIDz_c75TpUGOuCklAuWhTAsKaD8py1lvALMpZgaHhleTAiEAihrtDUcDRE-zfm4ht9PlhmYxufBpx_xREi-SZxuBqww"
+        }
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "webauthn-wrong-challenge",
+      "description": "challenge is the hash of another object",
+      "op": "check.verify",
+      "input": {
+        "check_key": {
+          "type": "webauthn",
+          "rp_id": "approve.suveren.ai",
+          "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+          "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+        },
+        "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+        "proof": {
+          "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoidzd0cGIyUWI4UFBMR3gxMTlsdHQ1eTU5LXF2SnQtNkdZUEthTUt3V3BkRSIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+          "signature": "MEUCIFMc1tALffNiWvlzvzg_6u-m0xs2FhRLeTWyGzpQekvqAiEAgluNjqeAFS3chKZYVZZ5POBb2TceObvEUCyn0qLuOyE"
+        }
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "webauthn-challenge-hex-not-base64url",
+      "description": "challenge written as the hash string instead of base64url bytes",
+      "op": "check.verify",
+      "input": {
+        "check_key": {
+          "type": "webauthn",
+          "rp_id": "approve.suveren.ai",
+          "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+          "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+        },
+        "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+        "proof": {
+          "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoic2hhMjU2OmU4NmIxMTI5MWI3ZjZlZjY2N2IzYjQ1OGViYzRjY2UyNjc4MDExZTMyZWExMmE2OTQ0OTg5YzZlOGNjYmQ5NmMiLCJvcmlnaW4iOiJodHRwczovL2FwcHJvdmUuc3V2ZXJlbi5haSJ9",
+          "signature": "MEYCIQCRc3GmD4IvpjQrxokjNxk_tyewgabTf6wh72ChyNGOhAIhAOINKMJbifRnWYSWWFw7zAFXu56ks0j2Um0rz467VyQw"
+        }
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "webauthn-wrong-key",
+      "description": "signature by another passkey",
+      "op": "check.verify",
+      "input": {
+        "check_key": {
+          "type": "webauthn",
+          "rp_id": "approve.suveren.ai",
+          "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+          "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+        },
+        "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+        "proof": {
+          "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiNkdzUktSdF9idlpuczdSWTY4VE00bWVBRWVNdW9TcHBSSmljYm96TDJXdyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+          "signature": "MEQCIELyDbyrkcs09IZf6p4-Wofk2dtJmYBAQcaTCiCV_6FUAiAF62cbWwmb0SAaWBLhFGKxQPOpU7NMln3-XTN842C1fQ"
+        }
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "webauthn-verified-for-other-hash",
+      "description": "valid assertion presented for another hash",
+      "op": "check.verify",
+      "input": {
+        "check_key": {
+          "type": "webauthn",
+          "rp_id": "approve.suveren.ai",
+          "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+          "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+        },
+        "hash": "sha256:c3bb696f641bf0f3cb1b1d75f65b6de72e7dfaabc9b7ee8660f29a30ac16a5d1",
+        "proof": {
+          "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiNkdzUktSdF9idlpuczdSWTY4VE00bWVBRWVNdW9TcHBSSmljYm96TDJXdyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+          "signature": "MEUCIFROGXjzzLf5ukfcVtQJCXICP5bEX8Gw4IgSbHtNHGimAiEAsf_BwbdDeEX9pMn4ygJr6iAnMwC799KbQZ0GR9e1NMI"
+        }
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "webauthn-cose-wrong-alg",
+      "description": "COSE key with alg -8 instead of -7",
+      "op": "check.verify",
+      "input": {
+        "check_key": {
+          "type": "webauthn",
+          "rp_id": "approve.suveren.ai",
+          "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+          "pub": "pQECAycgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+        },
+        "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c",
+        "proof": {
+          "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiNkdzUktSdF9idlpuczdSWTY4VE00bWVBRWVNdW9TcHBSSmljYm96TDJXdyIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+          "signature": "MEQCIFDAGibmHIpVPDgJXAxxTG12Zqz0hwYbEFbIIKt-SH9VAiAh3VIbGCK3NyCnvDOlWKTyJDqE4Jzit-j27h3l1z3rqg"
+        }
+      },
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "id": "cose-canonical",
+      "description": "CTAP2 canonical COSE_Key",
+      "op": "cose.to_point",
+      "input": {
+        "cose_hex": "a50102032620012158209c06bf1ae831220748a4dd3376af23ec17d48e5bcabcfda7d66f9ad0b74e61a322582039f2db4eeba6f65c40a594c78c83e36f0b6d59ae1a8c5ec5f03c01f0d8b03a21"
+      },
+      "expect": {
+        "point_hex": "049c06bf1ae831220748a4dd3376af23ec17d48e5bcabcfda7d66f9ad0b74e61a339f2db4eeba6f65c40a594c78c83e36f0b6d59ae1a8c5ec5f03c01f0d8b03a21"
+      }
+    },
+    {
+      "id": "cose-non-minimal-integer",
+      "description": "kty written as 0x18 0x02",
+      "op": "cose.to_point",
+      "input": {
+        "cose_hex": "a5011802032620012158209c06bf1ae831220748a4dd3376af23ec17d48e5bcabcfda7d66f9ad0b74e61a322582039f2db4eeba6f65c40a594c78c83e36f0b6d59ae1a8c5ec5f03c01f0d8b03a21"
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "cose-map-order",
+      "description": "y before x",
+      "op": "cose.to_point",
+      "input": {
+        "cose_hex": "a501020326200122582039f2db4eeba6f65c40a594c78c83e36f0b6d59ae1a8c5ec5f03c01f0d8b03a212158209c06bf1ae831220748a4dd3376af23ec17d48e5bcabcfda7d66f9ad0b74e61a3"
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "cose-extra-member",
+      "description": "six members",
+      "op": "cose.to_point",
+      "input": {
+        "cose_hex": "a60102032620012158209c06bf1ae831220748a4dd3376af23ec17d48e5bcabcfda7d66f9ad0b74e61a322582039f2db4eeba6f65c40a594c78c83e36f0b6d59ae1a8c5ec5f03c01f0d8b03a210401"
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    }
+  ]
+}
