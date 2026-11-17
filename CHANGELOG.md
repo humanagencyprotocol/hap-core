@@ -1,6 +1,22 @@
 # Changelog
 
-## 0.13.0 — unreleased (v0.8 wire)
+## 0.14.0 — 2026-11-17 (experimental device keys)
+
+New subpath export `@humanagencyp/hap-core/device-keys` (also `deviceKeys`
+from the main entry), marked **@experimental**: the protocol does not define
+device enrolment yet, so its API may change in any minor release.
+
+- Device chain: entry format, hashing, `verifyChain` (root DID, seq, prev,
+  signer rights, check keys, stored head), `validateEntryShape`.
+- Check keys: WebAuthn passkey and platform P-256; strict Ed25519.
+- Recovery code and root key (`deriveRootKey`), sign-in (`buildSignin`,
+  `verifySignin`, `checkNamedHead`), decision, mandate grant and receipt
+  objects, pairing QR, MACs, comparison and identity codes.
+- 195 JSON test vectors with a runner for Node and browsers.
+
+Existing exports and behaviour are unchanged.
+
+## 0.13.0 — 2026-11-04 (v0.8 wire)
 
 HAP v0.8 — a **re-grant release** (protocol.md → *Migration from v0.7*). No
 field is renamed or retired; every new signed field is optional or
