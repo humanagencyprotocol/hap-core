@@ -15,6 +15,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
+    },
+    "./device-keys": {
+      "types": "./dist/device-keys/index.d.ts",
+      "import": "./dist/device-keys/index.mjs",
+      "require": "./dist/device-keys/index.js"
     }
   },
   "files": [
@@ -22,8 +27,8 @@
     "src"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts",
-    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "build": "tsup src/index.ts src/device-keys/index.ts --format cjs,esm --dts",
+    "dev": "tsup src/index.ts src/device-keys/index.ts --format cjs,esm --dts --watch",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

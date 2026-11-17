@@ -1,0 +1,757 @@
+{
+  "suite": "device-keys/pairing",
+  "description": "Plan 4.3 and the identity code of 4.4",
+  "fixtures": {
+    "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+  },
+  "cases": [
+    {
+      "id": "derive",
+      "op": "pairing.derive",
+      "input": {
+        "secret": "QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkI"
+      },
+      "expect": {
+        "pairing_id": "WCqd4H3Nztwg87eEh8rk8g",
+        "mac_key_hex": "5affccc0df9d392d9d86953aa304dd0978af8444ce1235e66ed55dcdf4741a1f"
+      }
+    },
+    {
+      "id": "qr-admitter",
+      "op": "pairing.qr.decode",
+      "input": {
+        "text": "SUVEREN-PAIR-1:eyJhc19rZXkiOiJlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmIiwiYXNfdXJsIjoiaHR0cHM6Ly9zdXZlcmVuLmFpIiwiZXhwaXJlc19hdCI6MTc5NDAwMDYwMCwiaGVhZCI6eyJoYXNoIjoic2hhMjU2OmU4NmIxMTI5MWI3ZjZlZjY2N2IzYjQ1OGViYzRjY2UyNjc4MDExZTMyZWExMmE2OTQ0OTg5YzZlOGNjYmQ5NmMiLCJzZXEiOjN9LCJrZXlfaWQiOiJOSFVQbUwxWl9QeVViYVJhcXI2VE8tRlVwTFVKVGh4S3YwS0daUVh6eVg0Iiwicm9vdF9kaWQiOiJkaWQ6a2V5Ono2TWtvemhQYWlMSDJWenVjTmhyVGFONkM5SlZ3NDJ6akdZUW54dE52cHU2MW9EWSIsInNlY3JldCI6IlFrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0kiLCJzaG93bl9ieSI6ImFkbWl0dGVyIiwidiI6MX0",
+        "now": 1794000010
+      },
+      "expect": {
+        "qr": {
+          "v": 1,
+          "as_url": "https://suveren.ai",
+          "as_key": "efefefefefefefefefefefefefefefefefefefefefefefefefefefefefefefef",
+          "shown_by": "admitter",
+          "secret": "QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkI",
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "head": {
+            "seq": 3,
+            "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c"
+          },
+          "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+          "expires_at": 1794000600
+        },
+        "text": "SUVEREN-PAIR-1:eyJhc19rZXkiOiJlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmIiwiYXNfdXJsIjoiaHR0cHM6Ly9zdXZlcmVuLmFpIiwiZXhwaXJlc19hdCI6MTc5NDAwMDYwMCwiaGVhZCI6eyJoYXNoIjoic2hhMjU2OmU4NmIxMTI5MWI3ZjZlZjY2N2IzYjQ1OGViYzRjY2UyNjc4MDExZTMyZWExMmE2OTQ0OTg5YzZlOGNjYmQ5NmMiLCJzZXEiOjN9LCJrZXlfaWQiOiJOSFVQbUwxWl9QeVViYVJhcXI2VE8tRlVwTFVKVGh4S3YwS0daUVh6eVg0Iiwicm9vdF9kaWQiOiJkaWQ6a2V5Ono2TWtvemhQYWlMSDJWenVjTmhyVGFONkM5SlZ3NDJ6akdZUW54dE52cHU2MW9EWSIsInNlY3JldCI6IlFrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0kiLCJzaG93bl9ieSI6ImFkbWl0dGVyIiwidiI6MX0"
+      }
+    },
+    {
+      "id": "qr-joiner",
+      "op": "pairing.qr.decode",
+      "input": {
+        "text": "SUVEREN-PAIR-1:eyJhc19rZXkiOiJlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmIiwiYXNfdXJsIjoiaHR0cHM6Ly9zdXZlcmVuLmFpIiwiZXhwaXJlc19hdCI6MTc5NDAwMDYwMCwiaGVhZCI6bnVsbCwia2V5X2lkIjpudWxsLCJyb290X2RpZCI6bnVsbCwic2VjcmV0IjoiUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSSIsInNob3duX2J5Ijoiam9pbmVyIiwidiI6MX0",
+        "now": 1794000010
+      },
+      "expect": {
+        "qr": {
+          "v": 1,
+          "as_url": "https://suveren.ai",
+          "as_key": "efefefefefefefefefefefefefefefefefefefefefefefefefefefefefefefef",
+          "shown_by": "joiner",
+          "secret": "QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkI",
+          "root_did": null,
+          "head": null,
+          "key_id": null,
+          "expires_at": 1794000600
+        },
+        "text": "SUVEREN-PAIR-1:eyJhc19rZXkiOiJlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmIiwiYXNfdXJsIjoiaHR0cHM6Ly9zdXZlcmVuLmFpIiwiZXhwaXJlc19hdCI6MTc5NDAwMDYwMCwiaGVhZCI6bnVsbCwia2V5X2lkIjpudWxsLCJyb290X2RpZCI6bnVsbCwic2VjcmV0IjoiUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSSIsInNob3duX2J5Ijoiam9pbmVyIiwidiI6MX0"
+      }
+    },
+    {
+      "id": "qr-expired",
+      "op": "pairing.qr.decode",
+      "input": {
+        "text": "SUVEREN-PAIR-1:eyJhc19rZXkiOiJlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmIiwiYXNfdXJsIjoiaHR0cHM6Ly9zdXZlcmVuLmFpIiwiZXhwaXJlc19hdCI6MTc5NDAwMDYwMCwiaGVhZCI6eyJoYXNoIjoic2hhMjU2OmU4NmIxMTI5MWI3ZjZlZjY2N2IzYjQ1OGViYzRjY2UyNjc4MDExZTMyZWExMmE2OTQ0OTg5YzZlOGNjYmQ5NmMiLCJzZXEiOjN9LCJrZXlfaWQiOiJOSFVQbUwxWl9QeVViYVJhcXI2VE8tRlVwTFVKVGh4S3YwS0daUVh6eVg0Iiwicm9vdF9kaWQiOiJkaWQ6a2V5Ono2TWtvemhQYWlMSDJWenVjTmhyVGFONkM5SlZ3NDJ6akdZUW54dE52cHU2MW9EWSIsInNlY3JldCI6IlFrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0kiLCJzaG93bl9ieSI6ImFkbWl0dGVyIiwidiI6MX0",
+        "now": 1794000601
+      },
+      "expect": {
+        "error": "QR_EXPIRED"
+      }
+    },
+    {
+      "id": "qr-wrong-prefix",
+      "op": "pairing.qr.decode",
+      "input": {
+        "text": "SUVEREN-PAIR-2:eyJhc19rZXkiOiJlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmIiwiYXNfdXJsIjoiaHR0cHM6Ly9zdXZlcmVuLmFpIiwiZXhwaXJlc19hdCI6MTc5NDAwMDYwMCwiaGVhZCI6eyJoYXNoIjoic2hhMjU2OmU4NmIxMTI5MWI3ZjZlZjY2N2IzYjQ1OGViYzRjY2UyNjc4MDExZTMyZWExMmE2OTQ0OTg5YzZlOGNjYmQ5NmMiLCJzZXEiOjN9LCJrZXlfaWQiOiJOSFVQbUwxWl9QeVViYVJhcXI2VE8tRlVwTFVKVGh4S3YwS0daUVh6eVg0Iiwicm9vdF9kaWQiOiJkaWQ6a2V5Ono2TWtvemhQYWlMSDJWenVjTmhyVGFONkM5SlZ3NDJ6akdZUW54dE52cHU2MW9EWSIsInNlY3JldCI6IlFrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0kiLCJzaG93bl9ieSI6ImFkbWl0dGVyIiwidiI6MX0",
+        "now": 1794000010
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "qr-not-canonical-json",
+      "description": "members not in JCS order",
+      "op": "pairing.qr.decode",
+      "input": {
+        "text": "SUVEREN-PAIR-1:eyJ2IjoxLCJhc191cmwiOiJodHRwczovL3N1dmVyZW4uYWkiLCJhc19rZXkiOiJlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmIiwic2hvd25fYnkiOiJhZG1pdHRlciIsInNlY3JldCI6IlFrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0kiLCJyb290X2RpZCI6ImRpZDprZXk6ejZNa296aFBhaUxIMlZ6dWNOaHJUYU42QzlKVnc0MnpqR1lRbnh0TnZwdTYxb0RZIiwiaGVhZCI6eyJzZXEiOjMsImhhc2giOiJzaGEyNTY6ZTg2YjExMjkxYjdmNmVmNjY3YjNiNDU4ZWJjNGNjZTI2NzgwMTFlMzJlYTEyYTY5NDQ5ODljNmU4Y2NiZDk2YyJ9LCJrZXlfaWQiOiJOSFVQbUwxWl9QeVViYVJhcXI2VE8tRlVwTFVKVGh4S3YwS0daUVh6eVg0IiwiZXhwaXJlc19hdCI6MTc5NDAwMDYwMH0",
+        "now": 1794000010
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "qr-unknown-member",
+      "op": "pairing.qr.decode",
+      "input": {
+        "text": "SUVEREN-PAIR-1:eyJhc19rZXkiOiJlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmIiwiYXNfdXJsIjoiaHR0cHM6Ly9zdXZlcmVuLmFpIiwiZXhwaXJlc19hdCI6MTc5NDAwMDYwMCwiZXh0cmEiOjEsImhlYWQiOnsiaGFzaCI6InNoYTI1NjplODZiMTEyOTFiN2Y2ZWY2NjdiM2I0NThlYmM0Y2NlMjY3ODAxMWUzMmVhMTJhNjk0NDk4OWM2ZThjY2JkOTZjIiwic2VxIjozfSwia2V5X2lkIjoiTkhVUG1MMVpfUHlVYmFSYXFyNlRPLUZVcExVSlRoeEt2MEtHWlFYenlYNCIsInJvb3RfZGlkIjoiZGlkOmtleTp6Nk1rb3poUGFpTEgyVnp1Y05oclRhTjZDOUpWdzQyempHWVFueHROdnB1NjFvRFkiLCJzZWNyZXQiOiJRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtJIiwic2hvd25fYnkiOiJhZG1pdHRlciIsInYiOjF9",
+        "now": 1794000010
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "qr-joiner-with-root",
+      "description": "a joiner QR carries no chain facts",
+      "op": "pairing.qr.decode",
+      "input": {
+        "text": "SUVEREN-PAIR-1:eyJhc19rZXkiOiJlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmIiwiYXNfdXJsIjoiaHR0cHM6Ly9zdXZlcmVuLmFpIiwiZXhwaXJlc19hdCI6MTc5NDAwMDYwMCwiaGVhZCI6bnVsbCwia2V5X2lkIjpudWxsLCJyb290X2RpZCI6ImRpZDprZXk6ejZNa296aFBhaUxIMlZ6dWNOaHJUYU42QzlKVnc0MnpqR1lRbnh0TnZwdTYxb0RZIiwic2VjcmV0IjoiUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSSIsInNob3duX2J5Ijoiam9pbmVyIiwidiI6MX0",
+        "now": 1794000010
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "mac-hello",
+      "description": "mac = HMAC-SHA256(mac_key, \"hello\" || 0x00 || JCS(body)), base64url",
+      "op": "pairing.message.verify",
+      "input": {
+        "mac_key_hex": "5affccc0df9d392d9d86953aa304dd0978af8444ce1235e66ed55dcdf4741a1f",
+        "message": {
+          "kind": "hello",
+          "body": {
+            "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "head": {
+              "seq": 3,
+              "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c"
+            },
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "as_key": "efefefefefefefefefefefefefefefefefefefefefefefefefefefefefefefef"
+          },
+          "mac": "RzAABhOkxV4eSGv2H2392aIZ5RpniM9LKdtQdmz3V0Q"
+        }
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "mac-wrong",
+      "op": "pairing.message.verify",
+      "input": {
+        "mac_key_hex": "5affccc0df9d392d9d86953aa304dd0978af8444ce1235e66ed55dcdf4741a1f",
+        "message": {
+          "kind": "hello",
+          "body": {
+            "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "head": {
+              "seq": 3,
+              "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c"
+            },
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "as_key": "efefefefefefefefefefefefefefefefefefefefefefefefefefefefefefefef"
+          },
+          "mac": "AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE"
+        }
+      },
+      "expect": {
+        "error": "BAD_MAC"
+      }
+    },
+    {
+      "id": "mac-body-changed",
+      "op": "pairing.message.verify",
+      "input": {
+        "mac_key_hex": "5affccc0df9d392d9d86953aa304dd0978af8444ce1235e66ed55dcdf4741a1f",
+        "message": {
+          "kind": "hello",
+          "body": {
+            "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "head": {
+              "seq": 3,
+              "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c"
+            },
+            "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "as_key": "efefefefefefefefefefefefefefefefefefefefefefefefefefefefefefefef"
+          },
+          "mac": "RzAABhOkxV4eSGv2H2392aIZ5RpniM9LKdtQdmz3V0Q"
+        }
+      },
+      "expect": {
+        "error": "BAD_MAC"
+      }
+    },
+    {
+      "id": "mac-kind-changed",
+      "description": "the kind is under the MAC",
+      "op": "pairing.message.verify",
+      "input": {
+        "mac_key_hex": "5affccc0df9d392d9d86953aa304dd0978af8444ce1235e66ed55dcdf4741a1f",
+        "message": {
+          "kind": "done",
+          "body": {
+            "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "head": {
+              "seq": 3,
+              "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c"
+            },
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "as_key": "efefefefefefefefefefefefefefefefefefefefefefefefefefefefefefefef"
+          },
+          "mac": "RzAABhOkxV4eSGv2H2392aIZ5RpniM9LKdtQdmz3V0Q"
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "mac-other-key",
+      "op": "pairing.message.verify",
+      "input": {
+        "mac_key_hex": "0707070707070707070707070707070707070707070707070707070707070707",
+        "message": {
+          "kind": "hello",
+          "body": {
+            "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "head": {
+              "seq": 3,
+              "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c"
+            },
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "as_key": "efefefefefefefefefefefefefefefefefefefefefefefefefefefefefefefef"
+          },
+          "mac": "RzAABhOkxV4eSGv2H2392aIZ5RpniM9LKdtQdmz3V0Q"
+        }
+      },
+      "expect": {
+        "error": "BAD_MAC"
+      }
+    },
+    {
+      "id": "commit-message",
+      "op": "pairing.message.verify",
+      "input": {
+        "mac_key_hex": "5affccc0df9d392d9d86953aa304dd0978af8444ce1235e66ed55dcdf4741a1f",
+        "message": {
+          "kind": "commit",
+          "body": {
+            "c": "sha256:57360408c6e5f1101b564ac78586f8d74982a552aaad9cd9f0a95ec51ab83950"
+          },
+          "mac": "xv1W8EBwkoLc3lJyRrQNQPFGzjIiEA_vXURYn109lUw"
+        }
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "commit-value",
+      "description": "c = sha256(signed bytes of the entry || joiner_sig || r_j)",
+      "op": "pairing.commitment",
+      "input": {
+        "entry": {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 1,
+          "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+          "op": "add",
+          "device": {
+            "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+            "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+            "kind": "approve-app",
+            "label": "Alice's iPhone",
+            "keystore": "platform",
+            "check": {
+              "type": "webauthn",
+              "rp_id": "approve.suveren.ai",
+              "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+              "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+            }
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794000001,
+          "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+          "sigs": [
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+            },
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+            }
+          ],
+          "checks": [
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "check": {
+                "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS"
+              }
+            },
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "check": {
+                "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+              }
+            }
+          ]
+        },
+        "joiner_sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA",
+        "r_j": "UVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVE"
+      },
+      "expect": {
+        "c": "sha256:57360408c6e5f1101b564ac78586f8d74982a552aaad9cd9f0a95ec51ab83950"
+      }
+    },
+    {
+      "id": "commit-value-other-r",
+      "op": "pairing.commitment",
+      "input": {
+        "entry": {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 1,
+          "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+          "op": "add",
+          "device": {
+            "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+            "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+            "kind": "approve-app",
+            "label": "Alice's iPhone",
+            "keystore": "platform",
+            "check": {
+              "type": "webauthn",
+              "rp_id": "approve.suveren.ai",
+              "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+              "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+            }
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794000001,
+          "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+          "sigs": [
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+            },
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+            }
+          ],
+          "checks": [
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "check": {
+                "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS"
+              }
+            },
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "check": {
+                "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+              }
+            }
+          ]
+        },
+        "joiner_sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA",
+        "r_j": "UlJSUlJSUlJSUlJSUlJSUlJSUlJSUlJSUlJSUlJSUlI"
+      },
+      "expect": {
+        "differs_from": "sha256:57360408c6e5f1101b564ac78586f8d74982a552aaad9cd9f0a95ec51ab83950"
+      }
+    },
+    {
+      "id": "comparison-code",
+      "description": "6 digits from HMAC(mac_key, \"code\" || 0x00 || signed bytes || r_j || r_a)",
+      "op": "pairing.code",
+      "input": {
+        "mac_key_hex": "5affccc0df9d392d9d86953aa304dd0978af8444ce1235e66ed55dcdf4741a1f",
+        "entry": {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 1,
+          "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+          "op": "add",
+          "device": {
+            "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+            "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+            "kind": "approve-app",
+            "label": "Alice's iPhone",
+            "keystore": "platform",
+            "check": {
+              "type": "webauthn",
+              "rp_id": "approve.suveren.ai",
+              "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+              "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+            }
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794000001,
+          "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+          "sigs": [
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+            },
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+            }
+          ],
+          "checks": [
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "check": {
+                "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS"
+              }
+            },
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "check": {
+                "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+              }
+            }
+          ]
+        },
+        "r_j": "UVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVE",
+        "r_a": "YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWE"
+      },
+      "expect": {
+        "code": "164224"
+      }
+    },
+    {
+      "id": "comparison-code-other-challenge",
+      "op": "pairing.code",
+      "input": {
+        "mac_key_hex": "5affccc0df9d392d9d86953aa304dd0978af8444ce1235e66ed55dcdf4741a1f",
+        "entry": {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+          "seq": 1,
+          "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+          "op": "add",
+          "device": {
+            "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+            "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+            "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+            "kind": "approve-app",
+            "label": "Alice's iPhone",
+            "keystore": "platform",
+            "check": {
+              "type": "webauthn",
+              "rp_id": "approve.suveren.ai",
+              "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+              "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+            }
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794000001,
+          "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+          "sigs": [
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+            },
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+            }
+          ],
+          "checks": [
+            {
+              "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "check": {
+                "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS"
+              }
+            },
+            {
+              "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+              "check": {
+                "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+              }
+            }
+          ]
+        },
+        "r_j": "UVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVE",
+        "r_a": "YmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmI"
+      },
+      "expect": {
+        "differs_from": "164224"
+      }
+    },
+    {
+      "id": "done-refused",
+      "op": "pairing.message.verify",
+      "input": {
+        "mac_key_hex": "5affccc0df9d392d9d86953aa304dd0978af8444ce1235e66ed55dcdf4741a1f",
+        "message": {
+          "kind": "done",
+          "body": {
+            "refused": "CHAIN_HEAD_MOVED"
+          },
+          "mac": "RiPvULL1GBJ-YwA4N3D8KN7I35vGOJUDV9APXy7AGkk"
+        }
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "open-body-missing-member",
+      "op": "pairing.message.verify",
+      "input": {
+        "mac_key_hex": "5affccc0df9d392d9d86953aa304dd0978af8444ce1235e66ed55dcdf4741a1f",
+        "message": {
+          "kind": "open",
+          "body": {
+            "entry": {
+              "typ": "suveren-chain-entry",
+              "v": 1,
+              "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+              "seq": 1,
+              "prev": "sha256:50a33a9f81bee4452a1067df444c61599b7d334baa6205a2a922f776c9b759c6",
+              "op": "add",
+              "device": {
+                "key_id": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                "sign_pub": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q",
+                "read_pub": "goKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoI",
+                "kind": "approve-app",
+                "label": "Alice's iPhone",
+                "keystore": "platform",
+                "check": {
+                  "type": "webauthn",
+                  "rp_id": "approve.suveren.ai",
+                  "cred_id": "zMzMzMzMzMzMzMzMzMzMzA",
+                  "pub": "pQECAyYgASFYIJwGvxroMSIHSKTdM3avI-wX1I5byrz9p9ZvmtC3TmGjIlggOfLbTuum9lxApZTHjIPjbwttWa4ajF7F8DwB8NiwOiE"
+                }
+              },
+              "target": null,
+              "check": null,
+              "new_root": null,
+              "ext": null,
+              "created_at": 1794000001,
+              "signer": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+              "sigs": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "sig": "ebWtVSCzUb22B1kaU21aUgy8601HGmWT1-boguWD3E3KG0H_FCSJTMAwKgZcsMyTu1nlGCn4lqBfNfYuhpruDg"
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+                }
+              ],
+              "checks": [
+                {
+                  "by": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+                  "check": {
+                    "signature": "MEYCIQCUMx1AX06rIHG57gkoAz32nCeidNgAYi5aYv0whdLoYQIhANF9DIdrwlQDpZ8nqx0ax7h64qiWgtVm8nRusb2woIcS"
+                  }
+                },
+                {
+                  "by": "ajgD1fBZkCocba-8m6RykhL3yqwIY0zDrnaydSnwOCc",
+                  "check": {
+                    "authenticatorData": "Nwob0tDWpbNM47Dcof6h6EJ3b0et_0T5aDhe2IFmU34FAAAAAQ",
+                    "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWkxqMUJVVHUweVlPaWNwbkZyNFVwdUJCYjg2MFhleFY0X08yVi1MR184USIsIm9yaWdpbiI6Imh0dHBzOi8vYXBwcm92ZS5zdXZlcmVuLmFpIn0",
+                    "signature": "MEUCIFdd5GCUrhNxRcpQKMtzY3SbhFUPbJKifeYi2lVk1hlfAiEA4zjUBoLVf2Ompi6a4vmA1KafEPX2euYKwKFYpljVKpc"
+                  }
+                }
+              ]
+            },
+            "sig": "eXLumDalTOn6YAHjL2M3DTQXvlbi7nEbD3_pnUrtOW2P7jpkjGWEUvSVSgHjApQGfgskKoz0oStIh5fD1Bh8DA"
+          },
+          "mac": "qt53BWDuzDJereAD9k829xasFcZ8_EBCXDWlxiPWv0k"
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "identity-code-root1",
+      "op": "identity.code",
+      "input": {
+        "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY"
+      },
+      "expect": {
+        "code": "5488 2139 0334 2913 4820 1200"
+      }
+    },
+    {
+      "id": "identity-code-root2",
+      "op": "identity.code",
+      "input": {
+        "root_did": "did:key:z6MkktVVsNWBZddHTY1SAPRi2F3JdrV2q7po4o2PHCLBQLfw"
+      },
+      "expect": {
+        "code": "2169 1642 7425 5349 7188 6506"
+      }
+    },
+    {
+      "id": "qr-as-url-http-remote",
+      "description": "as_url over plain http to a remote host",
+      "op": "pairing.qr.decode",
+      "input": {
+        "text": "SUVEREN-PAIR-1:eyJhc19rZXkiOiJlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmIiwiYXNfdXJsIjoiaHR0cDovL2V2aWwuZXhhbXBsZSIsImV4cGlyZXNfYXQiOjE3OTQwMDA2MDAsImhlYWQiOm51bGwsImtleV9pZCI6bnVsbCwicm9vdF9kaWQiOm51bGwsInNlY3JldCI6IlFrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0kiLCJzaG93bl9ieSI6ImpvaW5lciIsInYiOjF9",
+        "now": 1794000010
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "qr-as-url-not-a-url",
+      "description": "as_url is not an address",
+      "op": "pairing.qr.decode",
+      "input": {
+        "text": "SUVEREN-PAIR-1:eyJhc19rZXkiOiJlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmIiwiYXNfdXJsIjoiamF2YXNjcmlwdDphbGVydCgxKSIsImV4cGlyZXNfYXQiOjE3OTQwMDA2MDAsImhlYWQiOm51bGwsImtleV9pZCI6bnVsbCwicm9vdF9kaWQiOm51bGwsInNlY3JldCI6IlFrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0kiLCJzaG93bl9ieSI6ImpvaW5lciIsInYiOjF9",
+        "now": 1794000010
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "qr-as-url-local-http-allowed",
+      "description": "plain http is allowed for 127.0.0.1 (dev lane)",
+      "op": "pairing.qr.decode",
+      "input": {
+        "text": "SUVEREN-PAIR-1:eyJhc19rZXkiOiJlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmIiwiYXNfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTo0MTAwIiwiZXhwaXJlc19hdCI6MTc5NDAwMDYwMCwiaGVhZCI6bnVsbCwia2V5X2lkIjpudWxsLCJyb290X2RpZCI6bnVsbCwic2VjcmV0IjoiUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSSIsInNob3duX2J5Ijoiam9pbmVyIiwidiI6MX0",
+        "now": 1794000010
+      },
+      "expect": {
+        "qr": {
+          "v": 1,
+          "as_url": "http://127.0.0.1:4100",
+          "as_key": "efefefefefefefefefefefefefefefefefefefefefefefefefefefefefefefef",
+          "shown_by": "joiner",
+          "secret": "QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkI",
+          "root_did": null,
+          "head": null,
+          "key_id": null,
+          "expires_at": 1794000600
+        },
+        "text": "SUVEREN-PAIR-1:eyJhc19rZXkiOiJlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmIiwiYXNfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTo0MTAwIiwiZXhwaXJlc19hdCI6MTc5NDAwMDYwMCwiaGVhZCI6bnVsbCwia2V5X2lkIjpudWxsLCJyb290X2RpZCI6bnVsbCwic2VjcmV0IjoiUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSSIsInNob3duX2J5Ijoiam9pbmVyIiwidiI6MX0"
+      }
+    },
+    {
+      "id": "qr-now-missing",
+      "description": "expiry cannot be skipped by leaving out now",
+      "op": "pairing.qr.decode",
+      "input": {
+        "text": "SUVEREN-PAIR-1:eyJhc19rZXkiOiJlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmZWZlZmVmIiwiYXNfdXJsIjoiaHR0cHM6Ly9zdXZlcmVuLmFpIiwiZXhwaXJlc19hdCI6MTc5NDAwMDYwMCwiaGVhZCI6bnVsbCwia2V5X2lkIjpudWxsLCJyb290X2RpZCI6bnVsbCwic2VjcmV0IjoiUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSSIsInNob3duX2J5Ijoiam9pbmVyIiwidiI6MX0"
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "hello-head-seq-fractional",
+      "op": "pairing.message.verify",
+      "input": {
+        "mac_key_hex": "5affccc0df9d392d9d86953aa304dd0978af8444ce1235e66ed55dcdf4741a1f",
+        "message": {
+          "kind": "hello",
+          "body": {
+            "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "head": {
+              "seq": 1.5,
+              "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c"
+            },
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "as_key": "efefefefefefefefefefefefefefefefefefefefefefefefefefefefefefefef"
+          },
+          "mac": "uaw2o5DL-JXgGFLk1kk90GR0vXrs_UNqQ_nBUZwnpbs"
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "hello-head-seq-negative",
+      "op": "pairing.message.verify",
+      "input": {
+        "mac_key_hex": "5affccc0df9d392d9d86953aa304dd0978af8444ce1235e66ed55dcdf4741a1f",
+        "message": {
+          "kind": "hello",
+          "body": {
+            "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "head": {
+              "seq": -1,
+              "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c"
+            },
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "as_key": "efefefefefefefefefefefefefefefefefefefefefefefefefefefefefefefef"
+          },
+          "mac": "mda_Iv8SvkKenibu6BsUohA6_tUYxWv21McH3yq6HiU"
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "hello-head-seq-string",
+      "op": "pairing.message.verify",
+      "input": {
+        "mac_key_hex": "5affccc0df9d392d9d86953aa304dd0978af8444ce1235e66ed55dcdf4741a1f",
+        "message": {
+          "kind": "hello",
+          "body": {
+            "root_did": "did:key:z6MkozhPaiLH2VzucNhrTaN6C9JVw42zjGYQnxtNvpu61oDY",
+            "head": {
+              "seq": "3",
+              "hash": "sha256:e86b11291b7f6ef667b3b458ebc4cce2678011e32ea12a6944989c6e8ccbd96c"
+            },
+            "key_id": "NHUPmL1Z_PyUbaRaqr6TO-FUpLUJThxKv0KGZQXzyX4",
+            "as_key": "efefefefefefefefefefefefefefefefefefefefefefefefefefefefefefefef"
+          },
+          "mac": "G7ZytdkhIBdUgQ7kE4FPdRBPM0RLEL7M5QTilvrcsDM"
+        }
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    }
+  ]
+}
