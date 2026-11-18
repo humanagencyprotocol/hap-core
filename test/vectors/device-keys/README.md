@@ -19,3 +19,6 @@ A case is `{ id, op, input, expect }`; `expect` is a value shape or `{ error: "N
 
 Device labels in the data are fictional ("Alice's MacBook"). Labels are inside signed bytes, so
 changing one means regenerating and re-patching.
+
+`identity.json` (cancel and override) is made by `generate-identity.mjs` instead, which builds its own
+two chains and leaves every other file untouched. Run it only on purpose (random ECDSA keys).

@@ -1,0 +1,2705 @@
+{
+  "suite": "device-keys/identity",
+  "description": "Plan section 10 and 20.1 item 4: suveren-identity-cancel (member chain) and suveren-identity-override (admin chain). Every case has now = 1794101000 and a fixed window of 300 seconds for both objects; aud is a 32-byte hex key.",
+  "fixtures": {
+    "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+    "chains": {
+      "member": [
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+          "seq": 0,
+          "prev": null,
+          "op": "genesis",
+          "device": {
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "sign_pub": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+            "read_pub": "wcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcE",
+            "kind": "gateway",
+            "label": "Max's MacBook",
+            "keystore": "software",
+            "check": {
+              "type": "platform",
+              "pub": "BCb5mOhv5Wz84ZctUuGcCPgluVFvdSD9ThVo9e2tUkzHMFbl8RBxd0UUqjrKb35IuVROWLdVCZA6d2etFtIZYm4"
+            }
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794100000,
+          "signer": "root",
+          "sigs": [
+            {
+              "by": "root",
+              "sig": "rBPccGOm1NekoXCizmGP21aYNHybM2h7SW0F6bNbfbKD9IRJDpg6UuzuXKOSUXGKOS_Ad-LcII-2bz_xF-02Ag"
+            },
+            {
+              "by": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+              "sig": "1DP6mEgQhe-1k9VxI50ir34VUoZ0-yj8Vu4q8ve9ABkygQIgEl-s1RPs43WI2e8soSiFUKsmZgyKhNQfSTnxCA"
+            }
+          ],
+          "checks": [
+            {
+              "by": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+              "check": {
+                "signature": "MEUCIQDn3AHQPjtAb63B3U_5bHtcuCmXtIXSlrdgk8eo4KuglgIgZZ6Vm3dOH7zC02JwTAy_VnHFWLLPbMDgUspjk4p026M"
+              }
+            }
+          ]
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+          "seq": 1,
+          "prev": "sha256:10886a3dcf35cae77dbd8c97ceff827844f194aa5702c02a826edc8a09b0e727",
+          "op": "add",
+          "device": {
+            "key_id": "MJfi3uLLSjS1OEDNtwWu1xBnw29o2w4PVZw_P6BDMV8",
+            "sign_pub": "IVL40Zt5HSRFMkLhXy6rbLfP-ntqXtMAl5YOBpiB2xI",
+            "read_pub": "wsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsI",
+            "kind": "gateway",
+            "label": "Max's Office PC",
+            "keystore": "software",
+            "check": null
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794100001,
+          "signer": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+          "sigs": [
+            {
+              "by": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+              "sig": "O_l-pIksn-cqvp__o5KmNNeoHyHcsE43zw5kA4BLl7v4N5F2tKNi5W_ahluas9U3MHvGbxvX0228Qmv_w_GwBA"
+            },
+            {
+              "by": "MJfi3uLLSjS1OEDNtwWu1xBnw29o2w4PVZw_P6BDMV8",
+              "sig": "qNmQCPX0Ci1x8wPKosCq6ZMzR1J6mLERlUq19IgnrbF8OX_ysoNpRrf-zvxQWL0ceDoV8zgmadFuFBToSg4nDw"
+            }
+          ],
+          "checks": [
+            {
+              "by": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+              "check": {
+                "signature": "MEUCIQCUwWofDYCu87OdmopUG-2dutVO3_mPGwvs4sXmGwdC6AIgexQadk0ysLJNeX7oaoDF6zxXxVaVKCMM6o15LNE2LhM"
+              }
+            }
+          ]
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+          "seq": 2,
+          "prev": "sha256:d7130abbe9af4813dda5ec94bf22e74b16e0c7859d8461f18e9ac72c669856b7",
+          "op": "add",
+          "device": {
+            "key_id": "fbCwHznRearPewPb192dcfZBWYvtQPuYOdPB4RF-Zm8",
+            "sign_pub": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+            "read_pub": "w8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8M",
+            "kind": "gateway",
+            "label": "Max's old laptop",
+            "keystore": "software",
+            "check": null
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794100002,
+          "signer": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+          "sigs": [
+            {
+              "by": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+              "sig": "orW64I3nkv8VIsAXx7nfSOyHSf7NxzU5Wdd8i3DzEPR9GBTO4XX62v7RZv_s0ZGVK7BZaFdP0-wuXvf_dDWrCA"
+            },
+            {
+              "by": "fbCwHznRearPewPb192dcfZBWYvtQPuYOdPB4RF-Zm8",
+              "sig": "1paX4XylKE1wGhWbbCg5ZtidczPjJJs6scjtRKQSlDLwzyuVophyYxRHJ5iriHIR8pkkfpdgSkUbRlzqYcBXCQ"
+            }
+          ],
+          "checks": [
+            {
+              "by": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+              "check": {
+                "signature": "MEYCIQClcLjSHWfD8W3QXCDiwRn5aSGYAUrp7FgkXEBGol8-nAIhAK73jdXhXDwKzoW2LS855hJQc88kc6M6zTgsd5lC0K7j"
+              }
+            }
+          ]
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+          "seq": 3,
+          "prev": "sha256:4dc6c57d3aa804bce8e845c8d873d44c878fa9c8d1c38a5b9842288ea6e3549b",
+          "op": "set",
+          "device": null,
+          "target": "MJfi3uLLSjS1OEDNtwWu1xBnw29o2w4PVZw_P6BDMV8",
+          "check": {
+            "type": "platform",
+            "pub": "BCaTK50jrGnXw3jSVh0C82M_UapYvWUtuSkkzeDpcUW5gqNCb1MyApWQqQYdUXaFAMRkPOA-jjk7GlFpTb2YZUU"
+          },
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794100003,
+          "signer": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+          "sigs": [
+            {
+              "by": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+              "sig": "ZZseDg6MgwZf5DC7SRJpbUkSkobj2yIn5wmmlhPKyeto_LUkL1evTFpE0aj5uGo1mnTNLGKW4g9AANcYImfHCQ"
+            }
+          ],
+          "checks": [
+            {
+              "by": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+              "check": {
+                "signature": "MEUCIQDM5viIx8c38NtX5EIQEjn9wCrOZvl3InvQehBLJc_lngIgHmPDAOnj2ossgtObm-Ekhxqblv4WjdkKIzIIHdFuA5k"
+              }
+            },
+            {
+              "by": "MJfi3uLLSjS1OEDNtwWu1xBnw29o2w4PVZw_P6BDMV8",
+              "check": {
+                "signature": "MEUCIHi9kbRLO_9KiaIjri2wAMRkq8Wra41n3IN9r5n6fH78AiEArUkXS2c5puC-8VQm7IKUEZY02mHPrKnbYv58r0me6ic"
+              }
+            }
+          ]
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+          "seq": 4,
+          "prev": "sha256:3686c0eb08f5f16899a1286f99c530123a7e1c08ce56ab551ac0a56ee6804421",
+          "op": "remove",
+          "device": null,
+          "target": "fbCwHznRearPewPb192dcfZBWYvtQPuYOdPB4RF-Zm8",
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794100004,
+          "signer": "fbCwHznRearPewPb192dcfZBWYvtQPuYOdPB4RF-Zm8",
+          "sigs": [
+            {
+              "by": "fbCwHznRearPewPb192dcfZBWYvtQPuYOdPB4RF-Zm8",
+              "sig": "adDTgpCG696yIBdipEuabXD2BpHOVG_OmATQZFSBSihyl5X3hMwQh976gwBjdVh2TLiew_kNs9Pdv1mUmhMIDA"
+            }
+          ],
+          "checks": []
+        }
+      ],
+      "admin": [
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+          "seq": 0,
+          "prev": null,
+          "op": "genesis",
+          "device": {
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "sign_pub": "wFDFY3pE-oYp__PMzOIwDLNipj2Z2V_FQUUmb0MyRFo",
+            "read_pub": "0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dE",
+            "kind": "gateway",
+            "label": "Admin's MacBook",
+            "keystore": "software",
+            "check": {
+              "type": "platform",
+              "pub": "BNsDA4BZDmyNcklkWaYjWQELONUDwIN1eUUScOuu79Y3QngHckttkbOVqqGaWrbvc8x4cPb-Y_JkLFwisOgyQas"
+            }
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794100000,
+          "signer": "root",
+          "sigs": [
+            {
+              "by": "root",
+              "sig": "zpkRuBNBZCDtTyuImo5AoHYrbb5PmzhL3SDdMD0GAjGBOVZED3h7nInIooFC2kw3rZ4FFTR1ryCZFrR2cCVcBg"
+            },
+            {
+              "by": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+              "sig": "fm2C7P2QjeqI3MrCl6XVlkyQpW4j-bqvGETxNfxJv2IRE6myJPvu6DJbV6mW4aU1pi_Ztk580LYZB1_QA_hUDw"
+            }
+          ],
+          "checks": [
+            {
+              "by": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+              "check": {
+                "signature": "MEUCIQCEI2SaT-HN3wnKiDWNvBehENEbMVcAWrE21xy4QuMeNgIgJ310MH9iGaG9gUK9n2skbVZfOPozm0YY0T9On2Xfxho"
+              }
+            }
+          ]
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+          "seq": 1,
+          "prev": "sha256:1867561c7aed93b2ae48e0df30e2e63691c70147e6a1a9792f07b9baecf5f857",
+          "op": "add",
+          "device": {
+            "key_id": "h-5zg31LoCDgdHkLQnZ6NPQ16O9g8tTJ2qdzt8QlGkA",
+            "sign_pub": "IBLLkMpg6OXY2vZuInLSIz4EhtVX6MZhQe2JIBd9frc",
+            "read_pub": "0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tI",
+            "kind": "gateway",
+            "label": "Admin's Office PC",
+            "keystore": "software",
+            "check": null
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794100001,
+          "signer": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+          "sigs": [
+            {
+              "by": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+              "sig": "zaUzHu4NPDGj7zAaEesj8qUWcWIRAI4UHMCJPYw_Wm8hd7suMpDZffH3E3d79oMUdIai7wXU36XM21-SEWpvAw"
+            },
+            {
+              "by": "h-5zg31LoCDgdHkLQnZ6NPQ16O9g8tTJ2qdzt8QlGkA",
+              "sig": "3wkLur0bfI69-s3TidqjNPU535bIz7EWVcoxOzFtAFounR-3mfjbqJ_MbD5UYSSHgwtaP4WzPteWPWlhbguOCw"
+            }
+          ],
+          "checks": [
+            {
+              "by": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+              "check": {
+                "signature": "MEUCIQDF6NxsOnr1WOKyPeoe_pOZZp5mzTFjt6B90wvID0tgtAIgTUdhT4mRATfRl2ixxhN8tyVKf3UDAZA8VMMwN1Bb8C4"
+              }
+            }
+          ]
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+          "seq": 2,
+          "prev": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+          "op": "add",
+          "device": {
+            "key_id": "-ZO_JmHIqA0ewJikn2-wHTlDmh1dYpWprkNZUAJlNto",
+            "sign_pub": "-AzM3OSuHAeuIIoq35mjEK5CB-Awb6AjYRCwaCe7uNA",
+            "read_pub": "09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09M",
+            "kind": "gateway",
+            "label": "Admin's old laptop",
+            "keystore": "software",
+            "check": null
+          },
+          "target": null,
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794100002,
+          "signer": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+          "sigs": [
+            {
+              "by": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+              "sig": "zcRuV_RRzg3dZUq03bPk0ifGgPwsDLBV-llNx-8pYR6gadvnJ90tY9vjGcmnG_WsW_CjmBB9tsUUeJd7tS8mDQ"
+            },
+            {
+              "by": "-ZO_JmHIqA0ewJikn2-wHTlDmh1dYpWprkNZUAJlNto",
+              "sig": "_Hy7FUAizIxzFl_2mDw6cMFE_1dN65dpYTvHoSfDgy41yyyiNZF-ZdF4tmJpRdg1pwFOr91KU96mno6in9fECA"
+            }
+          ],
+          "checks": [
+            {
+              "by": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+              "check": {
+                "signature": "MEUCIFWc3viCWloJ6mea6eEy9SwtYLLX8k5ASSZXo873pkSwAiEAjOlvn_mrVGt5mEKEm_4IYV9LY3-rBpY5dBda-wqeolw"
+              }
+            }
+          ]
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+          "seq": 3,
+          "prev": "sha256:c26d16633aae76b995b37e7f033e2eaf98f49686674d34408eae545ec68b2ea1",
+          "op": "remove",
+          "device": null,
+          "target": "-ZO_JmHIqA0ewJikn2-wHTlDmh1dYpWprkNZUAJlNto",
+          "check": null,
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794100003,
+          "signer": "-ZO_JmHIqA0ewJikn2-wHTlDmh1dYpWprkNZUAJlNto",
+          "sigs": [
+            {
+              "by": "-ZO_JmHIqA0ewJikn2-wHTlDmh1dYpWprkNZUAJlNto",
+              "sig": "WIk6jLlQmxD2xNbvNkZfoD13cLJPEsD_kgxyDlZw7OKem2t3xQCRO2XiFpESD-a0j6RK5MfkGD7AxJHiyUGXAg"
+            }
+          ],
+          "checks": []
+        },
+        {
+          "typ": "suveren-chain-entry",
+          "v": 1,
+          "root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+          "seq": 4,
+          "prev": "sha256:5b7ddfd97a2ae6bcc139b577be46ad2eab864a4d5982cdaa3fe34309f9634d11",
+          "op": "set",
+          "device": null,
+          "target": "h-5zg31LoCDgdHkLQnZ6NPQ16O9g8tTJ2qdzt8QlGkA",
+          "check": {
+            "type": "platform",
+            "pub": "BM3k924UhC9l_ZP6JLUV0TIFigZhT1il14cTf2bDktMpcJC22NQk9wvW2mYxdWS2-Wy9DbvFMQR2w2XptasAI3A"
+          },
+          "new_root": null,
+          "ext": null,
+          "created_at": 1794100004,
+          "signer": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+          "sigs": [
+            {
+              "by": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+              "sig": "IeL-KSK5xIlEWPeTgQj9M2iZ_j-KdfufOMsrVzSMY7kD6dL-fFDZudHbRLI4FdUTOr4i6KDcmqlm2D7ECzAvAg"
+            }
+          ],
+          "checks": [
+            {
+              "by": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+              "check": {
+                "signature": "MEQCIERY_OCh_yD5NarA9wCXUgEJm99cZQ20ATE8CNptIUXWAiBTK4UfvzQSGyyaMvN5SCwdrdw2E1KT5BFDbsmIn1XFZQ"
+              }
+            },
+            {
+              "by": "h-5zg31LoCDgdHkLQnZ6NPQ16O9g8tTJ2qdzt8QlGkA",
+              "check": {
+                "signature": "MEYCIQCjuHP7LRUCDyMcpC8URA7ozeYYdbjw8gNJvq0yuY0u7QIhAO96NIGT7V6ZgG8Ou_wE6OS_jHpj-TxDgDCWgDr1H3Y2"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "cases": [
+    {
+      "id": "cancel-valid-with-check",
+      "description": "device with a check key signs, with its check over the object hash",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "6se2fhnzkUn1BHdvR0F6Es31LGL-kZIFqnTuB1t5zg4ug_TBYwtSUtWPCiC_vCSaVqKLt0WfwiD2meMgiaoVAA",
+          "check": {
+            "signature": "MEQCHwtW9IaTGGUOAhoeB23YD2MUx7S0zsSuHLziU7Uf8YoCIQDFBgyi6BCbngwGpakseJ-ZjJGpFarx3nbrwYTWPBu9YA"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "cancel-valid-device-without-check-key",
+      "description": "W has no check key at seq 2 (chain of 2 entries): signs without a check",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 2
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "MJfi3uLLSjS1OEDNtwWu1xBnw29o2w4PVZw_P6BDMV8",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 1,
+            "chain_head": "sha256:d7130abbe9af4813dda5ec94bf22e74b16e0c7859d8461f18e9ac72c669856b7",
+            "issued_at": 1794100990
+          },
+          "sig": "qjdyUY1j0mjYN617WxnUGHZ7vonBn1x5p27S80fNxqBpY16sdVF0SKHPVtAKbNJSI3GcFuUZODOgeCBQJWvcDw"
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "cancel-valid-second-device-with-check",
+      "description": "W has a check key since seq 3: signs with it",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "MJfi3uLLSjS1OEDNtwWu1xBnw29o2w4PVZw_P6BDMV8",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "Jn9ipXuAj8MTrBauJpWJOiHaMKf0o7d25ex1eeDIK3krIxLVrMMgebFZquSw6tSd6FkX6LZEoBE2Lf1wbEgmBA",
+          "check": {
+            "signature": "MEYCIQDab3_3AWOMenAEb25OLy__AXbGkJT5I4R3Jb3gj1YK6wIhAMdQgAFh4lCG8G6yNj4Zjh0HfGqGiPhoiTdEeuvDM2KC"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "cancel-valid-older-head",
+      "description": "names an older head that matches the chain, same check key then and now",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 2,
+            "chain_head": "sha256:4dc6c57d3aa804bce8e845c8d873d44c878fa9c8d1c38a5b9842288ea6e3549b",
+            "issued_at": 1794100990
+          },
+          "sig": "eoJNjAFjJjMu7B42kuYVG28s6rWH6h8uRPixa6j1BLAtkxJcUXPv_YGQmawyjp0V6tZ3Bu-xFDTr_ca9bpGiCw",
+          "check": {
+            "signature": "MEUCIQDPG11kXv4NP8i8GI74-YbuKXYa45IPEp6q2pmR7UbFIgIgAYU3gQl6LektPrysSKJSish1a4LKmopiLyYAC79Stxc"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "cancel-valid-edge-of-window",
+      "description": "issued_at exactly 300 seconds before now",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100700
+          },
+          "sig": "sB4Y1Y3iuR8H2KpSoFHxtoL-5TahB05Pv6gjY1Ipk4rbLux5w2ZuPtpJoHe1gW2o_0oZhzEzI_KN7bY573HsCg",
+          "check": {
+            "signature": "MEYCIQCYlqGbYGDgU0Es_RPKg11LrmeVFa7ENbsTRQ9bqw_j7wIhANoDdKfL3FSeThXF_oNA-Lx8L9p16ks-MFscLLCjKO7n"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "cancel-wrong-typ",
+      "description": "typ of another object",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-device-signin",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "-Wa9hkrTvxyirBfcQWuNdX60XtkYs0Aa9QK4fr47l6-yaB4972ijBV8UH9ncajqGiZPg-DQfttlCak_6NbxRAg",
+          "check": {
+            "signature": "MEQCIGHq0M1I7vHInFeCBHaEJWeRZQVHZ_-QEwJQNHNU-9sGAiBN84pvXHKRg7v87g92qD3ju6PD7uFDEvD97I5UkvhQKA"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "cancel-wrong-v",
+      "description": "v is 2",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 2,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "OxeIVRN1g4bxPgF1je8uD5nduUlmtEeUa0C9v_1dbv15JQ2RFbOz8xCW7zFNkuMIxiDMSOgw_PXMIn4AOpD8Bw",
+          "check": {
+            "signature": "MEUCID0M5y6fYEbRQh7bZi83XiYktOwtrcPJLeh3XF6TfAFeAiEAsVsP41vk2t9gQtd_RFKbcgCx_9MG9m7mWMHnBoeLY7M"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "cancel-unknown-member",
+      "description": "extra member",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990,
+            "note": "x"
+          },
+          "sig": "cwXzjtnjJHR2JrWwb5n8vZp7wk-D4weAEbryX0KjiDXGzTciifn7tNGgssTlCAzPt-Vgcpi3lBYO4PVe3jSMAA",
+          "check": {
+            "signature": "MEUCIAOrpwjPrj5Hxob5aY_Wmk-DFkeWJB2dxhblKbut8ZG6AiEAoxf2D0LmWN7QGzJBD6ATH0FHKD9BVvhFnXXqvgO3rzc"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "cancel-missing-member",
+      "description": "request_id missing",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "v-ZeRC9pvL3MjKqwyjIVobpP0FZGduv5t649HjmDvLOnWKI0O45fbSH0dXyRX08yiocjMLvuLq6aIjWIUWGoCA",
+          "check": {
+            "signature": "MEUCIQCLyHCFgf41ZRSTqHR-9tsXS2aaQyoMIJ6YPFdEsuT37AIgL_n8KWk8R3SuVpsvnPR-0-Op6Btct6ffWmkPESkX7rI"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "cancel-wrong-request-id",
+      "description": "signed for another request than the one the AS expects",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "6se2fhnzkUn1BHdvR0F6Es31LGL-kZIFqnTuB1t5zg4ug_TBYwtSUtWPCiC_vCSaVqKLt0WfwiD2meMgiaoVAA",
+          "check": {
+            "signature": "MEQCIFGjEhrMZqmUnuX2yImK_mgp71qhA2pEys--B1TCZrw2AiBr1kyzhJ--TKjIOSKi-KYXZbP69Qw49sZ6zxBI8kCUEA"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "W1tbW1tbW1tbW1tbW1tbWw",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "REQUEST_MISMATCH"
+      }
+    },
+    {
+      "id": "cancel-fork",
+      "description": "named head hash differs from the chain at that seq",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:4dc6c57d3aa804bce8e845c8d873d44c878fa9c8d1c38a5b9842288ea6e3549b",
+            "issued_at": 1794100990
+          },
+          "sig": "VX_XHvJyTJ4uD7wcMDginwDg6fXW0e6eyGcqxPLOg6nrr6ijL1VYPYmN3jbC5oHpqNFuij9xXdcEeMzulRwxCw",
+          "check": {
+            "signature": "MEYCIQCOLHOqGdU_wdLId9-hVcWLyzTboaTHST1tn7b7HiPliwIhANEG_mJPps6jdVRh1sLdBM5xdVndCufsnYmCf6-9FG6t"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "FORK"
+      }
+    },
+    {
+      "id": "cancel-chain-ahead",
+      "description": "chain_seq is beyond the receiver head",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 9,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "_lY8fhlk0kn6kxdnNAh-jyW4nFwtquNeXfnzQMLkYnnO46XX4XDmz-a87wI4Y0Pt1N7pa0wJhp9ffFr8WvkBAw",
+          "check": {
+            "signature": "MEUCIBd4unFLbvA1rBn_yNMLK43z_KkRdXsxNlaLDzoEs13hAiEA4WClTwlQ7JSoPVJpcsgHsepF1LKuyn6iEh2Be881Kqk"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "CHAIN_AHEAD"
+      }
+    },
+    {
+      "id": "cancel-removed-key",
+      "description": "R was removed at seq 4",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "fbCwHznRearPewPb192dcfZBWYvtQPuYOdPB4RF-Zm8",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "kb2as74M75HV9HJuXbJWyOUfZ4KoE_2J8zwDDV5sqMkr6ecxbStoUBi9rfyZF2u_8ewsCbMhLLmOxB_u-W8YAQ"
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "NOT_ACTIVE"
+      }
+    },
+    {
+      "id": "cancel-not-admitted-at-named-head",
+      "description": "W was admitted at seq 1 and names head 0",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "MJfi3uLLSjS1OEDNtwWu1xBnw29o2w4PVZw_P6BDMV8",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 0,
+            "chain_head": "sha256:10886a3dcf35cae77dbd8c97ceff827844f194aa5702c02a826edc8a09b0e727",
+            "issued_at": 1794100990
+          },
+          "sig": "VF-Lmr73c2Q1_6osjjO2qp8G2sgekHPWD19hiPJI6pHcT7Iqyn6nq-duZOTkGVLpVjX8opxdlVxzRtoizsoDCQ",
+          "check": {
+            "signature": "MEUCIDC4gL4hQ8G7gcTCZpbXMmgMxa7u-6ayChxlvlITRydgAiEAtVxQsuxN_iJsBr1pBlo4uSMc12dZxfHwIVyUH4wit2s"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "NOT_ACTIVE"
+      }
+    },
+    {
+      "id": "cancel-missing-check",
+      "description": "G has a check key; the signature alone is refused",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "6se2fhnzkUn1BHdvR0F6Es31LGL-kZIFqnTuB1t5zg4ug_TBYwtSUtWPCiC_vCSaVqKLt0WfwiD2meMgiaoVAA"
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "cancel-check-over-other-object",
+      "description": "check made over another hash",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "6se2fhnzkUn1BHdvR0F6Es31LGL-kZIFqnTuB1t5zg4ug_TBYwtSUtWPCiC_vCSaVqKLt0WfwiD2meMgiaoVAA",
+          "check": {
+            "signature": "MEUCIQDiSCZ9yQL9jwuwFg53rU5CC0MOqEQtbOXJB55ccCEvTgIgVTX2lqME36b8XLnpN4k_a94knqbKuxK_GslNSIojg8E"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "cancel-check-by-other-key",
+      "description": "check made with a key that is not the device check key",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "6se2fhnzkUn1BHdvR0F6Es31LGL-kZIFqnTuB1t5zg4ug_TBYwtSUtWPCiC_vCSaVqKLt0WfwiD2meMgiaoVAA",
+          "check": {
+            "signature": "MEYCIQDysVVqYbCHexZgJ8_JN-0rn8GBK7kCVOSZ3iGC4KQC2gIhAL3XoRoZAIzgWQsKkkKUu43x0qcnxYcOJKOZjP1yH8OY"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "cancel-check-key-changed-since-named-head",
+      "description": "W got its check key at seq 3; naming head 2 cannot skip it",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "MJfi3uLLSjS1OEDNtwWu1xBnw29o2w4PVZw_P6BDMV8",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 2,
+            "chain_head": "sha256:4dc6c57d3aa804bce8e845c8d873d44c878fa9c8d1c38a5b9842288ea6e3549b",
+            "issued_at": 1794100990
+          },
+          "sig": "F4eOiMwTk4fUUOx5pdqq-Jp2MSaBnG--17w4wkC24PstlH3K8iiuL-nxoMluJzHxzSNjGSzW3dsoTYPHfTz9CA",
+          "check": {
+            "signature": "MEQCIGq6y-pGPBAfV0nzNARJaboWbsG8nr7E6EvgGXL7xO2VAiAb3N8wyes_4xF2zHp95gFPqr2no7yI3yw8A39NSkJnwA"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "cancel-check-given-by-device-without-check-key",
+      "description": "a device without a check key must not send one",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 2
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "MJfi3uLLSjS1OEDNtwWu1xBnw29o2w4PVZw_P6BDMV8",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 1,
+            "chain_head": "sha256:d7130abbe9af4813dda5ec94bf22e74b16e0c7859d8461f18e9ac72c669856b7",
+            "issued_at": 1794100990
+          },
+          "sig": "qjdyUY1j0mjYN617WxnUGHZ7vonBn1x5p27S80fNxqBpY16sdVF0SKHPVtAKbNJSI3GcFuUZODOgeCBQJWvcDw",
+          "check": {
+            "signature": "MEUCIHPAMk-1qsDjp8DvhkhYyXPS2Gr8qtHfrhAWDEOst2zsAiEA2d2F8T9ex2VSh7yFVeHk8iKML86naLO01i7qpB57guo"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "cancel-too-old",
+      "description": "issued_at 301 seconds before now",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100699
+          },
+          "sig": "p6tCTaSgYMlNRO76HDq5q6LkhczzcpogHlW1BKuUOqMUqf9-4jBpmLIYRXvLAmjjxf8TkkjuTXv5jqtOWMg4DQ",
+          "check": {
+            "signature": "MEQCIEI2AYwzrNPjHKre0RqSePThrhgCaVXPD7fa4K8kMVAxAiButr6RKVKLWAMZPlmcMa1KH__FIt-AE-mOJaoSr95soA"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "STALE"
+      }
+    },
+    {
+      "id": "cancel-in-the-future",
+      "description": "issued_at 301 seconds after now",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794101301
+          },
+          "sig": "aEES4e_zam3cnd2jXCAEFySQB_vzwvdy8I40OwSM1aHpQcBfLOu9LR8JgmOSnx5dBqaPUXkDqlIObC3DGdaMAg",
+          "check": {
+            "signature": "MEUCIAojF7NatX6CgUtQpMiMICNqisjdR78BLyQNiH4Mvyw8AiEAo8NTDSa7Rn0A5RD9TQbvxJdHFoofiNF4blucnxiqwE8"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "STALE"
+      }
+    },
+    {
+      "id": "cancel-valid-upper-edge-of-window",
+      "description": "issued_at exactly 300 seconds after now",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794101300
+          },
+          "sig": "40cCxHClM7cKP2BpSGlKRhn0OpAMTggU_1F6fZPqE-2G7wgCuy4Rrl7r1xkDIKYq33TTs8q7iHTSqHuFaU0bDQ",
+          "check": {
+            "signature": "MEUCIQD2kwUDdEivMAequgwsaTRjQCQ_QKA3bsJdzi-k65sk9gIgeFiD17tMOIxfIBrO_dmkEhjm07B9OKzEmbcrW0RrO9g"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "cancel-wrong-aud",
+      "description": "signed for another Authority Server (same request id)",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "6se2fhnzkUn1BHdvR0F6Es31LGL-kZIFqnTuB1t5zg4ug_TBYwtSUtWPCiC_vCSaVqKLt0WfwiD2meMgiaoVAA",
+          "check": {
+            "signature": "MEUCIQCHeA6mj2BCBX9b3yP5MgKlOAAcdKRB6XM4F0ouIlmO0AIgDFd7EbXFK__nLJxHeCMQJsfNMf3li1ori0RKxoUpL04"
+          }
+        },
+        "aud": "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "BAD_AUD"
+      }
+    },
+    {
+      "id": "cancel-short-request-id",
+      "description": "request_id of 8 bytes is below 128 bits",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlo",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "PWO3O23Dqicwnj3RLo_1xProg3-wTCB9D8kWmHcTtwnITBKkrY4NDk6f90VfIM7IpokC9jiz1gX7g5TJFIOFDg",
+          "check": {
+            "signature": "MEUCIH8gfBybkrABkqAEwQvztjLPsAJvVEhMEDm5hsrg8yr0AiEArEX287lBohsXcvSJdUGyZRRhez-jcETRvQGP5jDatdg"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlo",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "cancel-request-id-not-base64url",
+      "description": "request_id is not base64url",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "req-7f3a",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "xK6snUwQOr0VLjXnlR3yJvz6sKV6lppz-Ol3qF4JYq_gmxghnZdfTc47odGKUemxZZ_R24fIWNqU3jxVhG4eBQ",
+          "check": {
+            "signature": "MEQCIDk40QqVnw23Noei4UkPLEOqDkAzt1S6y7cHvyjCmZk1AiAUcV_AjsqhWrBl6lNga7krD3rhvtaw4GtJSvprsjmlWA"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "req-7f3a",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "cancel-float-issued-at",
+      "description": "issued_at is not an integer",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100989.5
+          },
+          "sig": "8dec1L5Y2Znl2y-4ApXzojzJhN9ckcBG9S6mp-LiHUBAy2pkG56IrMdLoRz4Ro7UfA1VBNsfXuTh1qCGFBX0DA",
+          "check": {
+            "signature": "MEUCIQCHJLI3ZiUoDa8Pof0mMoxp4Npsx9c7HlEy17kpeZn6pAIgUs5Qykgg_qIHnVhOHVVxbzA6yhGXANFv_xsUcrjViTk"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "cancel-negative-issued-at",
+      "description": "issued_at is negative",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": -1
+          },
+          "sig": "fSwLrOidxQd_wSQ3m5obTqOJ6XYC9T6mrRdc-UVOlnA2DY-H-CmRw-oLAlVGYXOy-YTEMVOM82eYGnYVmmaEBA",
+          "check": {
+            "signature": "MEUCIQCodBokRwsNdsaa6-_D4ITrYTJjvFhmOMwwVocvifSgsQIgQC7qhXnDpimlEymD0RnJOX7Hu6V8KYFXLKMSKNtH9q0"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "cancel-check-null",
+      "description": "check: null on a device with a check key counts as missing",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "6se2fhnzkUn1BHdvR0F6Es31LGL-kZIFqnTuB1t5zg4ug_TBYwtSUtWPCiC_vCSaVqKLt0WfwiD2meMgiaoVAA",
+          "check": null
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "cancel-check-null-device-without-check-key",
+      "description": "check: null from a device without a check key is the same as none",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 2
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "MJfi3uLLSjS1OEDNtwWu1xBnw29o2w4PVZw_P6BDMV8",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 1,
+            "chain_head": "sha256:d7130abbe9af4813dda5ec94bf22e74b16e0c7859d8461f18e9ac72c669856b7",
+            "issued_at": 1794100990
+          },
+          "sig": "qjdyUY1j0mjYN617WxnUGHZ7vonBn1x5p27S80fNxqBpY16sdVF0SKHPVtAKbNJSI3GcFuUZODOgeCBQJWvcDw",
+          "check": null
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "cancel-check-from-mandate-grant",
+      "description": "a check made over a real mandate grant is not a check over this object",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "6se2fhnzkUn1BHdvR0F6Es31LGL-kZIFqnTuB1t5zg4ug_TBYwtSUtWPCiC_vCSaVqKLt0WfwiD2meMgiaoVAA",
+          "check": {
+            "signature": "MEUCIQC4npPguZK-wgRdhxhz7_tcoDYTxhcbqxGrxNjUEOqquAIgcvJ8tYl2DgmYqjj_A5ZhqkdCPoZzGI_0p7FK7q1v_Ds"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "cancel-wrong-root",
+      "description": "root_did of another person",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6Mkr8zqp7Zyq9hyDURFPZimwk4zuiSxhCwm7CeGdfHxH4AH",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "I9w1_P0g_0pM7KCRtyfilxSrpufNdRR_Jxp_mfo4hHDz3xKS8_iPDvFZcl41fLqGp5EAvZnMtf-bZRxRQbN_Bg",
+          "check": {
+            "signature": "MEUCIQCjs4kE3_AvXmICD-mmpUugGbYcoOodCuHf57IjcoKzoQIgSLOPQVWGoWvEp0F_LUxIG-0M8tUalwAvUgBIFJpzINw"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "WRONG_ROOT"
+      }
+    },
+    {
+      "id": "cancel-bad-signature",
+      "description": "signature made by another device key",
+      "op": "identity-cancel.verify",
+      "input": {
+        "chain": {
+          "ref": "member",
+          "count": 5
+        },
+        "envelope": {
+          "cancel": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 4,
+            "chain_head": "sha256:d2e9efb67ead23f95baf67eeaff70f39dcad1e11bd76e12769adadadc6ad5446",
+            "issued_at": 1794100990
+          },
+          "sig": "mbKo2qg98CPeETDbtaCNl-ylz3xSbn9jMKf7iC5_YhoXQN0TdhhOuGuS9cOHyCRtrr3USD5jzzwTJFkn5WKcCQ",
+          "check": {
+            "signature": "MEUCIG42jGCj5ILHQN_SZr1sjLUDUjn13Jam9fMxsGjazoooAiEAgNqR1a_AOIkoyGNkyslo3pdf8Y2WuVDXwCITXYe09KI"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "BAD_SIGNATURE"
+      }
+    },
+    {
+      "id": "override-valid",
+      "description": "admin's granting device signs with its check over the object hash",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "kyF8Wl98cpoS0aMjSf8jPy9yYET8FFVH458BXpaw-89sk9ud9lYxO6g-6E2l9BoirRC8Mz_v9UpQq-nQ-hfnDQ",
+          "check": {
+            "signature": "MEUCIF2JOh-NS9KtcQygyynZiinb0iBe9B3LNnECYUSfO2aDAiEAvL7QKFRaoAc0gzT-K49hdymi4HQoob7OR3CAV2k-fK4"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "override-valid-older-head",
+      "description": "names an older head that matches, same check key then and now",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 0,
+            "chain_head": "sha256:1867561c7aed93b2ae48e0df30e2e63691c70147e6a1a9792f07b9baecf5f857",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "7FqIJ_hFJrJK5wSfVwS86Zc3Ia-rhKPdLpWDSIeywrjHl6fMNnpxkJs6m20uj4MAlpab7-x9bY2IQEa4gNkIDg",
+          "check": {
+            "signature": "MEUCIQCM9PnwFyfR2u81Wee7U2HGzoo0Ilk5jtEMPQBdlM14xQIgQr8nNPuV0GbrfWAVY0ihXlLYtBnU62qd9smHm0TQJ0g"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "override-wrong-typ",
+      "description": "typ of the cancel object",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "iP6qCJaYf7IlT1H_QanZbmwm22DtVlE2VOQPSXJD_JwPbb1KVSLu7iPxT-tkCOLa1K0E347LWjRZXYleeiF3Bg",
+          "check": {
+            "signature": "MEUCIEOlZ3Q1FA0s5qT36-hyHC6K5IGzBra2UaaWpii75zOVAiEAv_n8mGLiOsZc6QnZQ05VjTQX9KV4BksjevpWfRtuUa4"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "override-unknown-member",
+      "description": "extra member",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990,
+            "reason": "x"
+          },
+          "sig": "sAMuzuRLzIVs4x0We7MSNClnVmitWMLvLzI9bgDG6blgaYJeAG4XRGzASoVo4lrhS6FLM5KqkIWwqf2GLpC6Ag",
+          "check": {
+            "signature": "MEUCIE8C92QR5JZok3NQCRgKxWc3fLpC3rVB0HtkA7LIrRF-AiEA1Ps47OxK9pYEembY9BaNxxC14IbBwoHMPavqnegh-zU"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "override-missing-member",
+      "description": "member_user_id missing",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "D3Tek_9ye7idPOCJAOz9j9YgQXk_YbRes5gaG8URGGspVN8tfNCSAH6X5n_WzPrmDdaDa-47G4fhmIhFhSFhBQ",
+          "check": {
+            "signature": "MEUCIFMOM4-iZLzpF5oL56nAEXsHjjqmjv1_3gTyhmkoy4G5AiEA8hTZ5LMY-klblA9OAXz-wbyty7T2u-k9yOVeHUHQVek"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "override-wrong-request-id",
+      "description": "signed for another request",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "kyF8Wl98cpoS0aMjSf8jPy9yYET8FFVH458BXpaw-89sk9ud9lYxO6g-6E2l9BoirRC8Mz_v9UpQq-nQ-hfnDQ",
+          "check": {
+            "signature": "MEYCIQC4IrgdT5OrhHxj7GTvoS8IPWpoUS3JuAnqTGNaDMGIhAIhAIoUg6SbraXvh3Fq1b1S2jUo8Jp76oDYIGJSADU_Zw1J"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "W1tbW1tbW1tbW1tbW1tbWw",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "REQUEST_MISMATCH"
+      }
+    },
+    {
+      "id": "override-wrong-member",
+      "description": "signed for another member than the one the AS expects",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "kyF8Wl98cpoS0aMjSf8jPy9yYET8FFVH458BXpaw-89sk9ud9lYxO6g-6E2l9BoirRC8Mz_v9UpQq-nQ-hfnDQ",
+          "check": {
+            "signature": "MEUCIDl5_8et-LSIEmEZ-POm5zDToNnSnMdAF6rs3YlfwevOAiEAqk6cO3ERsLDNj6mMbxQ028pYYvJg3amCk26HbHLuAzo"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-someone-else",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "REQUEST_MISMATCH"
+      }
+    },
+    {
+      "id": "override-fork",
+      "description": "named head differs",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:1867561c7aed93b2ae48e0df30e2e63691c70147e6a1a9792f07b9baecf5f857",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "VmmjbDcOP1B0mDavmo6xrR_9rE8HLe8rGvgEm4bN5VW7xMFy5mkFc-i1-ehMkAByRN8NIPzbobF1Lv3sYA2GBw",
+          "check": {
+            "signature": "MEUCIQCO9deP3XIRw1XcQozi13571NYzDv3qG-DT0WJMYSZViAIgUABQlUkA1BNwuYC_D0BM-aWPS_dhY1gpGRpmLajgGLw"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "FORK"
+      }
+    },
+    {
+      "id": "override-chain-ahead",
+      "description": "chain_seq beyond the receiver head",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 9,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "0k5Fn-eoiTfcwX7LvL1Ajn-AzIII4sC26LTgowCDpjCBu2zUpJLi65ex3fGRqwZeJQbG6J_4-eIQ0n5n88IpCg",
+          "check": {
+            "signature": "MEUCICfzNzld3d32G5l4twiL1CDGegdhC63nVMcSvT22mmfxAiEA8HIriNJS9F9KSatGJE8s-o1Fp1KBh6uUi1eK4sbQYsM"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "CHAIN_AHEAD"
+      }
+    },
+    {
+      "id": "override-unknown-key",
+      "description": "key_id is not a device of the admin chain",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "mpLStUqaVALePmWgelyxKo3GdYvY6MLsRZVj1rLAgcQ",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "6RlZE5fPNDG7ijR2N8CEUKww52GrFNftiLCzq-wInaZWMQh83dUsPkcWkFFoKQddRLo5L5g9XM6-jxyz__3lCA",
+          "check": {
+            "signature": "MEUCIH2oIE2z6I2eWARaBR-IzXar9pVzsA0jZxJLY5whVs95AiEAxeZLVq4x-kTuyALUCYtxim0OyR--nKujyP8JzfFw23c"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "NOT_ACTIVE"
+      }
+    },
+    {
+      "id": "override-removed-admin-device",
+      "description": "A3 was a device of the admin chain and was removed at seq 3",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 5,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "-ZO_JmHIqA0ewJikn2-wHTlDmh1dYpWprkNZUAJlNto",
+            "chain_seq": 4,
+            "chain_head": "sha256:2272acceb093d80313b643a10cd8bc6c525ec8ae9e2504b4d3c404f37eeef270",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "wsRKB8za5WT_wXE5yRzs28RHVSJqSrPobG7iDesIb4DGGd6Kdr6DTJgJYiVKNhU2Z9kZM4-r-47WaHVPc799Ag"
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "NOT_ACTIVE"
+      }
+    },
+    {
+      "id": "override-not-admitted-at-named-head",
+      "description": "A2 was admitted at seq 1 and names head 0",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 5,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "h-5zg31LoCDgdHkLQnZ6NPQ16O9g8tTJ2qdzt8QlGkA",
+            "chain_seq": 0,
+            "chain_head": "sha256:1867561c7aed93b2ae48e0df30e2e63691c70147e6a1a9792f07b9baecf5f857",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "CUQKdfN_91QbLJKFA13uxxxus1HYWoTh-mpl8gI0QDaL2keGyPH812d7KJX79Sbp6gU6m39nMENX9aqKI_e5AA",
+          "check": {
+            "signature": "MEUCIQDyt7dxZPAZOCzocfzBZ9WdrFTI87fTMRWSgFt86MFC2gIgfMAtrbaDFLvLHn8vbbllOoTIsWtv86bRKeuxGFKjdpo"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "NOT_ACTIVE"
+      }
+    },
+    {
+      "id": "override-check-key-changed-since-named-head",
+      "description": "A2 got its check key at seq 4; naming head 1 cannot use it",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 5,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "h-5zg31LoCDgdHkLQnZ6NPQ16O9g8tTJ2qdzt8QlGkA",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "px5NdFBYJYkQaQig87_RPUGb0nngUtr2tgZ-VXEZnnS1KR2DMVU4oNgV6qVDmFe1Rz2h-YBdAdebwkoB7IreAA",
+          "check": {
+            "signature": "MEUCIGW_hrpw7LI2FulVxKvsITv82xLVnH2chhqc0I_l0zpNAiEA1JrLqPy5qVVoR6RnTHg7nRZvjC4KoWu5-B-4UIU-75o"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "override-valid-device-with-later-check-key",
+      "description": "A2 has a check key since seq 4 and names head 4",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 5,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "h-5zg31LoCDgdHkLQnZ6NPQ16O9g8tTJ2qdzt8QlGkA",
+            "chain_seq": 4,
+            "chain_head": "sha256:2272acceb093d80313b643a10cd8bc6c525ec8ae9e2504b4d3c404f37eeef270",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "W0Qs7GMSIXMchlriE-eCnuvcKdj5ikN0cEnYK09Aw5C_k6Qom-2ab8mQE6vlUvSB4mUifyObWJA-owd8bIXhDw",
+          "check": {
+            "signature": "MEYCIQCCIDBDjYoH9Ju_3dT5QF27QR7KcKjI31T7Pc--b7eYFgIhANsMtwXma1rRCKVptu8fAxSkprQCiE4ddLZi_KqidgSI"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "override-check-from-mandate-grant",
+      "description": "a check made over a real mandate grant is not a check over this object",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "kyF8Wl98cpoS0aMjSf8jPy9yYET8FFVH458BXpaw-89sk9ud9lYxO6g-6E2l9BoirRC8Mz_v9UpQq-nQ-hfnDQ",
+          "check": {
+            "signature": "MEUCIQCP1hqanthfIJDUgah1nJPJknt6h8FD6t0RCgQ3za7vAgIgFwlcDHPnAfP1LnIbRxLK3vqVQE8w4asHF6ipw73u80M"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "override-check-null",
+      "description": "check: null counts as missing",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "kyF8Wl98cpoS0aMjSf8jPy9yYET8FFVH458BXpaw-89sk9ud9lYxO6g-6E2l9BoirRC8Mz_v9UpQq-nQ-hfnDQ",
+          "check": null
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "override-valid-edge-of-window",
+      "description": "issued_at exactly 300 seconds before now",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100700
+          },
+          "sig": "mIIHlAhTo7smxd0RYKXr3nVsLWk6XoEEQbFX-6ekh0l3FYShMgF-f0qgvDkUSNBcmC7pU_MFgsPkaoMyMNW1CQ",
+          "check": {
+            "signature": "MEQCICeFBC2551DXMu4g7q-g8BkCRpBuud8AYwLSnInqRw5SAiAHGdCNpNdj73iCDGIyEGj-8GAVChz8qa-250Y9MXcwJg"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "override-valid-upper-edge-of-window",
+      "description": "issued_at exactly 300 seconds after now",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794101300
+          },
+          "sig": "vEQbA5XJJKCKjfv4FjcHmFbGYlIqTcE0SV2AGRevLqG11M90HLmgV8uKpwGxXs7vhejPPCJUdH2RNR89bORNBQ",
+          "check": {
+            "signature": "MEQCIGzb6UN_YC9fppuh3KwbwhbPECab7eZKC2hwjILNqpIWAiAYrF2sOXUB6FegA0-bvAwtjnfkBPXtNt744D--0z7MJg"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "id": "override-wrong-aud",
+      "description": "signed for another Authority Server (same request id)",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "kyF8Wl98cpoS0aMjSf8jPy9yYET8FFVH458BXpaw-89sk9ud9lYxO6g-6E2l9BoirRC8Mz_v9UpQq-nQ-hfnDQ",
+          "check": {
+            "signature": "MEQCIDsEh879OxtYoTUJ2tw9C8YEUGrUJEd1Q2mVs5qUG29WAiBuhziwNJ5409B26rjBYUL-pHTBGQSzeHbYsaqEAEm-fA"
+          }
+        },
+        "aud": "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "BAD_AUD"
+      }
+    },
+    {
+      "id": "override-short-request-id",
+      "description": "request_id of 8 bytes is below 128 bits",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlo",
+            "issued_at": 1794100990
+          },
+          "sig": "c5MzJEHE7rl9cbha7A2dZTvZ0kIQO6fsechXHaoF_moaMngue0_gXWCliQtXnoakJkJkzAyyvXvbYg3khP5_Dg",
+          "check": {
+            "signature": "MEYCIQCwecCGox8tw1WsJjQNoHEGTwOQOJ0UbFOlCW2mRWiVvAIhANT1crjUybtsCunp3tzy0XnDYQx-UahItYH4nv7mf1ZR"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlo",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "override-request-id-not-base64url",
+      "description": "request_id is not base64url",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "req-7f3a",
+            "issued_at": 1794100990
+          },
+          "sig": "ZNSJvbz3v3-toQruQgaDr3SrfhpXcDk_GXeskyW_gE-U1GMwLdHu9Slqx48mw9MMe0WjovpIVZRtXqVhgqEKAg",
+          "check": {
+            "signature": "MEUCIQCM1h_It_hmq1ZbXE2Tv2E02gfoACC7NmHtYRFJw3u8EAIgYfEcgebBooKFokwkCU0noRadP5sskioEEbOOERzq72s"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "req-7f3a",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "override-float-issued-at",
+      "description": "issued_at is not an integer",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100989.5
+          },
+          "sig": "6t6q4IRfDdWXk46xeWY3OIXXPakosunMy1p4wkBkNYjubI3tPVV_tQL1SXA-2Lo1eQnwuIdrKCNeAEuVhefbCg",
+          "check": {
+            "signature": "MEYCIQCXfw2fa5QjMf4otDyzT-B6C31bO3I5lDxDWfe0s8z_mAIhAN2hzwxbFdawpTekqtUOFuZpjMtgiG5h9U0wwaBbDglj"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "override-negative-issued-at",
+      "description": "issued_at is negative",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": -1
+          },
+          "sig": "iwMyY93Ld4SI6j3VP2U3rLnkViUQReWtj_DCDgIx9B1GqgQHRsxnIqBywe62DmD59MMriLc23oiLMD0wAAjDAg",
+          "check": {
+            "signature": "MEUCIB-TjqReoBVRONnbgBHRlUAOZ97ekq3BGrT2UkcyTtnLAiEAzZtS2UlOoCKE5XGILTZEsZyxrOutMUTsC-UZOeaaw0Y"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    },
+    {
+      "id": "override-missing-check",
+      "description": "signature alone is refused",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "kyF8Wl98cpoS0aMjSf8jPy9yYET8FFVH458BXpaw-89sk9ud9lYxO6g-6E2l9BoirRC8Mz_v9UpQq-nQ-hfnDQ"
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "override-check-over-other-object",
+      "description": "check made over another hash",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "kyF8Wl98cpoS0aMjSf8jPy9yYET8FFVH458BXpaw-89sk9ud9lYxO6g-6E2l9BoirRC8Mz_v9UpQq-nQ-hfnDQ",
+          "check": {
+            "signature": "MEUCIQDlg5AQ5kC7qf-VwKY0OvEY3BT8MX2gtwo92wNRAmP4-wIgQhE7hJDgiu_JM4Idr5A2Lq2ZTZIjAAo2B6NvHd76ibk"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "override-check-by-other-key",
+      "description": "check made with a key that is not the device check key",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "kyF8Wl98cpoS0aMjSf8jPy9yYET8FFVH458BXpaw-89sk9ud9lYxO6g-6E2l9BoirRC8Mz_v9UpQq-nQ-hfnDQ",
+          "check": {
+            "signature": "MEYCIQDa58tilbyxfQY1_pONndrJK5E7zACrn4J5ziXPrMnnngIhAKB7__fGsDk8DhSI1t4nepKTyxvOlqL1N5M6SCeTylK9"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "override-device-without-check-key",
+      "description": "A2 has no check key: an override is a grant-class action and needs one",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "h-5zg31LoCDgdHkLQnZ6NPQ16O9g8tTJ2qdzt8QlGkA",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "px5NdFBYJYkQaQig87_RPUGb0nngUtr2tgZ-VXEZnnS1KR2DMVU4oNgV6qVDmFe1Rz2h-YBdAdebwkoB7IreAA",
+          "check": {
+            "signature": "MEQCIDfsm_l8wTMXlbsm4rw_z0KDG_d3KO1WQlQcnq67zagFAiB_gJVEa5Lg-W9RT08xipIUmeMGTMQmZLIH26FB7lVmbg"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "override-device-without-check-key-no-check",
+      "description": "A2 signs without a check",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "h-5zg31LoCDgdHkLQnZ6NPQ16O9g8tTJ2qdzt8QlGkA",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "px5NdFBYJYkQaQig87_RPUGb0nngUtr2tgZ-VXEZnnS1KR2DMVU4oNgV6qVDmFe1Rz2h-YBdAdebwkoB7IreAA"
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "CHECK_REQUIRED"
+      }
+    },
+    {
+      "id": "override-too-old",
+      "description": "issued_at 301 seconds before now",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100699
+          },
+          "sig": "M16oaC5LUjCnMNuqdb_oCmScW7rjMTGF0N8_qv7BNavPo-ljN3c__os7DwTKkHNljd5rqSwlv0e3WeiivK_kBQ",
+          "check": {
+            "signature": "MEQCIEnS2YeeU0awnKOSTaXQtS3nQFPZEqIKwnUm-qOFmSiLAiAdZsubjA_n_X9WNkOmcxavdfRV2Hk-xvVPQEmep5axOw"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "STALE"
+      }
+    },
+    {
+      "id": "override-in-the-future",
+      "description": "issued_at 301 seconds after now",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794101301
+          },
+          "sig": "0NI51tKEnoglp4WYFOLoecC8OXiixLOipywh75EmrxY7PAEu2zzJYpvZpgajiOv2KiNDYeGvJnbKkG8YR2ZEAg",
+          "check": {
+            "signature": "MEYCIQDMc8bOIkfNEKICkbG2MFQco0fM5zxSIY1QiQ_Sk9CHzQIhAJKFnM058gAdgNVdLgd3y9A1qkZwLCLX9IqCm4YMEMdA"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "STALE"
+      }
+    },
+    {
+      "id": "override-wrong-root",
+      "description": "admin_did of another person",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6Mkr8zqp7Zyq9hyDURFPZimwk4zuiSxhCwm7CeGdfHxH4AH",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "PvBUJJWHtQtai2FZelOSnsnSRWwXVl049C2dtkD2F2Mr_qnWOXv03CbMEXi-2lwj40Amd9QOp-38xipmCImyAw",
+          "check": {
+            "signature": "MEQCIBrQMD-hBwzLyG4ubTyGKNILgkVjVgWJQR8ip3974IkVAiArH_hRRWnGC5F4tobOmlCKBm_0y-C4hQ-IEkRIKtA4Vw"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "WRONG_ROOT"
+      }
+    },
+    {
+      "id": "override-member-chain-is-not-admin-chain",
+      "description": "admin_did names the member, whose chain is not the admin chain",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkqGJU6fCQ2Wzgp7JJR2wQJ268jVsRUD7c5wWZRQiKiM1q",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "9eYYfi-6c5ZQjz0Ox8UFpQWg_VE3ZeIljxYv2QfKmqLZuEZEUAgXWMw_EgvRwXgdBB1Lpk3KJbqJ1-6nz_VpCw",
+          "check": {
+            "signature": "MEUCIQCLAIOipHam2sC1c0iBsC2mfmFhi8OWbAk3AqAVrfeiBwIgViUBIEXYpEZ5e8nWy9pp857Jfz5fhhUr0uwQgRTyflk"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "WRONG_ROOT"
+      }
+    },
+    {
+      "id": "override-bad-signature",
+      "description": "signature by another device key",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-override",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "admin_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "member_user_id": "user-max-42",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "issued_at": 1794100990
+          },
+          "sig": "pnq5l64-7t5pg2vrr0gW0JX7Z4jWHAWSLBC9t8Y8dvUJWKMg8oRIjviYeVyNudiQwlel6bTnuNV4dAdFnmxmBg",
+          "check": {
+            "signature": "MEQCIDEJRUKdoyrT3Gll7Bl8Km3XXvEgbkKUvEuQfpz3BxKXAiA0McMrX7jAR5Gmuw1jwgbsdTLbro9YYEqoww3SPJNdKw"
+          }
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "BAD_SIGNATURE"
+      }
+    },
+    {
+      "id": "override-cancel-object-is-refused",
+      "description": "a valid cancel object and its signature are not an override",
+      "op": "identity-override.verify",
+      "input": {
+        "chain": {
+          "ref": "admin",
+          "count": 2,
+          "expected_root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP"
+        },
+        "envelope": {
+          "override": {
+            "typ": "suveren-identity-cancel",
+            "v": 1,
+            "aud": "abababababababababababababababababababababababababababababababab",
+            "root_did": "did:key:z6MkiXkLkvjTUgQ5e52ABquJMFMqpF1gfcCdxyiumHYNfmFP",
+            "key_id": "S3NawXTkBjZQdxbtXJqKdfv29GI1f6u3GsQre9UCxko",
+            "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+            "chain_seq": 1,
+            "chain_head": "sha256:7f620943be2015c84d78e73d53d289734dd9f4cc56f50d8933738e3297069d44",
+            "issued_at": 1794100990
+          },
+          "sig": "ISgw5GpnkqlfBXpNLqTgPqWnKm82QCQJ83FORnHVmtNKgZSIJqH-UAZFw0am49TmiAnrfAOcUPDGRfjAQVm1Cw"
+        },
+        "aud": "abababababababababababababababababababababababababababababababab",
+        "request_id": "WlpaWlpaWlpaWlpaWlpaWg",
+        "member_user_id": "user-max-42",
+        "now": 1794101000
+      },
+      "expect": {
+        "error": "MALFORMED"
+      }
+    }
+  ]
+}

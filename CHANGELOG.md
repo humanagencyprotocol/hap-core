@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.15.0 — 2026-11-18 (identity cancel and override)
+
+Two signed objects for a new root DID, added to `deviceKeys` (**@experimental**):
+
+- `suveren-identity-cancel`: a device of the old chain cancels a pending request
+  for a new root DID. `buildIdentityCancel`, `validateIdentityCancel`,
+  `verifyIdentityCancel`. A device with a check key must send its check.
+- `suveren-identity-override`: a team admin's device (with its check) ends a
+  cancel loop. `buildIdentityOverride`, `validateIdentityOverride`,
+  `verifyIdentityOverride`.
+- Both objects carry `aud` (the Authority Server's public key, checked against
+  `ctx.aud`, refusal `BAD_AUD`), so one cannot be replayed on another Authority
+  Server. `request_id` must be base64url of at least 16 bytes.
+- The `issued_at` window is fixed at 300 seconds for both
+  (`IDENTITY_CANCEL_MAX_SKEW`, `IDENTITY_OVERRIDE_MAX_SKEW`); no caller-supplied skew.
+- A missing `chain`, `adminChain` or `aud` in the verifier context is `MALFORMED`.
+- New refusal code `REQUEST_MISMATCH` (wrong `request_id` or `member_user_id`).
+- Doc comments state what the Authority Server must still do: refuse when
+  `admin_did` is the member's own root DID, verify the admin chain against the
+  admin's root DID from its own storage, key replay on the object and never on
+  check bytes.
+- JSON vectors (`identity.json`) for the Node and browser runner.
+
+Existing exports, objects and behaviour are unchanged.
+
 ## 0.14.0 — 2026-11-17 (experimental device keys)
 
 New subpath export `@humanagencyp/hap-core/device-keys` (also `deviceKeys`
