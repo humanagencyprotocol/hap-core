@@ -114,12 +114,12 @@ const OPS = {
   },
   async 'identity-cancel.verify'(dk, i, fx) {
     const chain = await verifiedChain(dk, i.chain, fx);
-    await dk.verifyIdentityCancel(i.envelope, { chain, requestId: i.request_id, now: i.now, maxSkewSeconds: i.max_skew_seconds });
+    await dk.verifyIdentityCancel(i.envelope, { chain, aud: i.aud, requestId: i.request_id, now: i.now });
     return { ok: true };
   },
   async 'identity-override.verify'(dk, i, fx) {
     const adminChain = await verifiedChain(dk, i.chain, fx);
-    await dk.verifyIdentityOverride(i.envelope, { adminChain, requestId: i.request_id, memberUserId: i.member_user_id, now: i.now });
+    await dk.verifyIdentityOverride(i.envelope, { adminChain, aud: i.aud, requestId: i.request_id, memberUserId: i.member_user_id, now: i.now });
     return { ok: true };
   },
   async 'pairing.derive'(dk, i) {

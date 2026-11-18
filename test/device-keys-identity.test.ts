@@ -19,7 +19,7 @@ describe('identity cancel and override vectors', () => {
   it('every error code of both objects has a negative vector', () => {
     for (const prefix of ['cancel-', 'override-']) {
       const have = new Set(cases.filter((c) => c.id.startsWith(prefix)).map((c) => c.expect.error).filter(Boolean));
-      for (const n of ['MALFORMED', 'REQUEST_MISMATCH', 'STALE', 'WRONG_ROOT', 'NOT_ACTIVE', 'BAD_SIGNATURE', 'FORK', 'CHAIN_AHEAD', 'CHECK_REQUIRED']) {
+      for (const n of ['MALFORMED', 'BAD_AUD', 'REQUEST_MISMATCH', 'STALE', 'WRONG_ROOT', 'NOT_ACTIVE', 'BAD_SIGNATURE', 'FORK', 'CHAIN_AHEAD', 'CHECK_REQUIRED']) {
         expect(have.has(n), `${prefix} ${n}`).toBe(true);
       }
     }
@@ -27,7 +27,7 @@ describe('identity cancel and override vectors', () => {
   it('signed bytes are JCS of the object without sig and check, typ inside', () => {
     const i = input('cancel-valid-with-check');
     const bytes = dk.utf8Decode(dk.signedBytes(i.envelope.cancel));
-    expect(bytes.startsWith('{"chain_head":"sha256:')).toBe(true);
+    expect(bytes.startsWith('{"aud":"')).toBe(true);
     expect(bytes).toContain('"typ":"suveren-identity-cancel","v":1');
     expect(bytes).not.toContain('sig');
     expect(bytes).not.toContain('check"');
@@ -38,18 +38,29 @@ describe('identity cancel and override vectors', () => {
     const o = input('override-valid');
     expect(() => dk.validateIdentityCancel(o.envelope.override)).toThrow(/MALFORMED/);
   });
-  it('maxSkewSeconds is required for a cancel', async () => {
+  it('a missing chain, adminChain or aud is MALFORMED, never a TypeError', async () => {
     const i = input('cancel-valid-with-check');
     const chain = await chainOf(i.chain);
-    const ctx = { chain, requestId: i.request_id, now: i.now };
-    expect(await code(dk.verifyIdentityCancel(i.envelope, { ...ctx, maxSkewSeconds: 300 }))).toBe('OK');
-    expect(await code(dk.verifyIdentityCancel(i.envelope, ctx as any))).toBe('MALFORMED');
-    expect(await code(dk.verifyIdentityCancel(i.envelope, { ...ctx, maxSkewSeconds: 0 }))).toBe('MALFORMED');
+    const ctx = { chain, aud: i.aud, requestId: i.request_id, now: i.now };
+    expect(await code(dk.verifyIdentityCancel(i.envelope, ctx))).toBe('OK');
+    expect(await code(dk.verifyIdentityCancel(i.envelope, { ...ctx, chain: undefined } as any))).toBe('MALFORMED');
+    expect(await code(dk.verifyIdentityCancel(i.envelope, { ...ctx, aud: undefined } as any))).toBe('MALFORMED');
+    expect(await code(dk.verifyIdentityCancel(i.envelope, undefined as any))).toBe('MALFORMED');
+    const o = input('override-valid');
+    const octx = { adminChain: await chainOf(o.chain), aud: o.aud, requestId: o.request_id, memberUserId: o.member_user_id, now: o.now };
+    expect(await code(dk.verifyIdentityOverride(o.envelope, octx))).toBe('OK');
+    expect(await code(dk.verifyIdentityOverride(o.envelope, { ...octx, adminChain: undefined } as any))).toBe('MALFORMED');
+    expect(await code(dk.verifyIdentityOverride(o.envelope, { ...octx, aud: undefined } as any))).toBe('MALFORMED');
+  });
+  it('a cancel for one Authority Server is refused by another (same request id)', async () => {
+    const i = input('cancel-valid-with-check');
+    const chain = await chainOf(i.chain);
+    expect(await code(dk.verifyIdentityCancel(i.envelope, { chain, aud: 'cd'.repeat(32), requestId: i.request_id, now: i.now }))).toBe('BAD_AUD');
   });
   it('an override checked against the member chain by mistake is refused', async () => {
     const i = input('override-valid');
     const memberChain = await chainOf({ ref: 'member', count: 5 });
-    expect(await code(dk.verifyIdentityOverride(i.envelope, { adminChain: memberChain, requestId: i.request_id, memberUserId: i.member_user_id, now: i.now }))).toBe('WRONG_ROOT');
+    expect(await code(dk.verifyIdentityOverride(i.envelope, { adminChain: memberChain, aud: i.aud, requestId: i.request_id, memberUserId: i.member_user_id, now: i.now }))).toBe('WRONG_ROOT');
   });
   it('an override check does not carry over to a cancel (check over another object)', async () => {
     const o = input('override-valid');
@@ -57,6 +68,6 @@ describe('identity cancel and override vectors', () => {
     // the same sort of device and check key, but a check made over the override is not valid over a cancel
     const chain = await chainOf(c.chain);
     const env = { cancel: c.envelope.cancel, sig: c.envelope.sig, check: o.envelope.check };
-    expect(await code(dk.verifyIdentityCancel(env, { chain, requestId: c.request_id, now: c.now, maxSkewSeconds: 300 }))).toBe('CHECK_REQUIRED');
+    expect(await code(dk.verifyIdentityCancel(env, { chain, aud: c.aud, requestId: c.request_id, now: c.now }))).toBe('CHECK_REQUIRED');
   });
 });
