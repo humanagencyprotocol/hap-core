@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.15.0 — 2026-11-18 (identity cancel and override)
+
+Two signed objects for a new root DID, added to `deviceKeys` (**@experimental**):
+
+- `suveren-identity-cancel`: a device of the old chain cancels a pending request
+  for a new root DID. `buildIdentityCancel`, `validateIdentityCancel`,
+  `verifyIdentityCancel`. A device with a check key must send its check.
+- `suveren-identity-override`: a team admin's device (with its check) ends a
+  cancel loop. `buildIdentityOverride`, `validateIdentityOverride`,
+  `verifyIdentityOverride`.
+- New refusal code `REQUEST_MISMATCH` (wrong `request_id` or `member_user_id`).
+- 45 new JSON vectors (`identity.json`) for the Node and browser runner.
+
+Existing exports, objects and behaviour are unchanged.
+
 ## 0.14.0 — 2026-11-17 (experimental device keys)
 
 New subpath export `@humanagencyp/hap-core/device-keys` (also `deviceKeys`
