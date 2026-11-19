@@ -20,6 +20,12 @@ Three signed objects and three verifiers, added to `deviceKeys` (**@experimental
   another hash is `FORK`.
 - New refusal codes: `BAD_VERSION`, `TEAM_MISMATCH`, `HANDOVER_REQUIRED`, `NO_TRUST`,
   `NOT_A_MEMBER`, `HISTORY_GAP`, `ADMIN_CANNOT_LEAVE`. `BAD_PREV`, `ROLLBACK` and `FORK` are reused.
+- `verifyTeamTrust` links the walk to the pin by hash (else `HISTORY_GAP` or `FORK`), reports a
+  refused newer version as `rejected`, judges each leave alone (`skipped_leaves`), and takes
+  at most 256 versions and 1000 leaves. A signer removed since is accepted on a version that a
+  later strictly valid version links to. `verifyMemberList` needs `prev` (or `first: true`) and
+  relaxes the signer only for the pinned list itself or with `linked: true`.
+- DIDs must be `did:key`, `team_id` 1 to 128 characters of `A-Z a-z 0-9 . _ : -`.
 - JSON vectors (`team.json`) for the Node and browser runner.
 
 Existing exports, objects and behaviour are unchanged.

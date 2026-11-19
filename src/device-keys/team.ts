@@ -37,6 +37,16 @@ function str(x: unknown, what: string): string {
   if (typeof x !== 'string' || x.length === 0) return fail('MALFORMED', `${what} must be a non-empty string`);
   return x;
 }
+const DID_KEY = /^did:key:z[1-9A-HJ-NP-Za-km-z]{8,128}$/;
+const TEAM_ID = /^[A-Za-z0-9._:-]{1,128}$/;
+function did(x: unknown, what: string): string {
+  if (typeof x !== 'string' || !DID_KEY.test(x)) return fail('MALFORMED', `${what} must be a did:key`);
+  return x;
+}
+function teamId(x: unknown): string {
+  if (typeof x !== 'string' || !TEAM_ID.test(x)) return fail('MALFORMED', 'team_id must be 1 to 128 characters of A-Z a-z 0-9 . _ : -');
+  return x;
+}
 function exactMembers(o: Record<string, unknown>, keys: string[], what: string): void {
   if (!sameMembers(o, keys)) fail('MALFORMED', `${what}: members must be exactly ${keys.join(', ')}`);
 }
@@ -218,8 +228,8 @@ export function validateMemberList(o: unknown): MemberList {
     'member list',
   );
   if (o.typ !== TEAM_MEMBERS_TYP || o.v !== 1) return fail('MALFORMED', 'typ or v');
-  str(o.team_id, 'team_id');
-  str(o.admin_did, 'admin_did');
+  teamId(o.team_id);
+  did(o.admin_did, 'admin_did');
   if (!isInt(o.version) || o.version < 1) return fail('MALFORMED', 'version must be an integer of at least 1');
   if (!isInt(o.chain_seq) || !isInt(o.created_at)) return fail('MALFORMED', 'integers');
   b64uBytes(o.key_id, 32, 'key_id');
@@ -228,7 +238,7 @@ export function validateMemberList(o: unknown): MemberList {
   if (o.prev !== null) hashBytes(o.prev);
   if (o.handover !== null) {
     const h = validateNamed(o.handover, 'handover', ['admin_did']);
-    str(h.admin_did, 'handover.admin_did');
+    did(h.admin_did, 'handover.admin_did');
     if (h.admin_did === o.admin_did) return fail('MALFORMED', 'handover names the same admin');
   }
   if (!Array.isArray(o.members) || o.members.length < 1 || o.members.length > TEAM_MAX_MEMBERS) {
@@ -239,12 +249,12 @@ export function validateMemberList(o: unknown): MemberList {
   for (const m of o.members) {
     if (!isObj(m)) return fail('MALFORMED', 'member must be an object');
     exactMembers(m, ['did', 'name', 'code'], 'member');
-    const did = str(m.did, 'member did');
+    const mdid = did(m.did, 'member did');
     validateName(m.name);
     if (typeof m.code !== 'string' || !/^\d{4}( \d{4}){5}$/.test(m.code)) return fail('MALFORMED', 'member code');
-    if (last !== null && did <= last) return fail('MALFORMED', did === last ? 'duplicate member did' : 'members are not sorted by did');
-    last = did;
-    if (did === o.admin_did) adminSeen = true;
+    if (last !== null && mdid <= last) return fail('MALFORMED', mdid === last ? 'duplicate member did' : 'members are not sorted by did');
+    last = mdid;
+    if (mdid === o.admin_did) adminSeen = true;
   }
   if (!adminSeen) return fail('MALFORMED', 'admin_did is not a member');
   if (o.version === 1) {
@@ -267,19 +277,30 @@ export interface MemberListContext {
   /** The verified chain of `list.admin_did` (the admin who signs). */
   chain: ChainState;
   /**
-   * The list before this one (already validated). Without it only the list's own signature is
-   * proved: `version`, `prev` and the change-of-admin rule are NOT checked. A verifier that
-   * walks versions (`verifyTeamTrust`) always gives it, except for the first list it holds.
+   * The list before this one (already validated), or `null` for version 1. REQUIRED (unless
+   * `first`): `version`, `prev` and the change-of-admin rule are checked against it.
    */
   prev?: MemberList | null;
+  /**
+   * The first list the verifier holds: its predecessor is not available, so `version`, `prev` and
+   * the admin rule are NOT checked (the member's anchor and the pin carry that). Exactly one of
+   * `prev` and `first: true` MUST be given, else MALFORMED.
+   */
+  first?: boolean;
   /** The verified chain of the OLD admin; required when the list carries a hand-over. */
   oldAdminChain?: ChainState;
   /**
-   * The verifier's pin. A list at or below `pin.version` is not re-verified against the admin's
-   * head now (the re-sign rule): its signer needs only to have been admitted at the named head.
-   * Does not itself refuse; use `checkTeamPin`.
+   * The verifier's pin. A list that IS the pinned version (same version, same hash) is not
+   * re-verified against the admin's head now (the re-sign rule): its signer needs only to have
+   * been admitted at the named head. Does not itself refuse; use `checkTeamPin`.
    */
   pin?: TeamPin | null;
+  /**
+   * The caller has hash-linked this list to a strictly valid later list or to the pin, so the
+   * signer needs only to have been admitted at the named head (a device removed since does not
+   * matter: the later list endorses this one).
+   */
+  linked?: boolean;
   /**
    * The verifier holds a member anchor naming `list.admin_did`: a change of admin with ONE
    * signature (no hand-over) is accepted for this list, because the members' own statements
@@ -307,9 +328,10 @@ export async function verifyMemberList(env: { list: unknown; sigs: unknown }, ct
   for (const m of l.members) {
     if (m.code !== (await identityCode(m.did))) return fail('MALFORMED', `identity code of ${m.did} does not match`);
   }
+  if (ctx.first !== true && ctx.prev === undefined) return fail('MALFORMED', 'ctx.prev (null or a list) or ctx.first is required');
+  if (ctx.first === true && ctx.prev !== undefined) return fail('MALFORMED', 'ctx.first and ctx.prev are exclusive');
   const prev = ctx.prev ?? null;
-  const hasPrevCtx = ctx.prev !== undefined;
-  if (hasPrevCtx && prev === null && l.version !== 1) return fail('BAD_VERSION', 'no earlier list given for a version above 1');
+  if (ctx.first !== true && prev === null && l.version !== 1) return fail('BAD_VERSION', 'no earlier list given for a version above 1');
   if (prev) {
     if (prev.team_id !== l.team_id) return fail('TEAM_MISMATCH');
     if (l.version !== prev.version + 1) return fail('BAD_VERSION', `version must be ${prev.version + 1}`);
@@ -334,7 +356,8 @@ export async function verifyMemberList(env: { list: unknown; sigs: unknown }, ct
     if (!Object.keys(o).every((k) => k === 'key_id' || k === 'sig' || k === 'check')) return fail('MALFORMED', 'sig entry members');
     return o as unknown as ListSig;
   };
-  const strict = !(ctx.pin && l.version <= ctx.pin.version);
+  const pinned = !!ctx.pin && l.version === ctx.pin.version && (await memberListHash(l)) === ctx.pin.hash;
+  const strict = !(pinned || ctx.linked === true);
   const main = entry(l.key_id);
   await verifySigner(l, l, main.sig, main.check, ctx.chain, { needCheck: true, strict });
   if (l.handover) {
@@ -381,10 +404,10 @@ export function validateAnchor(o: unknown): TeamAnchor {
   if (!isObj(o)) return fail('MALFORMED', 'anchor must be an object');
   exactMembers(o, ['typ', 'v', 'member_did', 'team_id', 'admin_did', 'version', 'prev', 'key_id', 'chain_seq', 'chain_head', 'created_at', 'nonce'], 'anchor');
   if (o.typ !== TEAM_ANCHOR_TYP || o.v !== 1) return fail('MALFORMED', 'typ or v');
-  str(o.member_did, 'member_did');
-  str(o.team_id, 'team_id');
+  did(o.member_did, 'member_did');
+  teamId(o.team_id);
   if (o.admin_did !== null) {
-    str(o.admin_did, 'admin_did');
+    did(o.admin_did, 'admin_did');
     if (o.admin_did === o.member_did) return fail('MALFORMED', 'a member cannot anchor itself');
   }
   if (!isInt(o.version) || o.version < 1) return fail('MALFORMED', 'version must be an integer of at least 1');
@@ -481,8 +504,8 @@ export function validateLeave(o: unknown): TeamLeave {
   if (!isObj(o)) return fail('MALFORMED', 'leave must be an object');
   exactMembers(o, ['typ', 'v', 'member_did', 'team_id', 'list_version', 'key_id', 'chain_seq', 'chain_head', 'created_at', 'nonce'], 'leave');
   if (o.typ !== TEAM_LEAVE_TYP || o.v !== 1) return fail('MALFORMED', 'typ or v');
-  str(o.member_did, 'member_did');
-  str(o.team_id, 'team_id');
+  did(o.member_did, 'member_did');
+  teamId(o.team_id);
   if (!isInt(o.list_version) || o.list_version < 1) return fail('MALFORMED', 'list_version');
   if (!isInt(o.chain_seq) || !isInt(o.created_at)) return fail('MALFORMED', 'integers');
   b64uBytes(o.key_id, 32, 'key_id');
@@ -516,6 +539,11 @@ export async function verifyLeave(
 // what a member's device runs
 // ---------------------------------------------------------------------------
 
+/** Most list versions and most leaves one `verifyTeamTrust` call takes. @experimental */
+export const TEAM_TRUST_MAX_VERSIONS = 256;
+/** @experimental */
+export const TEAM_TRUST_MAX_LEAVES = 1000;
+
 /** @experimental */
 export interface TeamTrustInput {
   team_id: string;
@@ -524,13 +552,13 @@ export interface TeamTrustInput {
   anchorChain: ChainState;
   /** The verifier's pin of the anchor line, if any. */
   anchorPin?: TeamPin | null;
-  /** List versions as the Authority Server carries them (any order). Each is verified here. */
+  /** List versions as the Authority Server carries them (any order, at most 256). Each is verified here. */
   versions: { list: unknown; sigs: unknown }[];
   /** Verified chains of the admins, by root DID. Must hold every admin that signs a version taken into account. */
   adminChains: Record<string, ChainState>;
   /** The verifier's pin for this team: highest `(version, hash)` it accepted. */
   pin?: TeamPin | null;
-  /** Leaves of members, each with the verified chain of its member. */
+  /** Leaves of members, each with the verified chain of its member (at most 1000). */
   leaves?: { env: { leave: unknown; sig: unknown }; chain: ChainState }[];
 }
 
@@ -546,47 +574,101 @@ export interface TeamTrust {
   left: string[];
   /** What the verifier stores as its pin for this team. */
   pin: TeamPin;
+  /**
+   * The lowest served version above `version` that was refused, with the code, or null. A gateway
+   * SHOULD warn or refuse when this is set: the Authority Server served something newer that does
+   * not verify (a removed signer, a foreign admin, a broken signature, a missing version).
+   */
+  rejected: { version: number; code: string } | null;
+  /** Leaves that were not applied, by their index in `input.leaves`, with the reason. */
+  skipped_leaves: { index: number; code: string }[];
+}
+
+function codeOf(e: unknown): string {
+  const c = (e as { code?: unknown } | null)?.code;
+  return typeof c === 'string' ? c : 'MALFORMED';
+}
+
+function chainLike(x: unknown, what: string): ChainState {
+  if (!isObj(x) || typeof x.root_did !== 'string' || !isObj(x.devices) || !isObj(x.head) || !Array.isArray(x.hashes)) {
+    return fail('MALFORMED', `${what} must be a verified chain`);
+  }
+  return x as unknown as ChainState;
+}
+
+function checkTrustInput(input: TeamTrustInput): void {
+  if (!isObj(input)) return fail('MALFORMED', 'input must be an object');
+  teamId(input.team_id);
+  if (!isObj(input.anchor) || !isObj((input.anchor as Record<string, unknown>).anchor)) return fail('MALFORMED', 'anchor must be { anchor, sig, check? }');
+  chainLike(input.anchorChain, 'anchorChain');
+  if (!Array.isArray(input.versions) || input.versions.length > TEAM_TRUST_MAX_VERSIONS) {
+    return fail('MALFORMED', `versions must be an array of at most ${TEAM_TRUST_MAX_VERSIONS}`);
+  }
+  for (const v of input.versions) {
+    if (!isObj(v) || !isObj(v.list) || !Array.isArray(v.sigs)) return fail('MALFORMED', 'a version must be { list, sigs }');
+  }
+  if (!isObj(input.adminChains)) return fail('MALFORMED', 'adminChains must be an object');
+  for (const k of Object.keys(input.adminChains)) chainLike(input.adminChains[k], 'adminChains entry');
+  if (input.leaves !== undefined) {
+    if (!Array.isArray(input.leaves) || input.leaves.length > TEAM_TRUST_MAX_LEAVES) {
+      return fail('MALFORMED', `leaves must be an array of at most ${TEAM_TRUST_MAX_LEAVES}`);
+    }
+    for (const l of input.leaves) {
+      if (!isObj(l) || !isObj(l.env)) return fail('MALFORMED', 'a leave must be { env, chain }');
+      chainLike(l.chain, 'leave chain');
+    }
+  }
+  for (const p of [input.pin, input.anchorPin]) {
+    if (p === undefined || p === null) continue;
+    if (!isObj(p) || !isInt(p.version)) return fail('MALFORMED', 'pin must be { version, hash }');
+    hashBytes(p.hash);
+  }
 }
 
 /**
  * Trust of one member's device in one team (20.21.3). The member's anchor names an admin. From
- * the first list signed by that admin, versions are followed upward: each must verify against
- * its predecessor (`verifyMemberList`; a change of admin needs the old and the new admin, unless
- * the list is the first of the anchored admin), and each admin that signs needs a chain in
- * `adminChains`. The result is the HIGHEST version that verifies; a broken or foreign version
- * ends the walk and is not accepted (the version before it is the result, which is the same as the
- * Authority Server serving an older list: only the pin protects against that). If not even the
- * first version verifies, its refusal is thrown.
+ * the first list signed by that admin ("start"), versions are followed upward: each must verify
+ * against its predecessor (`verifyMemberList`; a change of admin needs the old and the new admin,
+ * unless the list is the start), and each admin that signs needs a chain in `adminChains`.
  *
- * Then: the pin (`ROLLBACK` below it, `FORK` at the same version with another hash, and a higher
- * version must link back to the pin: a list at `pin.version` with the pinned hash, or at
- * `pin.version + 1` with `prev` equal to it, else `HISTORY_GAP`: fetch more versions); the
- * anchor's member must be in the list (`NOT_A_MEMBER`: a member who was removed is not given an
- * older list). Leaves apply to members who stayed listed without a gap from the leave's
- * `list_version` to the accepted version; the admin cannot leave (`ADMIN_CANNOT_LEAVE`).
- * Errors: everything of `verifyMemberList`, `verifyAnchor`, `verifyLeave`, plus NO_TRUST (no
- * version of the anchored admin verifies; the first error is in the message), TEAM_MISMATCH,
- * NOT_A_MEMBER, ROLLBACK, FORK, HISTORY_GAP, ADMIN_CANNOT_LEAVE.
+ * The result is the highest version that verifies, with these rules:
+ *  - A signer removed since needs no re-check on a version that a later, strictly valid version
+ *    hash-links to (the later list endorses it). The newest accepted version must be strictly
+ *    valid (signer active now) or equal the pin.
+ *  - A refused newer version is reported in `rejected`; the result is the version before it.
+ *  - The pin: `ROLLBACK` below it, `FORK` at the same version with another hash. The walk must be
+ *    linked to the pin: either the start is at or below the pin version (the walk then holds the
+ *    pinned version with the pinned hash), or every version from the pin to the start is present
+ *    with `prev` equal to the previous hash and the pinned hash at the bottom (signatures are not
+ *    needed on that segment). Otherwise `HISTORY_GAP` (fetch more versions) or `FORK`.
+ *  - The anchor's member must be in the list (`NOT_A_MEMBER`: a removed member is not given an
+ *    older list).
+ *  - Each leave is applied or skipped on its own (`skipped_leaves`): a leave applies if its
+ *    `list_version` is not above the result and the member stays listed without a gap from there
+ *    to the result; a leave of the admin is skipped as `ADMIN_CANNOT_LEAVE`.
+ * Errors: everything of `verifyMemberList` and `verifyAnchor` (a refusal of the first list is
+ * thrown as it is), plus MALFORMED (input shape, caps), NO_TRUST, TEAM_MISMATCH, NOT_A_MEMBER,
+ * ROLLBACK, FORK, HISTORY_GAP.
  * @experimental
  */
 export async function verifyTeamTrust(input: TeamTrustInput): Promise<TeamTrust> {
-  if (!input || !input.anchorChain || !Array.isArray(input.versions) || !isObj(input.adminChains) || typeof input.team_id !== 'string' || input.team_id.length === 0) {
-    return fail('MALFORMED', 'input must give team_id, anchor, anchorChain, versions and adminChains');
-  }
+  checkTrustInput(input);
+  const own = (o: Record<string, ChainState>, k: string): ChainState | undefined => (Object.prototype.hasOwnProperty.call(o, k) ? o[k] : undefined);
   const anchor = await verifyAnchor(input.anchor, { chain: input.anchorChain, pin: input.anchorPin, expect: { team_id: input.team_id } });
   if (anchor.admin_did === null) return fail('NO_TRUST', 'the anchor is cleared');
   const adminDid = anchor.admin_did;
+  const pin = input.pin ?? undefined;
 
-  // validate shapes, order, detect two different lists at one version
-  const lists: { list: MemberList; hash: string; env: { list: unknown; sigs: unknown } }[] = [];
+  // shapes, order, two different lists at one version
+  const all: { list: MemberList; hash: string; env: { list: unknown; sigs: unknown } }[] = [];
   for (const e of input.versions) {
-    const list = validateMemberList(e?.list);
+    const list = validateMemberList(e.list);
     if (list.team_id !== input.team_id) return fail('TEAM_MISMATCH', 'a version belongs to another team');
-    lists.push({ list, hash: await memberListHash(list), env: e });
+    all.push({ list, hash: await memberListHash(list), env: e });
   }
-  lists.sort((a, b) => a.list.version - b.list.version);
-  const seen: typeof lists = [];
-  for (const x of lists) {
+  all.sort((a, b) => a.list.version - b.list.version);
+  const seen: typeof all = [];
+  for (const x of all) {
     const last = seen[seen.length - 1];
     if (last && last.list.version === x.list.version) {
       if (last.hash !== x.hash) return fail('FORK', `two different lists at version ${x.list.version}`);
@@ -598,62 +680,97 @@ export async function verifyTeamTrust(input: TeamTrustInput): Promise<TeamTrust>
   const start = seen.findIndex((x) => x.list.admin_did === adminDid);
   if (start < 0) return fail('NO_TRUST', 'no list signed by the admin this member trusts');
 
-  let accepted = -1;
-  let firstError: unknown = null;
+  // 1. walk upward, each list verified with the re-sign relaxation (linked)
+  type Step = { chain: ChainState; oldAdminChain?: ChainState; prev?: MemberList; first?: boolean; anchored: boolean };
+  const steps: Step[] = [];
+  let lastOk = -1;
+  let walkError: unknown = null;
   for (let i = start; i < seen.length; i++) {
     const { list, env } = seen[i];
     try {
       const before = i > 0 ? seen[i - 1] : undefined;
-      const prev = before && before.list.version === list.version - 1 ? before.list : i === start ? undefined : null;
-      if (prev === null) return fail('BAD_VERSION', 'a version is missing');
-      const chain = input.adminChains[list.admin_did];
+      const adjacent = before && before.list.version === list.version - 1 ? before.list : undefined;
+      if (!adjacent && i > start) return fail('BAD_VERSION', 'a version is missing');
+      const chain = own(input.adminChains, list.admin_did);
       if (!chain) return fail('NO_TRUST', `no verified chain for admin ${list.admin_did}`);
-      const oldChain = list.handover ? input.adminChains[list.handover.admin_did] : undefined;
+      const oldChain = list.handover ? own(input.adminChains, list.handover.admin_did) : undefined;
       if (list.handover && !oldChain) return fail('NO_TRUST', 'no verified chain for the old admin');
-      await verifyMemberList(env, { chain, prev, oldAdminChain: oldChain, pin: input.pin, anchored: i === start });
-      accepted = i;
+      const step: Step = adjacent ? { chain, oldAdminChain: oldChain, prev: adjacent, anchored: i === start } : { chain, oldAdminChain: oldChain, first: true, anchored: i === start };
+      await verifyMemberList(env, { ...step, pin, linked: true });
+      steps[i] = step;
+      lastOk = i;
     } catch (e) {
-      firstError = e;
+      walkError = e;
       break;
     }
   }
-  if (accepted < 0) {
-    // keep the cause visible: the first refusal is thrown as it is
-    if (firstError) throw firstError;
-    return fail('NO_TRUST', 'no version verifies');
+  if (lastOk < 0) throw walkError ?? fail('NO_TRUST', 'no version verifies');
+
+  // 2. the newest accepted version is strictly valid (signer active now) or is the pin; older ones are endorsed by hash
+  let accepted = -1;
+  const strictError: Record<number, unknown> = {};
+  for (let j = lastOk; j >= start; j--) {
+    if (pin && seen[j].list.version === pin.version && seen[j].hash === pin.hash) {
+      accepted = j;
+      break;
+    }
+    try {
+      await verifyMemberList(seen[j].env, { ...steps[j], pin, linked: false });
+      accepted = j;
+      break;
+    } catch (e) {
+      strictError[j] = e;
+    }
   }
+  if (accepted < 0) throw strictError[lastOk];
   const best = seen[accepted];
 
-  // rollback and fork against the pin, and the link back to it
-  checkTeamPin(best.list.version, best.hash, input.pin);
-  if (input.pin && best.list.version > input.pin.version) {
-    const at = seen.find((x) => x.list.version === input.pin!.version);
-    const next = seen.find((x) => x.list.version === input.pin!.version + 1);
-    if (at) {
-      if (at.hash !== input.pin.hash) return fail('FORK', 'the history differs from the pinned version');
-    } else if (next) {
-      if (next.list.prev !== input.pin.hash) return fail('FORK', 'the history does not continue from the pinned version');
+  // 3. pin: rollback, fork, and the hash link from the pin to the walk
+  if (pin) {
+    checkTeamPin(best.list.version, best.hash, pin);
+    if (seen[start].list.version <= pin.version) {
+      const at = seen.slice(start, accepted + 1).find((x) => x.list.version === pin.version);
+      if (at && at.hash !== pin.hash) return fail('FORK', 'the history differs from the pinned version');
+      if (!at && best.list.version > pin.version) return fail('HISTORY_GAP', 'the pinned version is not in the walked versions');
     } else {
-      return fail('HISTORY_GAP', 'versions from the pinned one are missing');
+      let cur = seen[start];
+      while (cur.list.version > pin.version + 1) {
+        const pred = seen.find((x) => x.list.version === cur.list.version - 1);
+        if (!pred) return fail('HISTORY_GAP', 'versions from the pinned one to the start are missing');
+        if (cur.list.prev !== pred.hash) return fail('FORK', 'the history does not link up');
+        cur = pred;
+      }
+      if (cur.list.prev !== pin.hash) return fail('FORK', 'the history does not continue from the pinned version');
     }
   }
 
   if (!best.list.members.some((m) => m.did === anchor.member_did)) return fail('NOT_A_MEMBER');
 
-  // leaves
+  // what was refused above the result
+  let rejected: TeamTrust['rejected'] = null;
+  if (accepted + 1 <= lastOk) rejected = { version: seen[accepted + 1].list.version, code: codeOf(strictError[accepted + 1]) };
+  else if (lastOk + 1 < seen.length) rejected = { version: seen[lastOk + 1].list.version, code: codeOf(walkError) };
+
+  // leaves, one by one
   const left: string[] = [];
-  for (const lv of input.leaves ?? []) {
-    const x = await verifyLeave(lv.env, { chain: lv.chain, expect: { team_id: input.team_id } });
-    if (x.member_did === best.list.admin_did) return fail('ADMIN_CANNOT_LEAVE');
-    if (left.includes(x.member_did)) continue;
-    if (x.list_version > best.list.version) continue;
-    let continuous = true;
-    for (let v = x.list_version; v <= best.list.version && continuous; v++) {
-      const at = seen.find((s) => s.list.version === v);
-      if (!at) return fail('HISTORY_GAP', 'versions from the leave on are missing');
-      if (!at.list.members.some((m) => m.did === x.member_did)) continuous = false;
+  const skipped: { index: number; code: string }[] = [];
+  const leaves = input.leaves ?? [];
+  for (let idx = 0; idx < leaves.length; idx++) {
+    try {
+      const x = await verifyLeave(leaves[idx].env, { chain: leaves[idx].chain, expect: { team_id: input.team_id } });
+      if (x.list_version > best.list.version) throw Object.assign(new Error('NOT_APPLICABLE'), { code: 'NOT_APPLICABLE' });
+      let continuous = true;
+      for (let v = x.list_version; v <= best.list.version && continuous; v++) {
+        const at = seen.slice(start, accepted + 1).find((s) => s.list.version === v);
+        if (!at) throw Object.assign(new Error('HISTORY_GAP'), { code: 'HISTORY_GAP' });
+        if (!at.list.members.some((m) => m.did === x.member_did)) continuous = false;
+      }
+      if (!continuous) throw Object.assign(new Error('NOT_APPLICABLE'), { code: 'NOT_APPLICABLE' });
+      if (x.member_did === best.list.admin_did) throw Object.assign(new Error('ADMIN_CANNOT_LEAVE'), { code: 'ADMIN_CANNOT_LEAVE' });
+      if (!left.includes(x.member_did)) left.push(x.member_did);
+    } catch (e) {
+      skipped.push({ index: idx, code: codeOf(e) });
     }
-    if (continuous) left.push(x.member_did);
   }
   if (left.includes(anchor.member_did)) return fail('NOT_A_MEMBER', 'this member has left');
 
@@ -665,5 +782,7 @@ export async function verifyTeamTrust(input: TeamTrustInput): Promise<TeamTrust>
     members: best.list.members.filter((m) => !left.includes(m.did)),
     left,
     pin: { version: best.list.version, hash: best.hash },
+    rejected,
+    skipped_leaves: skipped,
   };
 }

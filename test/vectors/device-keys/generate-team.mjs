@@ -165,7 +165,7 @@ async function lcase(id, description, e, o, expect) {
     id: `list-${id}`,
     description,
     op: 'team-list.verify',
-    input: { chain: o.chain ?? cref('ada', 5), envelope: e, prev: o.prev, old_admin_chain: o.old, pin: o.pin, anchored: o.anchored },
+    input: { chain: o.chain ?? cref('ada', 5), envelope: e, prev: o.prev, first: o.first, old_admin_chain: o.old, pin: o.pin, linked: o.linked, anchored: o.anchored },
     expect,
   });
 }
@@ -176,14 +176,16 @@ async function signed(list, signers = SA1) {
 }
 
 await lcase('v1-valid', 'the first list: the admin alone, no prev', E1, { prev: null }, OK);
-await lcase('v1-valid-without-prev-context', 'the same list without a prev in the context', E1, {}, OK);
+await lcase('v1-without-prev-context', 'prev (or first) must be given explicitly', E1, {}, { error: 'MALFORMED' });
+await lcase('first-list-of-trimmed-history', 'the first list the verifier holds is version 3: its predecessor is not available', E3, { first: true }, OK);
+await lcase('first-and-prev-together', 'first and prev are exclusive', E3, { first: true, prev: L2 }, { error: 'MALFORMED' });
 await lcase('v2-valid', 'a member is added', E2, { prev: L1 }, OK);
 await lcase('v3-valid', 'another member is added', E3, { prev: L2 }, OK);
 await lcase('v4-handover-two-signatures', 'change of admin signed by the new admin (B1) and the old admin (A1), each with its check', E4, { chain: cref('ben'), prev: L3, old: cref('ada', 5) }, OK);
 await lcase('v5-same-admin-removes-a-member', 'the new admin removes a member', E5, { chain: cref('ben'), prev: L4 }, OK);
 await lcase('valid-name-unicode-nfc', 'a name with umlauts in NFC', await signed(mkList({ members: byDid([await member(rA.did, 'Zoë Müller-Åkesson')]) })), { prev: null }, OK);
 await lcase('valid-name-64-characters', 'a name of exactly 64 characters', await signed(mkList({ members: byDid([await member(rA.did, 'n'.repeat(64))]) })), { prev: null }, OK);
-await lcase('valid-signer-removed-at-or-below-pin', 'A3 was removed at seq 4 but was admitted with a check key at the named head 3; the version is at the pin', await signed(mkList({ key_id: A3.id }), [[A3, maker(CA3)]]), { prev: null, pin: { version: 1, hash: await hash(L1) } }, OK);
+await lcase('valid-signer-removed-at-or-below-pin', 'A3 was removed at seq 4 but was admitted with a check key at the named head 3; the list is hash-linked to a later strictly valid one (linked)', await signed(mkList({ key_id: A3.id }), [[A3, maker(CA3)]]), { prev: null, linked: true }, OK);
 
 await lcase('wrong-typ', 'typ of another object', await signed(strip({ ...L1, typ: 'suveren-team-anchor' })), { prev: null }, { error: 'MALFORMED' });
 await lcase('wrong-v', 'v is 2', await signed({ ...L1, v: 2 }), { prev: null }, { error: 'MALFORMED' });
@@ -222,10 +224,10 @@ await lcase('check-over-other-object', 'check made over the hash of another list
 await lcase('check-by-other-key', 'check made with a key that is not the device check key', { list: L1, sigs: [{ key_id: A1.id, sig: await sign(L1, A1), check: await maker(COTHER)(await hash(L1)) }] }, { prev: null }, { error: 'CHECK_REQUIRED' });
 await lcase('check-null', 'check: null counts as missing', { list: L1, sigs: [{ key_id: A1.id, sig: await sign(L1, A1), check: null }] }, { prev: null }, { error: 'CHECK_REQUIRED' });
 await lcase('device-without-check-key', 'A2 has no check key: a member list is a grant-class action', await signed({ ...L1, key_id: A2.id }, [[A2, null]]), { prev: null }, { error: 'CHECK_REQUIRED' });
-await lcase('check-key-changed-since-named-head', 'A3 got its check key at seq 3; naming head 2 cannot use it', await signed(mkList({ key_id: A3.id, chain_seq: 2, chain_head: ada.hashes[2] }), [[A3, maker(CA3)]]), { prev: null, pin: { version: 1, hash: await hash(L1) } }, { error: 'CHECK_REQUIRED' });
+await lcase('check-key-changed-since-named-head', 'A3 got its check key at seq 3; naming head 2 cannot use it', await signed(mkList({ key_id: A3.id, chain_seq: 2, chain_head: ada.hashes[2] }), [[A3, maker(CA3)]]), { prev: null, linked: true }, { error: 'CHECK_REQUIRED' });
 await lcase('signer-removed-no-pin', 'A3 was removed at seq 4; without a pin the signer must be active now', await signed(mkList({ key_id: A3.id }), [[A3, maker(CA3)]]), { prev: null }, { error: 'NOT_ACTIVE' });
 await lcase('signer-removed-pin-below-version', 'the pin is below this version, so the signer must be active now', await signed(mkList({ key_id: A3.id, version: 2, prev: await hash(L1), members: L2.members }), [[A3, maker(CA3)]]), { prev: L1, pin: { version: 1, hash: await hash(L1) } }, { error: 'NOT_ACTIVE' });
-await lcase('signer-not-admitted-at-named-head', 'A3 was admitted at seq 2 and names head 1', await signed(mkList({ key_id: A3.id, chain_seq: 1, chain_head: ada.hashes[1] }), [[A3, maker(CA3)]]), { prev: null, pin: { version: 1, hash: await hash(L1) } }, { error: 'NOT_ACTIVE' });
+await lcase('signer-not-admitted-at-named-head', 'A3 was admitted at seq 2 and names head 1', await signed(mkList({ key_id: A3.id, chain_seq: 1, chain_head: ada.hashes[1] }), [[A3, maker(CA3)]]), { prev: null, linked: true }, { error: 'NOT_ACTIVE' });
 await lcase('signer-of-another-chain', 'M1 is not a device of the admin chain', await signed({ ...L1, key_id: M1.id }, [[M1, maker(CM1)]]), { prev: null }, { error: 'NOT_ACTIVE' });
 await lcase('wrong-root', 'the list names Ben as admin but the context chain is Ada\'s', await signed({ ...L1, admin_did: rB.did, members: [mBen] }), { prev: null }, { error: 'WRONG_ROOT' });
 await lcase('bad-signature', 'a name was changed after signing', { list: { ...L2, members: byDid([mAda, mBen, { ...mMax, name: 'Max Mustermann' }]) }, sigs: E2.sigs }, { prev: L1 }, { error: 'BAD_SIGNATURE' });
@@ -331,9 +333,9 @@ await tcase('follows-handover-and-later', 'versions after the hand-over, signed 
 await tcase('start-from-trimmed-history', 'the Authority Server serves only the last versions (Max trusts Ada, list 3 is the first)', { versions: [E3, E4, E5] }, { ok: true, version: 5, admin_did: rB.did });
 await tcase('anchor-names-new-admin', 'Max re-anchored to Ben; the list of Ben alone (one signature) is accepted from that anchor on', { anchor: AN_MAX_B, versions: [E1, E2, E3, E4x] }, { ok: true, version: 4, admin_did: rB.did });
 await tcase('anchor-names-new-admin-later-versions', 'the same, and a later version signed by Ben', { anchor: AN_MAX_B, versions: [E1, E2, E3, E4x, E5x] }, { ok: true, version: 5, admin_did: rB.did, members: dids(L5.members) });
-await tcase('single-signature-change-without-anchor', 'Ben alone changes the admin and Max never anchored Ben: the walk stops at version 3', { versions: [E1, E2, E3, E4x] }, { ok: true, version: 3, admin_did: rA.did });
+await tcase('single-signature-change-without-anchor', 'Ben alone changes the admin and Max never anchored Ben: the walk stops at version 3', { versions: [E1, E2, E3, E4x] }, { ok: true, version: 3, admin_did: rA.did, rejected: { version: 4, code: 'HANDOVER_REQUIRED' } });
 await tcase('list-by-a-stranger-admin', 'a list by Xavier at version 4 is ignored: version 3', { versions: [E1, E2, E3, await env(mkList({ version: 4, prev: await hash(L3), admin_did: rX.did, members: byDid([mAda, mBen, mMax, mNora, await member(rX.did, 'Xavier Fremd')]), key_id: X1.id, chain_seq: 0, chain_head: xav.hashes[0] }), [[X1, maker(CX1)]])] }, { ok: true, version: 3, admin_did: rA.did });
-await tcase('removed-signer-without-pin-stops-the-walk', 'list 3 is signed by A3, removed at seq 4: no pin, so the walk ends at version 2', { versions: [E1, E2, await env(mkList({ version: 3, prev: await hash(L2), members: L3.members, key_id: A3.id }), [[A3, maker(CA3)]])] }, { ok: true, version: 2 });
+await tcase('removed-signer-without-pin-stops-the-walk', 'list 3 is signed by A3, removed at seq 4: no pin, so the walk ends at version 2', { versions: [E1, E2, await env(mkList({ version: 3, prev: await hash(L2), members: L3.members, key_id: A3.id }), [[A3, maker(CA3)]])] }, { ok: true, version: 2, rejected: { version: 3, code: 'NOT_ACTIVE' } });
 const L3a3 = mkList({ version: 3, prev: await hash(L2), members: L3.members, key_id: A3.id, created_at: T0 + 150 });
 await tcase('removed-signer-at-pin-is-accepted', 'the same list when the verifier already pinned version 3', { versions: [E1, E2, await env(L3a3, [[A3, maker(CA3)]])], pin: await pinOf(L3a3) }, { ok: true, version: 3 });
 await tcase('pin-same-version', 'the pin equals the newest version', { versions: [E1, E2, E3], pin: await pinOf(L3) }, { ok: true, version: 3, pin: await pinOf(L3) });
@@ -354,16 +356,28 @@ await tcase('list-of-another-team', 'a version belongs to another team', { versi
 await tcase('no-list-of-the-anchored-admin', 'only Xavier\'s lists', { versions: [await env(mkList({ admin_did: rX.did, members: [await member(rX.did, 'Xavier Fremd')], key_id: X1.id, chain_seq: 0, chain_head: xav.hashes[0] }), [[X1, maker(CX1)]])] }, { error: 'NO_TRUST' });
 await tcase('admin-chain-missing', 'no verified chain given for the admin', { versions: [E1, E2], adminChains: {} }, { error: 'NO_TRUST' });
 await tcase('first-list-does-not-verify', 'the first version of the anchored admin has a wrong signature', { versions: [{ list: L1, sigs: [{ key_id: A1.id, sig: await sign(L1, A2), check: await maker(CA1)(await hash(L1)) }] }] }, { error: 'BAD_SIGNATURE' });
-await tcase('versions-with-a-gap-end-the-walk', 'version 3 is missing between 2 and 4: the walk ends at 2', { versions: [E1, E2, E4], adminChains }, { ok: true, version: 2 });
+await tcase('versions-with-a-gap-end-the-walk', 'version 3 is missing between 2 and 4: the walk ends at 2', { versions: [E1, E2, E4], adminChains }, { ok: true, version: 2, rejected: { version: 4, code: 'BAD_VERSION' } });
+
+// pin link (review M1) and endorsement by a later list (L1)
+const h2 = await hash(L2);
+const stub3 = { list: { ...L3, prev: h2, created_at: T0 + 190 }, sigs: [] };
+await tcase('pin-stub-version-does-not-link', 'Max trusts Ben; the pin is version 2; the Authority Server serves an unsigned stub of version 3 and version 5: version 4 is missing', { anchor: AN_MAX_B, versions: [stub3, E5x], pin: await pinOf(L2) }, { error: 'HISTORY_GAP' });
+await tcase('pin-only-and-a-later-version', 'the pinned version 2 and version 5 only: nothing links 5 to 2', { anchor: AN_MAX_B, versions: [E2, E5x], pin: await pinOf(L2) }, { error: 'HISTORY_GAP' });
+await tcase('pin-stub-chain-does-not-link', 'an unsigned stub of version 3 continues the pin, but version 4 continues the real version 3: version 4 does not verify against its predecessor', { anchor: AN_MAX_B, versions: [stub3, E4x, E5x], pin: await pinOf(L2) }, { error: 'BAD_PREV' });
+await tcase('pin-links-through-unsigned-segment', 'version 3 (not signed by the anchored admin) links version 4 to the pin at version 2', { anchor: AN_MAX_B, versions: [E3, E4x, E5x], pin: await pinOf(L2) }, { ok: true, version: 5, admin_did: rB.did });
+await tcase('pin-at-the-bottom-of-the-segment', 'the pin is version 3 and version 4 continues it', { anchor: AN_MAX_B, versions: [E4x, E5x], pin: await pinOf(L3) }, { ok: true, version: 5 });
+const L2r = mkList({ version: 2, prev: await hash(L1), members: L2.members, key_id: A3.id, created_at: T0 + 160 });
+const L3r = mkList({ version: 3, prev: await hash(L2r), members: L3.members, created_at: T0 + 161 });
+await tcase('removed-signer-endorsed-by-a-later-list', 'version 2 was signed by A3 (removed since); version 3 by A1 links to it: a fresh gateway accepts both', { versions: [E1, await env(L2r, [[A3, maker(CA3)]]), await env(L3r, SA1)] }, { ok: true, version: 3, rejected: null });
 
 const LEAVE_MAX_3 = { env: await lenv(mkLeave(M1, { list_version: 3 }), M1), chain: cref('max', 4) };
 await tcase('leave-applies', 'Max left at version 3; Nora (who trusts Ada) sees him gone before the admin signed', { anchor: AN_NORA_A, anchorChain: cref('nora'), versions: [E1, E2, E3], leaves: [LEAVE_MAX_3] }, { ok: true, version: 3, left: [rM.did], members: dids(byDid([mAda, mBen, mNora])) });
 await tcase('leave-by-the-member-itself', 'Max sees his own leave: he is out', { versions: [E1, E2, E3], leaves: [LEAVE_MAX_3] }, { error: 'NOT_A_MEMBER' });
-await tcase('leave-of-a-later-version-is-ignored', 'a leave from a list version above the accepted one does not apply yet', { anchor: AN_NORA_A, anchorChain: cref('nora'), versions: [E1, E2, E3], leaves: [{ env: await lenv(mkLeave(M1, { list_version: 4 }), M1), chain: cref('max', 4) }] }, { ok: true, version: 3, left: [] });
+await tcase('leave-of-a-later-version-is-ignored', 'a leave from a list version above the accepted one does not apply yet', { anchor: AN_NORA_A, anchorChain: cref('nora'), versions: [E1, E2, E3], leaves: [{ env: await lenv(mkLeave(M1, { list_version: 4 }), M1), chain: cref('max', 4) }] }, { ok: true, version: 3, left: [], skipped_leaves: [{ index: 0, code: 'NOT_APPLICABLE' }] });
 await tcase('leave-then-removed-and-added-again', 'Max left at version 3 but a later list does not hold him in between: the leave does not apply to a rejoin', { anchor: AN_NORA_A, anchorChain: cref('nora'), versions: [E1, E2, E3, E4, E5, E6, await env(mkList({ version: 7, prev: await hash(L6), admin_did: rB.did, members: byDid([mAda, mBen, mMax, mNora]), ...bHead, created_at: T0 + 107 }), SB1)], leaves: [LEAVE_MAX_3] }, { ok: true, version: 7, left: [] });
-await tcase('leave-by-the-admin', 'the admin cannot leave', { anchor: AN_NORA_A, anchorChain: cref('nora'), versions: [E1, E2, E3], leaves: [{ env: await lenv(dk.buildLeave({ member_did: rA.did, team_id: TEAM, list_version: 3, key_id: A1.id, chain_seq: 3, chain_head: ada.hashes[3], created_at: T0 + 301, nonce: nonce() }), A1), chain: cref('ada', 5) }] }, { error: 'ADMIN_CANNOT_LEAVE' });
-await tcase('leave-for-another-team', 'a leave of another team', { anchor: AN_NORA_A, anchorChain: cref('nora'), versions: [E1, E2, E3], leaves: [{ env: await lenv(mkLeave(M1, { team_id: OTHER_TEAM }), M1), chain: cref('max', 4) }] }, { error: 'TEAM_MISMATCH' });
-await tcase('leave-forged', 'a leave signed by another device key', { anchor: AN_NORA_A, anchorChain: cref('nora'), versions: [E1, E2, E3], leaves: [{ env: await lenv(mkLeave(M1, { list_version: 3 }), M2), chain: cref('max', 4) }] }, { error: 'BAD_SIGNATURE' });
+await tcase('leave-by-the-admin', 'the admin cannot leave', { anchor: AN_NORA_A, anchorChain: cref('nora'), versions: [E1, E2, E3], leaves: [{ env: await lenv(dk.buildLeave({ member_did: rA.did, team_id: TEAM, list_version: 3, key_id: A1.id, chain_seq: 3, chain_head: ada.hashes[3], created_at: T0 + 301, nonce: nonce() }), A1), chain: cref('ada', 5) }] }, { ok: true, version: 3, left: [], skipped_leaves: [{ index: 0, code: 'ADMIN_CANNOT_LEAVE' }] });
+await tcase('leave-for-another-team', 'a leave of another team', { anchor: AN_NORA_A, anchorChain: cref('nora'), versions: [E1, E2, E3], leaves: [{ env: await lenv(mkLeave(M1, { team_id: OTHER_TEAM }), M1), chain: cref('max', 4) }] }, { ok: true, version: 3, left: [], skipped_leaves: [{ index: 0, code: 'TEAM_MISMATCH' }] });
+await tcase('leave-forged', 'a leave signed by another device key', { anchor: AN_NORA_A, anchorChain: cref('nora'), versions: [E1, E2, E3], leaves: [{ env: await lenv(mkLeave(M1, { list_version: 3 }), M2), chain: cref('max', 4) }] }, { ok: true, version: 3, left: [], skipped_leaves: [{ index: 0, code: 'BAD_SIGNATURE' }] });
 
 writeFileSync(
   join(here, 'team.json'),

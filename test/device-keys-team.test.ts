@@ -37,10 +37,14 @@ describe('team vectors', () => {
     const have = new Set(cases.map((c) => c.expect.error).filter(Boolean));
     for (const n of [
       'MALFORMED', 'WRONG_ROOT', 'BAD_VERSION', 'BAD_PREV', 'TEAM_MISMATCH', 'HANDOVER_REQUIRED', 'NOT_ACTIVE', 'BAD_SIGNATURE',
-      'CHECK_REQUIRED', 'FORK', 'CHAIN_AHEAD', 'ROLLBACK', 'NO_TRUST', 'NOT_A_MEMBER', 'HISTORY_GAP', 'ADMIN_CANNOT_LEAVE',
+      'CHECK_REQUIRED', 'FORK', 'CHAIN_AHEAD', 'ROLLBACK', 'NO_TRUST', 'NOT_A_MEMBER', 'HISTORY_GAP',
     ]) {
       expect(have.has(n), `no vector for ${n}`).toBe(true);
     }
+  });
+  it('a leave that cannot apply is skipped and reported, not an error of the whole call', () => {
+    const codes = cases.flatMap((c) => c.expect.skipped_leaves ?? []).map((x: any) => x.code);
+    for (const n of ['ADMIN_CANNOT_LEAVE', 'NOT_APPLICABLE', 'TEAM_MISMATCH', 'BAD_SIGNATURE']) expect(codes).toContain(n);
   });
   it('has the cases the design names', () => {
     const ids = cases.map((c) => c.id).join(' ');
@@ -81,7 +85,7 @@ describe('signed bytes and hash', () => {
 
 describe('shape limits', () => {
   const base = input('list-v1-valid').envelope.list;
-  const mem = (n: number) => ({ did: `did:key:z${String(n).padStart(6, '0')}`, name: `Member ${n}`, code: '0000 0000 0000 0000 0000 0000' });
+  const mem = (n: number) => ({ did: `did:key:z6Mk${[...String(n).padStart(6, '0')].map((c) => 'ABCDEFGHJK'[+c]).join('')}`, name: `Member ${n}`, code: '0000 0000 0000 0000 0000 0000' });
   it('500 members are fine, 501 are not', () => {
     const many = (n: number) => Array.from({ length: n }, (_, i) => mem(i));
     const mk = (n: number) => ({ ...base, version: 2, prev: base.chain_head, admin_did: mem(0).did, members: many(n) });
@@ -187,5 +191,53 @@ describe('leave', () => {
     })());
     expect(t.left).toEqual([file.fixtures.roots.max]);
     expect(t.members.map((m) => m.did)).not.toContain(file.fixtures.roots.max);
+  });
+});
+
+describe('input validation and review fixes', () => {
+  const bad = async (patch: Record<string, unknown>) => code(dk.verifyTeamTrust({ ...(await trustInput('trust-after-join')), ...patch } as any));
+  it('versions, leaves, anchor and chains of the wrong shape are MALFORMED', async () => {
+    for (const patch of [
+      { versions: null }, { versions: [null] }, { versions: [{}] }, { versions: 'x' },
+      { leaves: null }, { leaves: {} }, { leaves: [null] }, { leaves: [{}] }, { leaves: [5] },
+      { anchor: null }, { anchor: { anchor: null } }, { anchorChain: {} }, { adminChains: null }, { adminChains: { x: 1 } },
+      { team_id: '' }, { team_id: 'a b' }, { pin: { version: 1, hash: 'x' } },
+    ]) {
+      expect(await bad(patch), JSON.stringify(patch)).toBe('MALFORMED');
+    }
+  });
+  it('too many versions or leaves are MALFORMED', async () => {
+    const i = await trustInput('trust-after-join');
+    expect(await bad({ versions: Array.from({ length: dk.TEAM_TRUST_MAX_VERSIONS + 1 }, () => i.versions[0]) })).toBe('MALFORMED');
+    expect(await bad({ leaves: Array.from({ length: dk.TEAM_TRUST_MAX_LEAVES + 1 }, () => ({ env: {}, chain: i.anchorChain })) })).toBe('MALFORMED');
+  });
+  it('an inherited property name is not an admin chain', async () => {
+    expect(await bad({ adminChains: JSON.parse('{"__proto__":{"x":1}}') })).toBe('MALFORMED');
+  });
+  it('DIDs and team ids must have a valid shape', () => {
+    const l = input('list-v1-valid').envelope.list;
+    expect(() => dk.validateMemberList({ ...l, admin_did: 'did:web:example.com' })).toThrow(/MALFORMED/);
+    expect(() => dk.validateMemberList({ ...l, team_id: 'x'.repeat(129) })).toThrow(/MALFORMED/);
+    const a = input('anchor-v1-valid').envelope.anchor;
+    expect(() => dk.validateAnchor({ ...a, admin_did: 'nope' })).toThrow(/MALFORMED/);
+    const x = input('leave-valid').envelope.leave;
+    expect(() => dk.validateLeave({ ...x, member_did: 'nope' })).toThrow(/MALFORMED/);
+  });
+  it('verifyMemberList needs prev or first, and a pin of another list does not relax the signer', async () => {
+    const i = input('list-valid-signer-removed-at-or-below-pin');
+    const chain = await chainOf(i.chain);
+    expect(await code(dk.verifyMemberList(i.envelope, { chain }))).toBe('MALFORMED');
+    expect(await code(dk.verifyMemberList(i.envelope, { chain, prev: null, linked: true }))).toBe('OK');
+    expect(await code(dk.verifyMemberList(i.envelope, { chain, prev: null }))).toBe('NOT_ACTIVE');
+    const other = { version: 1, hash: await dk.memberListHash(input('list-v2-valid').envelope.list) };
+    expect(await code(dk.verifyMemberList(i.envelope, { chain, prev: null, pin: other }))).toBe('NOT_ACTIVE');
+    const own = { version: 1, hash: await dk.memberListHash(i.envelope.list) };
+    expect(await code(dk.verifyMemberList(i.envelope, { chain, prev: null, pin: own }))).toBe('OK');
+  });
+  it('a refused newer version is reported in rejected', async () => {
+    const t = await dk.verifyTeamTrust(await trustInput('trust-single-signature-change-without-anchor'));
+    expect(t.version).toBe(3);
+    expect(t.rejected).toEqual({ version: 4, code: 'HANDOVER_REQUIRED' });
+    expect((await dk.verifyTeamTrust(await trustInput('trust-after-join'))).rejected).toBeNull();
   });
 });

@@ -125,9 +125,11 @@ const OPS = {
   async 'team-list.verify'(dk, i, fx) {
     const ctx = { chain: await verifiedChain(dk, i.chain, fx) };
     if ('prev' in i) ctx.prev = i.prev;
+    if (i.first) ctx.first = true;
     if (i.old_admin_chain) ctx.oldAdminChain = await verifiedChain(dk, i.old_admin_chain, fx);
     if (i.pin) ctx.pin = i.pin;
     if (i.anchored) ctx.anchored = true;
+    if (i.linked) ctx.linked = true;
     await dk.verifyMemberList(i.envelope, ctx);
     return { ok: true };
   },
@@ -159,7 +161,7 @@ const OPS = {
       pin: i.pin,
       leaves,
     });
-    return { ok: true, version: t.version, admin_did: t.admin_did, members: t.members.map((m) => m.did), left: t.left, pin: t.pin };
+    return { ok: true, version: t.version, admin_did: t.admin_did, members: t.members.map((m) => m.did), left: t.left, pin: t.pin, rejected: t.rejected, skipped_leaves: t.skipped_leaves };
   },
   async 'pairing.derive'(dk, i) {
     const d = await dk.derivePairing(dk.b64uDecode(i.secret));
