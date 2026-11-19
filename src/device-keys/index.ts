@@ -12,3 +12,4 @@ export * from './checks';
 export * from './chain';
 export * from './objects';
 export * from './pairing';
+export * from './team';

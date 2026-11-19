@@ -122,6 +122,45 @@ const OPS = {
     await dk.verifyIdentityOverride(i.envelope, { adminChain, aud: i.aud, requestId: i.request_id, memberUserId: i.member_user_id, now: i.now });
     return { ok: true };
   },
+  async 'team-list.verify'(dk, i, fx) {
+    const ctx = { chain: await verifiedChain(dk, i.chain, fx) };
+    if ('prev' in i) ctx.prev = i.prev;
+    if (i.old_admin_chain) ctx.oldAdminChain = await verifiedChain(dk, i.old_admin_chain, fx);
+    if (i.pin) ctx.pin = i.pin;
+    if (i.anchored) ctx.anchored = true;
+    await dk.verifyMemberList(i.envelope, ctx);
+    return { ok: true };
+  },
+  async 'team-anchor.verify'(dk, i, fx) {
+    const ctx = { chain: await verifiedChain(dk, i.chain, fx) };
+    if ('prev' in i) ctx.prev = i.prev;
+    if (i.pin) ctx.pin = i.pin;
+    if (i.expect) ctx.expect = i.expect;
+    await dk.verifyAnchor(i.envelope, ctx);
+    return { ok: true };
+  },
+  async 'team-leave.verify'(dk, i, fx) {
+    const chain = await verifiedChain(dk, i.chain, fx);
+    await dk.verifyLeave(i.envelope, { chain, expect: { team_id: i.team_id } });
+    return { ok: true };
+  },
+  async 'team-trust.verify'(dk, i, fx) {
+    const adminChains = {};
+    for (const [did, spec] of Object.entries(i.admin_chains)) adminChains[did] = await verifiedChain(dk, spec, fx);
+    const leaves = [];
+    for (const l of i.leaves ?? []) leaves.push({ env: l.env, chain: await verifiedChain(dk, l.chain, fx) });
+    const t = await dk.verifyTeamTrust({
+      team_id: i.team_id,
+      anchor: i.anchor,
+      anchorChain: await verifiedChain(dk, i.anchor_chain, fx),
+      anchorPin: i.anchor_pin,
+      versions: i.versions,
+      adminChains,
+      pin: i.pin,
+      leaves,
+    });
+    return { ok: true, version: t.version, admin_did: t.admin_did, members: t.members.map((m) => m.did), left: t.left, pin: t.pin };
+  },
   async 'pairing.derive'(dk, i) {
     const d = await dk.derivePairing(dk.b64uDecode(i.secret));
     return { pairing_id: d.pairingId, mac_key_hex: dk.hexEncode(d.macKey) };
@@ -205,4 +244,4 @@ export async function runVectors(dk, files) {
 }
 
 /** Names of the vector files, in order. */
-export const VECTOR_FILES = ['encoding', 'recovery', 'ed25519-strict', 'der', 'checks', 'chain', 'objects', 'pairing', 'identity'].map((n) => `${n}.json`);
+export const VECTOR_FILES = ['encoding', 'recovery', 'ed25519-strict', 'der', 'checks', 'chain', 'objects', 'pairing', 'identity', 'team'].map((n) => `${n}.json`);
