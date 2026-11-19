@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased (team trust, DEC-73; version number is the maintainer's decision)
+## 0.16.0 — team trust (DEC-73)
 
 Three signed objects and three verifiers, added to `deviceKeys` (**@experimental**):
 
