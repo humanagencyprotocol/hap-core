@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.16.0 — team trust (DEC-73)
+
+Three signed objects and three verifiers, added to `deviceKeys` (**@experimental**):
+
+- `suveren-team-members`: a versioned member list (`version`, `prev`, members with
+  name, root DID and the identity code the admin confirmed at the join). Signed by a
+  granting device of the admin, with its check. A change of admin carries two
+  signatures (old and new admin, `handover`). `buildMemberList`, `buildTeamMember`,
+  `validateMemberList`, `memberListHash`, `verifyMemberList`.
+- `suveren-team-anchor`: a member's own "I trust this admin for this team", signed by a
+  granting device of the member with its check (a touch). `admin_did` null clears it.
+  `buildAnchor`, `validateAnchor`, `anchorHash`, `verifyAnchor`.
+- `suveren-team-leave`: a member leaves, signed by any active device, no check.
+  `buildLeave`, `validateLeave`, `verifyLeave`.
+- `verifyTeamTrust`: what a member's device runs. Follows the member's anchor and the
+  list versions (hand-overs included) and returns the member set, the admin and the pin to
+  store. `checkTeamPin`: a lower version than the pin is `ROLLBACK`, the same version with
+  another hash is `FORK`.
+- New refusal codes: `BAD_VERSION`, `TEAM_MISMATCH`, `HANDOVER_REQUIRED`, `NO_TRUST`,
+  `NOT_A_MEMBER`, `HISTORY_GAP`, `ADMIN_CANNOT_LEAVE`. `BAD_PREV`, `ROLLBACK` and `FORK` are reused.
+- `verifyTeamTrust` links the walk to the pin by hash (else `HISTORY_GAP` or `FORK`), reports a
+  refused newer version as `rejected`, judges each leave alone (`skipped_leaves`), and takes
+  at most 256 versions and 1000 leaves. A signer removed since is accepted on a version that a
+  later strictly valid version links to. `verifyMemberList` needs `prev` (or `first: true`) and
+  relaxes the signer only for the pinned list itself or with `linked: true`.
+- DIDs must be `did:key`, `team_id` 1 to 128 characters of `A-Z a-z 0-9 . _ : -`.
+- JSON vectors (`team.json`) for the Node and browser runner.
+
+Existing exports, objects and behaviour are unchanged.
+
 ## 0.15.0 — 2026-11-18 (identity cancel and override)
 
 Two signed objects for a new root DID, added to `deviceKeys` (**@experimental**):

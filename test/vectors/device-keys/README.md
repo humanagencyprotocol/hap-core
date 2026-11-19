@@ -22,3 +22,6 @@ changing one means regenerating and re-patching.
 
 `identity.json` (cancel and override) is made by `generate-identity.mjs` instead, which builds its own
 two chains and leaves every other file untouched. Run it only on purpose (random ECDSA keys).
+
+`team.json` (member list, anchor, leave, team trust; DEC-73) is made by `generate-team.mjs` the same way:
+it builds its own chains and leaves every other file untouched. Run it only on purpose (random ECDSA keys).
