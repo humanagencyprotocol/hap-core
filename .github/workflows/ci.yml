@@ -7,6 +7,32 @@ on:
     branches: [main]
 
 jobs:
+  # The browser entry and the device-keys vectors in real WebKit and Chromium
+  # (test/browser/run-browsers.mjs). Playwright is not a dependency of hap-core:
+  # an exact version is installed outside the project for this job only. The
+  # runner is pinned because Playwright 1.58.2 has no WebKit for ubuntu 26.04.
+  browsers:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout hap-core
+        uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 9
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Vectors in WebKit and Chromium
+        run: |
+          npm install --no-save --no-audit --no-fund --prefix "$RUNNER_TEMP/pw" playwright@1.58.2
+          "$RUNNER_TEMP/pw/node_modules/.bin/playwright" install --with-deps webkit chromium
+          PLAYWRIGHT_DIR="$RUNNER_TEMP/pw/node_modules/playwright" pnpm test:browsers
+
   test:
     runs-on: ubuntu-latest
     # Normative data (content/0.8/vectors/*.json and 0.7) lives in the spec repo, not
@@ -68,12 +94,3 @@ jobs:
         working-directory: hap-core
         run: pnpm test
 
-      # The browser entry and the device-keys vectors in real WebKit and Chromium. Playwright is
-      # not a dependency of hap-core: an exact version is installed outside the project for this
-      # step only (test/browser/run-browsers.mjs).
-      - name: Vectors in WebKit and Chromium
-        working-directory: hap-core
-        run: |
-          npm install --no-save --no-audit --no-fund --prefix "$RUNNER_TEMP/pw" playwright@1.58.2
-          "$RUNNER_TEMP/pw/node_modules/.bin/playwright" install --with-deps webkit chromium
-          PLAYWRIGHT_DIR="$RUNNER_TEMP/pw/node_modules/playwright" pnpm test:browsers
