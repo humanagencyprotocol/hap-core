@@ -24,7 +24,8 @@
  * three at random, and the deterministic hooks exist for that test only.
  */
 
-import { createHash, type webcrypto } from 'crypto';
+import type { webcrypto } from 'crypto';
+import { sha256Hex } from './sha256';
 import { CipherSuite, DhkemX25519HkdfSha256, HkdfSha256, Aes256Gcm } from '@hpke/core';
 import { canonicalize } from './canonicalize';
 import { toBase64Url, fromBase64Url } from './base64url';
@@ -64,7 +65,7 @@ export function proposalContentJcs(args: Record<string, unknown>): string {
 
 /** `proposalContentHash` — `"sha256:" + hex(sha256(JCS(content)))` (rule 4). */
 export function computeProposalContentHash(args: Record<string, unknown>): string {
-  return `sha256:${createHash('sha256').update(proposalContentJcs(args), 'utf8').digest('hex')}`;
+  return `sha256:${sha256Hex(proposalContentJcs(args))}`;
 }
 
 /** A fresh reader key pair (X25519). */

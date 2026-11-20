@@ -25,5 +25,6 @@ export * from './issuance';
 export * from './gatekeeper';
 export * from './profiles';
 export * from './did-key';
+export * from './sha256';
 /** @experimental Device keys (chain, checks, pairing, grants). The protocol does not define device enrolment yet. */
 export * as deviceKeys from './device-keys/index';

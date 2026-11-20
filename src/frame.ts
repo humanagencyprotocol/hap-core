@@ -17,7 +17,7 @@
  * `validateContextParams` → `validateScopeParams`).
  */
 
-import { createHash } from 'crypto';
+import { sha256Hex } from './sha256';
 import type { AgentBoundsParams, AgentScopeParams, AgentProfile } from './types';
 
 // ─── Bounds Validation ────────────────────────────────────────────────────────
@@ -259,7 +259,7 @@ export function canonicalScope(params: AgentScopeParams, profile: AgentProfile):
  */
 export function computeBoundsHash(params: AgentBoundsParams, profile: AgentProfile): string {
   const canonical = canonicalBounds(params, profile);
-  const hash = createHash('sha256').update(canonical, 'utf8').digest('hex');
+  const hash = sha256Hex(canonical);
   return `sha256:${hash}`;
 }
 
@@ -272,6 +272,6 @@ export function computeBoundsHash(params: AgentBoundsParams, profile: AgentProfi
  */
 export function computeScopeHash(params: AgentScopeParams, profile: AgentProfile): string {
   const canonical = canonicalScope(params, profile);
-  const hash = createHash('sha256').update(canonical, 'utf8').digest('hex');
+  const hash = sha256Hex(canonical);
   return `sha256:${hash}`;
 }

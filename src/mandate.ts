@@ -10,7 +10,7 @@
  * is a re-grant release, and a v0.7 artifact stays verifiable as evidence.
  */
 
-import { createHash } from 'crypto';
+import { sha256Hex } from './sha256';
 import * as ed from '@noble/ed25519';
 import { canonicalize } from './canonicalize';
 import { toBase64Url, fromBase64Url } from './base64url';
@@ -55,7 +55,7 @@ export function encodeMandateBlob(mandate: Mandate): string {
  * `attestationId`.
  */
 export function mandateBlobId(blob: string): string {
-  const hash = createHash('sha256').update(blob, 'utf8').digest('hex');
+  const hash = sha256Hex(blob);
   return `sha256:${hash}`;
 }
 

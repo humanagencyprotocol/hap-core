@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.17.0 — browser-safe entry
+
+- New subpath `@humanagencyp/hap-core/browser`: the mandate, owner-signature, profile and
+  issuance functions (`verifyMandate`, `decodeMandateBlob`, `buildMandateProjection`,
+  `projectionSigningBytes`, `computeProfileHash`, `boundReadFields`, `wireExecutionContext`,
+  `encodeDidKey`, `canonicalize`, base64url, ...) and `deviceKeys`, for a verifier in a web page or
+  an installed web app. They are the same functions as the main entry's, from the same modules.
+- No module of the protocol core imports Node's `crypto` or uses `Buffer` any more. Hashes go
+  through one synchronous SHA-256 in plain TypeScript (`sha256`, `sha256Hex`, new exports of both
+  entries); base64url is plain TypeScript too. Outputs are unchanged: the new code is tested
+  against Node's SHA-256 (FIPS vectors, every length 0 to 300 bytes, random inputs) and against the
+  old Buffer-based base64url (encode and decode, non-canonical tails included).
+- Tests: the browser entry is bundled for the browser with every dependency inlined and must
+  leave no import behind (a negative control proves the check catches `node:crypto`).
+  `browser-entry.json` (23 cases, made by `test/vectors/browser-entry/generate.mjs`; identical
+  when generated with 0.16.0) and all device-keys vectors run through the browser entry in
+  vitest, and in WebKit and Chromium with `pnpm test:browsers` (`PLAYWRIGHT_DIR` names an
+  installed Playwright; it is not a dependency).
+- The main entry's and `./device-keys`'s exports are unchanged apart from the two additions.
+
 ## 0.16.0 — team trust (DEC-73)
 
 Three signed objects and three verifiers, added to `deviceKeys` (**@experimental**):

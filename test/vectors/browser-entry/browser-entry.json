@@ -1,0 +1,700 @@
+{
+  "description": "What a page verifies with @humanagencyp/hap-core/browser; expectations from the Node build. Fixture keys are seeds 7 (Authority Server), 9 (another key) and 11 (owner).",
+  "cases": [
+    {
+      "id": "valid mandate, pinned key",
+      "op": "verifyMandate",
+      "input": {
+        "blob": "eyJoZWFkZXIiOnsidHlwIjoiSEFQLW1hbmRhdGUiLCJhbGciOiJFZERTQSIsImtpZCI6Ino2TWt2RHFHVDU0Y1hlc1lHdkFCcEYxVWFwVk53akNxUmNhZmk0UHg2VGh2NVQzWiJ9LCJwYXlsb2FkIjp7Im1hbmRhdGVfaWQiOiJtbmRfYnJvd3Nlcl92ZWN0b3JzXzEiLCJ2ZXJzaW9uIjoiMC44IiwicHJvZmlsZV9pZCI6ImVtYWlsQDAuOCIsInByb2ZpbGVfaGFzaCI6InNoYTI1Njo3NGJlY2ZmNTFhNjM3NjAzMGVlYTAxYTI4ZGExOTQ0ZWUxODY0NmIzMGEwNjAzZjJkYTc0ZjY0YWRmYzYxOGZlIiwiYm91bmRzX2hhc2giOiJzaGEyNTY6MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMSIsInNjb3BlX2hhc2giOiJzaGEyNTY6MjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMiIsImV4ZWN1dGlvbl9jb250ZXh0X2hhc2giOiJzaGEyNTY6MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMyIsImdhdGVfY29udGVudF9oYXNoZXMiOnsiaW50ZW50Ijoic2hhMjU2OjQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQifSwiaXNzdWVyIjoiZGlkOmtleTp6Nk1rdkRxR1Q1NGNYZXNZR3ZBQnBGMVVhcFZOd2pDcVJjYWZpNFB4NlRodjVUM1oiLCJtYW5kYXRlX293bmVycyI6W3siZGlkIjoiZGlkOmtleTp6Nk1rbU5MNnhrc2RFSkVOR2s5WjFxcUdzWTVuaktRZGpVMVVoblVFVXZXeVFVVlgifV0sImNvbW1pdG1lbnRfbW9kZSI6InJldmlldyIsImlzc3VlZF9hdCI6MTgwMDAwMDAwMCwiZXhwaXJlc19hdCI6MTgwMDAwMzYwMH0sInNpZ25hdHVyZSI6ImRyWDB3Sy11WlVwS1dLU3owVTBPbE5aZnZsbVR5RUNoSmFuTV9iS1N2SnZmeXJ5T0NveExmM0Z6R3JFV3BfRE9QaGNLRU1OSzN1c25SQlpDWlUyY0R3In0",
+        "pinned_did": "did:key:z6MkvDqGT54cXesYGvABpF1UapVNwjCqRcafi4Px6Thv5T3Z",
+        "now": 1800000010
+      },
+      "expect": {
+        "ok": "mnd_browser_vectors_1"
+      }
+    },
+    {
+      "id": "valid mandate, at expires_at + 300 (skew)",
+      "op": "verifyMandate",
+      "input": {
+        "blob": "eyJoZWFkZXIiOnsidHlwIjoiSEFQLW1hbmRhdGUiLCJhbGciOiJFZERTQSIsImtpZCI6Ino2TWt2RHFHVDU0Y1hlc1lHdkFCcEYxVWFwVk53akNxUmNhZmk0UHg2VGh2NVQzWiJ9LCJwYXlsb2FkIjp7Im1hbmRhdGVfaWQiOiJtbmRfYnJvd3Nlcl92ZWN0b3JzXzEiLCJ2ZXJzaW9uIjoiMC44IiwicHJvZmlsZV9pZCI6ImVtYWlsQDAuOCIsInByb2ZpbGVfaGFzaCI6InNoYTI1Njo3NGJlY2ZmNTFhNjM3NjAzMGVlYTAxYTI4ZGExOTQ0ZWUxODY0NmIzMGEwNjAzZjJkYTc0ZjY0YWRmYzYxOGZlIiwiYm91bmRzX2hhc2giOiJzaGEyNTY6MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMSIsInNjb3BlX2hhc2giOiJzaGEyNTY6MjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMiIsImV4ZWN1dGlvbl9jb250ZXh0X2hhc2giOiJzaGEyNTY6MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMyIsImdhdGVfY29udGVudF9oYXNoZXMiOnsiaW50ZW50Ijoic2hhMjU2OjQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQifSwiaXNzdWVyIjoiZGlkOmtleTp6Nk1rdkRxR1Q1NGNYZXNZR3ZBQnBGMVVhcFZOd2pDcVJjYWZpNFB4NlRodjVUM1oiLCJtYW5kYXRlX293bmVycyI6W3siZGlkIjoiZGlkOmtleTp6Nk1rbU5MNnhrc2RFSkVOR2s5WjFxcUdzWTVuaktRZGpVMVVoblVFVXZXeVFVVlgifV0sImNvbW1pdG1lbnRfbW9kZSI6InJldmlldyIsImlzc3VlZF9hdCI6MTgwMDAwMDAwMCwiZXhwaXJlc19hdCI6MTgwMDAwMzYwMH0sInNpZ25hdHVyZSI6ImRyWDB3Sy11WlVwS1dLU3owVTBPbE5aZnZsbVR5RUNoSmFuTV9iS1N2SnZmeXJ5T0NveExmM0Z6R3JFV3BfRE9QaGNLRU1OSzN1c25SQlpDWlUyY0R3In0",
+        "pinned_did": "did:key:z6MkvDqGT54cXesYGvABpF1UapVNwjCqRcafi4Px6Thv5T3Z",
+        "now": 1800003900
+      },
+      "expect": {
+        "ok": "mnd_browser_vectors_1"
+      }
+    },
+    {
+      "id": "expired past expires_at + 300",
+      "op": "verifyMandate",
+      "input": {
+        "blob": "eyJoZWFkZXIiOnsidHlwIjoiSEFQLW1hbmRhdGUiLCJhbGciOiJFZERTQSIsImtpZCI6Ino2TWt2RHFHVDU0Y1hlc1lHdkFCcEYxVWFwVk53akNxUmNhZmk0UHg2VGh2NVQzWiJ9LCJwYXlsb2FkIjp7Im1hbmRhdGVfaWQiOiJtbmRfYnJvd3Nlcl92ZWN0b3JzXzEiLCJ2ZXJzaW9uIjoiMC44IiwicHJvZmlsZV9pZCI6ImVtYWlsQDAuOCIsInByb2ZpbGVfaGFzaCI6InNoYTI1Njo3NGJlY2ZmNTFhNjM3NjAzMGVlYTAxYTI4ZGExOTQ0ZWUxODY0NmIzMGEwNjAzZjJkYTc0ZjY0YWRmYzYxOGZlIiwiYm91bmRzX2hhc2giOiJzaGEyNTY6MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMSIsInNjb3BlX2hhc2giOiJzaGEyNTY6MjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMiIsImV4ZWN1dGlvbl9jb250ZXh0X2hhc2giOiJzaGEyNTY6MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMyIsImdhdGVfY29udGVudF9oYXNoZXMiOnsiaW50ZW50Ijoic2hhMjU2OjQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQifSwiaXNzdWVyIjoiZGlkOmtleTp6Nk1rdkRxR1Q1NGNYZXNZR3ZBQnBGMVVhcFZOd2pDcVJjYWZpNFB4NlRodjVUM1oiLCJtYW5kYXRlX293bmVycyI6W3siZGlkIjoiZGlkOmtleTp6Nk1rbU5MNnhrc2RFSkVOR2s5WjFxcUdzWTVuaktRZGpVMVVoblVFVXZXeVFVVlgifV0sImNvbW1pdG1lbnRfbW9kZSI6InJldmlldyIsImlzc3VlZF9hdCI6MTgwMDAwMDAwMCwiZXhwaXJlc19hdCI6MTgwMDAwMzYwMH0sInNpZ25hdHVyZSI6ImRyWDB3Sy11WlVwS1dLU3owVTBPbE5aZnZsbVR5RUNoSmFuTV9iS1N2SnZmeXJ5T0NveExmM0Z6R3JFV3BfRE9QaGNLRU1OSzN1c25SQlpDWlUyY0R3In0",
+        "pinned_did": "did:key:z6MkvDqGT54cXesYGvABpF1UapVNwjCqRcafi4Px6Thv5T3Z",
+        "now": 1800003901
+      },
+      "expect": {
+        "error": "TTL_EXPIRED"
+      }
+    },
+    {
+      "id": "another pinned key",
+      "op": "verifyMandate",
+      "input": {
+        "blob": "eyJoZWFkZXIiOnsidHlwIjoiSEFQLW1hbmRhdGUiLCJhbGciOiJFZERTQSIsImtpZCI6Ino2TWt2RHFHVDU0Y1hlc1lHdkFCcEYxVWFwVk53akNxUmNhZmk0UHg2VGh2NVQzWiJ9LCJwYXlsb2FkIjp7Im1hbmRhdGVfaWQiOiJtbmRfYnJvd3Nlcl92ZWN0b3JzXzEiLCJ2ZXJzaW9uIjoiMC44IiwicHJvZmlsZV9pZCI6ImVtYWlsQDAuOCIsInByb2ZpbGVfaGFzaCI6InNoYTI1Njo3NGJlY2ZmNTFhNjM3NjAzMGVlYTAxYTI4ZGExOTQ0ZWUxODY0NmIzMGEwNjAzZjJkYTc0ZjY0YWRmYzYxOGZlIiwiYm91bmRzX2hhc2giOiJzaGEyNTY6MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMSIsInNjb3BlX2hhc2giOiJzaGEyNTY6MjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMiIsImV4ZWN1dGlvbl9jb250ZXh0X2hhc2giOiJzaGEyNTY6MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMyIsImdhdGVfY29udGVudF9oYXNoZXMiOnsiaW50ZW50Ijoic2hhMjU2OjQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQifSwiaXNzdWVyIjoiZGlkOmtleTp6Nk1rdkRxR1Q1NGNYZXNZR3ZBQnBGMVVhcFZOd2pDcVJjYWZpNFB4NlRodjVUM1oiLCJtYW5kYXRlX293bmVycyI6W3siZGlkIjoiZGlkOmtleTp6Nk1rbU5MNnhrc2RFSkVOR2s5WjFxcUdzWTVuaktRZGpVMVVoblVFVXZXeVFVVlgifV0sImNvbW1pdG1lbnRfbW9kZSI6InJldmlldyIsImlzc3VlZF9hdCI6MTgwMDAwMDAwMCwiZXhwaXJlc19hdCI6MTgwMDAwMzYwMH0sInNpZ25hdHVyZSI6ImRyWDB3Sy11WlVwS1dLU3owVTBPbE5aZnZsbVR5RUNoSmFuTV9iS1N2SnZmeXJ5T0NveExmM0Z6R3JFV3BfRE9QaGNLRU1OSzN1c25SQlpDWlUyY0R3In0",
+        "pinned_did": "did:key:z6MkwVDfCg9LbbY6xjH3EZk8YSFQZujV5Y4y1ZWeER9tDiN3",
+        "now": 1800000010
+      },
+      "expect": {
+        "error": "INVALID_SIGNATURE"
+      }
+    },
+    {
+      "id": "signed by another key that names itself as issuer",
+      "op": "verifyMandate",
+      "input": {
+        "blob": "eyJoZWFkZXIiOnsidHlwIjoiSEFQLW1hbmRhdGUiLCJhbGciOiJFZERTQSJ9LCJwYXlsb2FkIjp7Im1hbmRhdGVfaWQiOiJtbmRfYnJvd3Nlcl92ZWN0b3JzXzEiLCJ2ZXJzaW9uIjoiMC44IiwicHJvZmlsZV9pZCI6ImVtYWlsQDAuOCIsInByb2ZpbGVfaGFzaCI6InNoYTI1Njo3NGJlY2ZmNTFhNjM3NjAzMGVlYTAxYTI4ZGExOTQ0ZWUxODY0NmIzMGEwNjAzZjJkYTc0ZjY0YWRmYzYxOGZlIiwiYm91bmRzX2hhc2giOiJzaGEyNTY6MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMSIsInNjb3BlX2hhc2giOiJzaGEyNTY6MjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMiIsImV4ZWN1dGlvbl9jb250ZXh0X2hhc2giOiJzaGEyNTY6MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMyIsImdhdGVfY29udGVudF9oYXNoZXMiOnsiaW50ZW50Ijoic2hhMjU2OjQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQifSwiaXNzdWVyIjoiZGlkOmtleTp6Nk1rd1ZEZkNnOUxiYlk2eGpIM0VaazhZU0ZRWnVqVjVZNHkxWldlRVI5dERpTjMiLCJtYW5kYXRlX293bmVycyI6W3siZGlkIjoiZGlkOmtleTp6Nk1rbU5MNnhrc2RFSkVOR2s5WjFxcUdzWTVuaktRZGpVMVVoblVFVXZXeVFVVlgifV0sImNvbW1pdG1lbnRfbW9kZSI6InJldmlldyIsImlzc3VlZF9hdCI6MTgwMDAwMDAwMCwiZXhwaXJlc19hdCI6MTgwMDAwMzYwMH0sInNpZ25hdHVyZSI6IjdRelZlZlpScGRBamctVF9ISXZOeEdpSzJFSUNOakI2Z3dEbWNnTHNMMjZrRVMxbFVxOGpHNUktU2ZncW4yVEpHS1d4cmRjaFh3MktvZGNpbW9EWUJBIn0",
+        "pinned_did": "did:key:z6MkvDqGT54cXesYGvABpF1UapVNwjCqRcafi4Px6Thv5T3Z",
+        "now": 1800000010
+      },
+      "expect": {
+        "error": "INVALID_SIGNATURE"
+      }
+    },
+    {
+      "id": "payload changed after signing",
+      "op": "verifyMandate",
+      "input": {
+        "blob": "eyJoZWFkZXIiOnsidHlwIjoiSEFQLW1hbmRhdGUiLCJhbGciOiJFZERTQSIsImtpZCI6Ino2TWt2RHFHVDU0Y1hlc1lHdkFCcEYxVWFwVk53akNxUmNhZmk0UHg2VGh2NVQzWiJ9LCJwYXlsb2FkIjp7Im1hbmRhdGVfaWQiOiJtbmRfYnJvd3Nlcl92ZWN0b3JzXzEiLCJ2ZXJzaW9uIjoiMC44IiwicHJvZmlsZV9pZCI6ImVtYWlsQDAuOCIsInByb2ZpbGVfaGFzaCI6InNoYTI1Njo3NGJlY2ZmNTFhNjM3NjAzMGVlYTAxYTI4ZGExOTQ0ZWUxODY0NmIzMGEwNjAzZjJkYTc0ZjY0YWRmYzYxOGZlIiwiYm91bmRzX2hhc2giOiJzaGEyNTY6MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMSIsInNjb3BlX2hhc2giOiJzaGEyNTY6MjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMiIsImV4ZWN1dGlvbl9jb250ZXh0X2hhc2giOiJzaGEyNTY6MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMyIsImdhdGVfY29udGVudF9oYXNoZXMiOnsiaW50ZW50Ijoic2hhMjU2OjQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQifSwiaXNzdWVyIjoiZGlkOmtleTp6Nk1rdkRxR1Q1NGNYZXNZR3ZBQnBGMVVhcFZOd2pDcVJjYWZpNFB4NlRodjVUM1oiLCJtYW5kYXRlX293bmVycyI6W3siZGlkIjoiZGlkOmtleTp6Nk1rbU5MNnhrc2RFSkVOR2s5WjFxcUdzWTVuaktRZGpVMVVoblVFVXZXeVFVVlgifV0sImNvbW1pdG1lbnRfbW9kZSI6InJldmlldyIsImlzc3VlZF9hdCI6MTgwMDAwMDAwMCwiZXhwaXJlc19hdCI6MTgwMDAwMzYwMX0sInNpZ25hdHVyZSI6ImRyWDB3Sy11WlVwS1dLU3owVTBPbE5aZnZsbVR5RUNoSmFuTV9iS1N2SnZmeXJ5T0NveExmM0Z6R3JFV3BfRE9QaGNLRU1OSzN1c25SQlpDWlUyY0R3In0",
+        "pinned_did": "did:key:z6MkvDqGT54cXesYGvABpF1UapVNwjCqRcafi4Px6Thv5T3Z",
+        "now": 1800000010
+      },
+      "expect": {
+        "error": "INVALID_SIGNATURE"
+      }
+    },
+    {
+      "id": "header kid names another key",
+      "op": "verifyMandate",
+      "input": {
+        "blob": "eyJoZWFkZXIiOnsidHlwIjoiSEFQLW1hbmRhdGUiLCJhbGciOiJFZERTQSIsImtpZCI6Ino2TWt3VkRmQ2c5TGJiWTZ4akgzRVprOFlTRlFadWpWNVk0eTFaV2VFUjl0RGlOMyJ9LCJwYXlsb2FkIjp7Im1hbmRhdGVfaWQiOiJtbmRfYnJvd3Nlcl92ZWN0b3JzXzEiLCJ2ZXJzaW9uIjoiMC44IiwicHJvZmlsZV9pZCI6ImVtYWlsQDAuOCIsInByb2ZpbGVfaGFzaCI6InNoYTI1Njo3NGJlY2ZmNTFhNjM3NjAzMGVlYTAxYTI4ZGExOTQ0ZWUxODY0NmIzMGEwNjAzZjJkYTc0ZjY0YWRmYzYxOGZlIiwiYm91bmRzX2hhc2giOiJzaGEyNTY6MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMSIsInNjb3BlX2hhc2giOiJzaGEyNTY6MjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMiIsImV4ZWN1dGlvbl9jb250ZXh0X2hhc2giOiJzaGEyNTY6MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMyIsImdhdGVfY29udGVudF9oYXNoZXMiOnsiaW50ZW50Ijoic2hhMjU2OjQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQifSwiaXNzdWVyIjoiZGlkOmtleTp6Nk1rdkRxR1Q1NGNYZXNZR3ZBQnBGMVVhcFZOd2pDcVJjYWZpNFB4NlRodjVUM1oiLCJtYW5kYXRlX293bmVycyI6W3siZGlkIjoiZGlkOmtleTp6Nk1rbU5MNnhrc2RFSkVOR2s5WjFxcUdzWTVuaktRZGpVMVVoblVFVXZXeVFVVlgifV0sImNvbW1pdG1lbnRfbW9kZSI6InJldmlldyIsImlzc3VlZF9hdCI6MTgwMDAwMDAwMCwiZXhwaXJlc19hdCI6MTgwMDAwMzYwMH0sInNpZ25hdHVyZSI6ImRyWDB3Sy11WlVwS1dLU3owVTBPbE5aZnZsbVR5RUNoSmFuTV9iS1N2SnZmeXJ5T0NveExmM0Z6R3JFV3BfRE9QaGNLRU1OSzN1c25SQlpDWlUyY0R3In0",
+        "pinned_did": "did:key:z6MkvDqGT54cXesYGvABpF1UapVNwjCqRcafi4Px6Thv5T3Z",
+        "now": 1800000010
+      },
+      "expect": {
+        "error": "INVALID_SIGNATURE"
+      }
+    },
+    {
+      "id": "standard base64 signature",
+      "op": "verifyMandate",
+      "input": {
+        "blob": "eyJoZWFkZXIiOnsidHlwIjoiSEFQLW1hbmRhdGUiLCJhbGciOiJFZERTQSIsImtpZCI6Ino2TWt2RHFHVDU0Y1hlc1lHdkFCcEYxVWFwVk53akNxUmNhZmk0UHg2VGh2NVQzWiJ9LCJwYXlsb2FkIjp7Im1hbmRhdGVfaWQiOiJtbmRfYnJvd3Nlcl92ZWN0b3JzXzEiLCJ2ZXJzaW9uIjoiMC44IiwicHJvZmlsZV9pZCI6ImVtYWlsQDAuOCIsInByb2ZpbGVfaGFzaCI6InNoYTI1Njo3NGJlY2ZmNTFhNjM3NjAzMGVlYTAxYTI4ZGExOTQ0ZWUxODY0NmIzMGEwNjAzZjJkYTc0ZjY0YWRmYzYxOGZlIiwiYm91bmRzX2hhc2giOiJzaGEyNTY6MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMSIsInNjb3BlX2hhc2giOiJzaGEyNTY6MjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMiIsImV4ZWN1dGlvbl9jb250ZXh0X2hhc2giOiJzaGEyNTY6MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMyIsImdhdGVfY29udGVudF9oYXNoZXMiOnsiaW50ZW50Ijoic2hhMjU2OjQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQifSwiaXNzdWVyIjoiZGlkOmtleTp6Nk1rdkRxR1Q1NGNYZXNZR3ZBQnBGMVVhcFZOd2pDcVJjYWZpNFB4NlRodjVUM1oiLCJtYW5kYXRlX293bmVycyI6W3siZGlkIjoiZGlkOmtleTp6Nk1rbU5MNnhrc2RFSkVOR2s5WjFxcUdzWTVuaktRZGpVMVVoblVFVXZXeVFVVlgifV0sImNvbW1pdG1lbnRfbW9kZSI6InJldmlldyIsImlzc3VlZF9hdCI6MTgwMDAwMDAwMCwiZXhwaXJlc19hdCI6MTgwMDAwMzYwMH0sInNpZ25hdHVyZSI6ImRyWDB3Syt1WlVwS1dLU3owVTBPbE5aZnZsbVR5RUNoSmFuTS9iS1N2SnZmeXJ5T0NveExmM0Z6R3JFV3AvRE9QaGNLRU1OSzN1c25SQlpDWlUyY0R3In0",
+        "pinned_did": "did:key:z6MkvDqGT54cXesYGvABpF1UapVNwjCqRcafi4Px6Thv5T3Z",
+        "now": 1800000010
+      },
+      "expect": {
+        "error": "INVALID_SIGNATURE"
+      }
+    },
+    {
+      "id": "two mandate owners",
+      "op": "verifyMandate",
+      "input": {
+        "blob": "eyJoZWFkZXIiOnsidHlwIjoiSEFQLW1hbmRhdGUiLCJhbGciOiJFZERTQSJ9LCJwYXlsb2FkIjp7Im1hbmRhdGVfaWQiOiJtbmRfYnJvd3Nlcl92ZWN0b3JzXzEiLCJ2ZXJzaW9uIjoiMC44IiwicHJvZmlsZV9pZCI6ImVtYWlsQDAuOCIsInByb2ZpbGVfaGFzaCI6InNoYTI1Njo3NGJlY2ZmNTFhNjM3NjAzMGVlYTAxYTI4ZGExOTQ0ZWUxODY0NmIzMGEwNjAzZjJkYTc0ZjY0YWRmYzYxOGZlIiwiYm91bmRzX2hhc2giOiJzaGEyNTY6MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMSIsInNjb3BlX2hhc2giOiJzaGEyNTY6MjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMiIsImV4ZWN1dGlvbl9jb250ZXh0X2hhc2giOiJzaGEyNTY6MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMyIsImdhdGVfY29udGVudF9oYXNoZXMiOnsiaW50ZW50Ijoic2hhMjU2OjQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQifSwiaXNzdWVyIjoiZGlkOmtleTp6Nk1rdkRxR1Q1NGNYZXNZR3ZBQnBGMVVhcFZOd2pDcVJjYWZpNFB4NlRodjVUM1oiLCJtYW5kYXRlX293bmVycyI6W3siZGlkIjoiZGlkOmtleTp6Nk1rbU5MNnhrc2RFSkVOR2s5WjFxcUdzWTVuaktRZGpVMVVoblVFVXZXeVFVVlgifSx7ImRpZCI6ImRpZDprZXk6ejZNa3dWRGZDZzlMYmJZNnhqSDNFWms4WVNGUVp1alY1WTR5MVpXZUVSOXREaU4zIn1dLCJjb21taXRtZW50X21vZGUiOiJyZXZpZXciLCJpc3N1ZWRfYXQiOjE4MDAwMDAwMDAsImV4cGlyZXNfYXQiOjE4MDAwMDM2MDB9LCJzaWduYXR1cmUiOiJmSlRRR21OV1k5MXNaWXBSQjdockV3MnJuU0x5eUNlb0Y0MEF5TDQzOHl0UTRvMTdrakFaYndSanV4UDVqWEJyNGlFbVh4b2dYU0lRZ092cU5VT0tCZyJ9",
+        "pinned_did": "did:key:z6MkvDqGT54cXesYGvABpF1UapVNwjCqRcafi4Px6Thv5T3Z",
+        "now": 1800000010
+      },
+      "expect": {
+        "error": "MALFORMED_MANDATE"
+      }
+    },
+    {
+      "id": "unsupported version",
+      "op": "verifyMandate",
+      "input": {
+        "blob": "eyJoZWFkZXIiOnsidHlwIjoiSEFQLW1hbmRhdGUiLCJhbGciOiJFZERTQSJ9LCJwYXlsb2FkIjp7Im1hbmRhdGVfaWQiOiJtbmRfYnJvd3Nlcl92ZWN0b3JzXzEiLCJ2ZXJzaW9uIjoiMC42IiwicHJvZmlsZV9pZCI6ImVtYWlsQDAuOCIsInByb2ZpbGVfaGFzaCI6InNoYTI1Njo3NGJlY2ZmNTFhNjM3NjAzMGVlYTAxYTI4ZGExOTQ0ZWUxODY0NmIzMGEwNjAzZjJkYTc0ZjY0YWRmYzYxOGZlIiwiYm91bmRzX2hhc2giOiJzaGEyNTY6MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMSIsInNjb3BlX2hhc2giOiJzaGEyNTY6MjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMiIsImV4ZWN1dGlvbl9jb250ZXh0X2hhc2giOiJzaGEyNTY6MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMyIsImdhdGVfY29udGVudF9oYXNoZXMiOnsiaW50ZW50Ijoic2hhMjU2OjQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQifSwiaXNzdWVyIjoiZGlkOmtleTp6Nk1rdkRxR1Q1NGNYZXNZR3ZBQnBGMVVhcFZOd2pDcVJjYWZpNFB4NlRodjVUM1oiLCJtYW5kYXRlX293bmVycyI6W3siZGlkIjoiZGlkOmtleTp6Nk1rbU5MNnhrc2RFSkVOR2s5WjFxcUdzWTVuaktRZGpVMVVoblVFVXZXeVFVVlgifV0sImNvbW1pdG1lbnRfbW9kZSI6InJldmlldyIsImlzc3VlZF9hdCI6MTgwMDAwMDAwMCwiZXhwaXJlc19hdCI6MTgwMDAwMzYwMH0sInNpZ25hdHVyZSI6ImkzekVOVGJ3ZDFBLXl2T1FPTndFcU5Xd2V2TVpHcmwyYlg0QXZMS1VpdWMybndZdlBhd0tpNlUtOUVpTTcwalluSXlSbzZGQWg5YlE4cExQS2pudkJnIn0",
+        "pinned_did": "did:key:z6MkvDqGT54cXesYGvABpF1UapVNwjCqRcafi4Px6Thv5T3Z",
+        "now": 1800000010
+      },
+      "expect": {
+        "error": "VERSION_UNSUPPORTED"
+      }
+    },
+    {
+      "id": "not base64url",
+      "op": "verifyMandate",
+      "input": {
+        "blob": "abc+/=",
+        "pinned_did": "did:key:z6MkvDqGT54cXesYGvABpF1UapVNwjCqRcafi4Px6Thv5T3Z",
+        "now": 1800000010
+      },
+      "expect": {
+        "error": "MALFORMED_MANDATE"
+      }
+    },
+    {
+      "id": "base64url but not JSON",
+      "op": "verifyMandate",
+      "input": {
+        "blob": "bm90IGpzb24",
+        "pinned_did": "did:key:z6MkvDqGT54cXesYGvABpF1UapVNwjCqRcafi4Px6Thv5T3Z",
+        "now": 1800000010
+      },
+      "expect": {
+        "error": "MALFORMED_MANDATE"
+      }
+    },
+    {
+      "id": "review mandate",
+      "op": "buildMandateProjection",
+      "input": {
+        "payload": {
+          "mandate_id": "mnd_browser_vectors_1",
+          "version": "0.8",
+          "profile_id": "email@0.8",
+          "profile_hash": "sha256:74becff51a6376030eea01a28da1944ee18646b30a0603f2da74f64adfc618fe",
+          "bounds_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "scope_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "execution_context_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "gate_content_hashes": {
+            "intent": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+          },
+          "issuer": "did:key:z6MkvDqGT54cXesYGvABpF1UapVNwjCqRcafi4Px6Thv5T3Z",
+          "mandate_owners": [
+            {
+              "did": "did:key:z6MkmNL6xksdEJENGk9Z1qqGsY5njKQdjU1UhnUEUvWyQUVX"
+            }
+          ],
+          "commitment_mode": "review",
+          "issued_at": 1800000000,
+          "expires_at": 1800003600
+        },
+        "entry": {
+          "did": "did:key:z6MkmNL6xksdEJENGk9Z1qqGsY5njKQdjU1UhnUEUvWyQUVX",
+          "nonce": "bm9uY2Utbm9uY2Utbm9uY2U",
+          "binding": "raw",
+          "signing_surface": "gateway"
+        }
+      },
+      "expect": {
+        "projection": {
+          "typ": "HAP-mandate-projection",
+          "version": "0.8",
+          "profile_id": "email@0.8",
+          "profile_hash": "sha256:74becff51a6376030eea01a28da1944ee18646b30a0603f2da74f64adfc618fe",
+          "owner_did": "did:key:z6MkmNL6xksdEJENGk9Z1qqGsY5njKQdjU1UhnUEUvWyQUVX",
+          "bounds_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "scope_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "execution_context_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "gate_content_hashes": {
+            "intent": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+          },
+          "commitment_mode": "review",
+          "expires_at": 1800003600,
+          "nonce": "bm9uY2Utbm9uY2Utbm9uY2U",
+          "binding": "raw",
+          "signing_surface": "gateway",
+          "subjects_disclosed": false
+        },
+        "signing_bytes_sha256": "080a5d3d9e3633bb1fb4ee645d2a264f3ab06a1d174201f490ed65cb7c9a32a7"
+      }
+    },
+    {
+      "id": "above-cap mandate with intent disclosure",
+      "op": "buildMandateProjection",
+      "input": {
+        "payload": {
+          "mandate_id": "mnd_browser_vectors_1",
+          "version": "0.8",
+          "profile_id": "email@0.8",
+          "profile_hash": "sha256:74becff51a6376030eea01a28da1944ee18646b30a0603f2da74f64adfc618fe",
+          "bounds_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "scope_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "execution_context_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "gate_content_hashes": {
+            "intent": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+          },
+          "issuer": "did:key:z6MkvDqGT54cXesYGvABpF1UapVNwjCqRcafi4Px6Thv5T3Z",
+          "mandate_owners": [
+            {
+              "did": "did:key:z6MkmNL6xksdEJENGk9Z1qqGsY5njKQdjU1UhnUEUvWyQUVX"
+            }
+          ],
+          "commitment_mode": "review_above_cap",
+          "issued_at": 1800000000,
+          "expires_at": 1800003600,
+          "above_cap_caps": {
+            "amount_max": 500
+          },
+          "above_cap_approvers": [
+            "did:key:z6MkwVDfCg9LbbY6xjH3EZk8YSFQZujV5Y4y1ZWeER9tDiN3"
+          ],
+          "above_cap_approvals": 1,
+          "intent_disclosure_hash": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+          "disclose_fields": [
+            "amount"
+          ]
+        },
+        "entry": {
+          "did": "did:key:z6MkmNL6xksdEJENGk9Z1qqGsY5njKQdjU1UhnUEUvWyQUVX",
+          "nonce": "bm9uY2Utbm9uY2Utbm9uY2U",
+          "binding": "raw",
+          "signing_surface": "gateway"
+        }
+      },
+      "expect": {
+        "projection": {
+          "typ": "HAP-mandate-projection",
+          "version": "0.8",
+          "profile_id": "email@0.8",
+          "profile_hash": "sha256:74becff51a6376030eea01a28da1944ee18646b30a0603f2da74f64adfc618fe",
+          "owner_did": "did:key:z6MkmNL6xksdEJENGk9Z1qqGsY5njKQdjU1UhnUEUvWyQUVX",
+          "bounds_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "scope_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "execution_context_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "gate_content_hashes": {
+            "intent": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+          },
+          "commitment_mode": "review_above_cap",
+          "expires_at": 1800003600,
+          "nonce": "bm9uY2Utbm9uY2Utbm9uY2U",
+          "intent_disclosure_hash": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+          "above_cap_caps": {
+            "amount_max": 500
+          },
+          "above_cap_approvers": [
+            "did:key:z6MkwVDfCg9LbbY6xjH3EZk8YSFQZujV5Y4y1ZWeER9tDiN3"
+          ],
+          "above_cap_approvals": 1,
+          "disclose_fields": [
+            "amount"
+          ],
+          "binding": "raw",
+          "signing_surface": "gateway",
+          "subjects_disclosed": false
+        },
+        "signing_bytes_sha256": "288aa4e3c77dbb534016476a2896f478236b5abd467932d9359b6493dcbb7b9a"
+      }
+    },
+    {
+      "id": "v0.8 entry without binding",
+      "op": "buildMandateProjection",
+      "input": {
+        "payload": {
+          "mandate_id": "mnd_browser_vectors_1",
+          "version": "0.8",
+          "profile_id": "email@0.8",
+          "profile_hash": "sha256:74becff51a6376030eea01a28da1944ee18646b30a0603f2da74f64adfc618fe",
+          "bounds_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "scope_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "execution_context_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "gate_content_hashes": {
+            "intent": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+          },
+          "issuer": "did:key:z6MkvDqGT54cXesYGvABpF1UapVNwjCqRcafi4Px6Thv5T3Z",
+          "mandate_owners": [
+            {
+              "did": "did:key:z6MkmNL6xksdEJENGk9Z1qqGsY5njKQdjU1UhnUEUvWyQUVX"
+            }
+          ],
+          "commitment_mode": "review",
+          "issued_at": 1800000000,
+          "expires_at": 1800003600
+        },
+        "entry": {
+          "did": "did:key:z6MkmNL6xksdEJENGk9Z1qqGsY5njKQdjU1UhnUEUvWyQUVX",
+          "nonce": "bm9uY2Utbm9uY2Utbm9uY2U"
+        }
+      },
+      "expect": {
+        "error": "OWNER_SIGNATURE_INVALID"
+      }
+    },
+    {
+      "id": "profile hash",
+      "op": "computeProfileHash",
+      "input": {
+        "profile": {
+          "id": "email@0.8",
+          "version": "0.8",
+          "name": "Email",
+          "description": "Fixture for the browser-entry vectors",
+          "boundsSchema": {
+            "actionTypes": [
+              "send"
+            ],
+            "keyOrder": [
+              "profile",
+              "recipient_max",
+              "amount_max",
+              "send_daily_max"
+            ],
+            "fields": {
+              "profile": {
+                "type": "string",
+                "required": true
+              },
+              "recipient_max": {
+                "type": "number",
+                "required": false,
+                "boundType": {
+                  "kind": "per_transaction",
+                  "of": "recipient_count"
+                }
+              },
+              "amount_max": {
+                "type": "number",
+                "required": false,
+                "boundType": {
+                  "kind": "cumulative_sum",
+                  "of": "amount",
+                  "window": "daily"
+                }
+              },
+              "send_daily_max": {
+                "type": "number",
+                "required": false,
+                "boundType": {
+                  "kind": "cumulative_count",
+                  "window": "daily"
+                }
+              }
+            }
+          },
+          "scopeSchema": {
+            "keyOrder": [
+              "allowed_domains"
+            ],
+            "fields": {
+              "allowed_domains": {
+                "type": "string",
+                "required": false,
+                "constraint": {
+                  "enforceable": [
+                    "subset"
+                  ]
+                }
+              }
+            }
+          },
+          "executionContextSchema": {
+            "fields": {
+              "recipient_count": {
+                "type": "number"
+              },
+              "amount": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "expect": {
+        "value": "sha256:74becff51a6376030eea01a28da1944ee18646b30a0603f2da74f64adfc618fe"
+      }
+    },
+    {
+      "id": "profile hash ignores key order",
+      "op": "computeProfileHash",
+      "input": {
+        "profile": {
+          "executionContextSchema": {
+            "fields": {
+              "recipient_count": {
+                "type": "number"
+              },
+              "amount": {
+                "type": "number"
+              }
+            }
+          },
+          "scopeSchema": {
+            "keyOrder": [
+              "allowed_domains"
+            ],
+            "fields": {
+              "allowed_domains": {
+                "type": "string",
+                "required": false,
+                "constraint": {
+                  "enforceable": [
+                    "subset"
+                  ]
+                }
+              }
+            }
+          },
+          "boundsSchema": {
+            "actionTypes": [
+              "send"
+            ],
+            "keyOrder": [
+              "profile",
+              "recipient_max",
+              "amount_max",
+              "send_daily_max"
+            ],
+            "fields": {
+              "profile": {
+                "type": "string",
+                "required": true
+              },
+              "recipient_max": {
+                "type": "number",
+                "required": false,
+                "boundType": {
+                  "kind": "per_transaction",
+                  "of": "recipient_count"
+                }
+              },
+              "amount_max": {
+                "type": "number",
+                "required": false,
+                "boundType": {
+                  "kind": "cumulative_sum",
+                  "of": "amount",
+                  "window": "daily"
+                }
+              },
+              "send_daily_max": {
+                "type": "number",
+                "required": false,
+                "boundType": {
+                  "kind": "cumulative_count",
+                  "window": "daily"
+                }
+              }
+            }
+          },
+          "description": "Fixture for the browser-entry vectors",
+          "name": "Email",
+          "version": "0.8",
+          "id": "email@0.8"
+        }
+      },
+      "expect": {
+        "value": "sha256:74becff51a6376030eea01a28da1944ee18646b30a0603f2da74f64adfc618fe"
+      }
+    },
+    {
+      "id": "bound-read fields",
+      "op": "boundReadFields",
+      "input": {
+        "profile": {
+          "id": "email@0.8",
+          "version": "0.8",
+          "name": "Email",
+          "description": "Fixture for the browser-entry vectors",
+          "boundsSchema": {
+            "actionTypes": [
+              "send"
+            ],
+            "keyOrder": [
+              "profile",
+              "recipient_max",
+              "amount_max",
+              "send_daily_max"
+            ],
+            "fields": {
+              "profile": {
+                "type": "string",
+                "required": true
+              },
+              "recipient_max": {
+                "type": "number",
+                "required": false,
+                "boundType": {
+                  "kind": "per_transaction",
+                  "of": "recipient_count"
+                }
+              },
+              "amount_max": {
+                "type": "number",
+                "required": false,
+                "boundType": {
+                  "kind": "cumulative_sum",
+                  "of": "amount",
+                  "window": "daily"
+                }
+              },
+              "send_daily_max": {
+                "type": "number",
+                "required": false,
+                "boundType": {
+                  "kind": "cumulative_count",
+                  "window": "daily"
+                }
+              }
+            }
+          },
+          "scopeSchema": {
+            "keyOrder": [
+              "allowed_domains"
+            ],
+            "fields": {
+              "allowed_domains": {
+                "type": "string",
+                "required": false,
+                "constraint": {
+                  "enforceable": [
+                    "subset"
+                  ]
+                }
+              }
+            }
+          },
+          "executionContextSchema": {
+            "fields": {
+              "recipient_count": {
+                "type": "number"
+              },
+              "amount": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "expect": {
+        "value": [
+          "amount",
+          "recipient_count"
+        ]
+      }
+    },
+    {
+      "id": "wire execution context",
+      "op": "wireExecutionContext",
+      "input": {
+        "execution": {
+          "recipient_count": 3,
+          "amount": 120.5,
+          "_note": "advisory",
+          "subject": "not read by a bound",
+          "nothing": null
+        },
+        "profile": {
+          "id": "email@0.8",
+          "version": "0.8",
+          "name": "Email",
+          "description": "Fixture for the browser-entry vectors",
+          "boundsSchema": {
+            "actionTypes": [
+              "send"
+            ],
+            "keyOrder": [
+              "profile",
+              "recipient_max",
+              "amount_max",
+              "send_daily_max"
+            ],
+            "fields": {
+              "profile": {
+                "type": "string",
+                "required": true
+              },
+              "recipient_max": {
+                "type": "number",
+                "required": false,
+                "boundType": {
+                  "kind": "per_transaction",
+                  "of": "recipient_count"
+                }
+              },
+              "amount_max": {
+                "type": "number",
+                "required": false,
+                "boundType": {
+                  "kind": "cumulative_sum",
+                  "of": "amount",
+                  "window": "daily"
+                }
+              },
+              "send_daily_max": {
+                "type": "number",
+                "required": false,
+                "boundType": {
+                  "kind": "cumulative_count",
+                  "window": "daily"
+                }
+              }
+            }
+          },
+          "scopeSchema": {
+            "keyOrder": [
+              "allowed_domains"
+            ],
+            "fields": {
+              "allowed_domains": {
+                "type": "string",
+                "required": false,
+                "constraint": {
+                  "enforceable": [
+                    "subset"
+                  ]
+                }
+              }
+            }
+          },
+          "executionContextSchema": {
+            "fields": {
+              "recipient_count": {
+                "type": "number"
+              },
+              "amount": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "expect": {
+        "value": {
+          "recipient_count": 3,
+          "amount": 120.5
+        }
+      }
+    },
+    {
+      "id": "did:key of an Ed25519 key",
+      "op": "encodeDidKey",
+      "input": {
+        "public_key_hex": "ea4a6c63e29c520abef5507b132ec5f9954776aebebe7b92421eea691446d22c"
+      },
+      "expect": {
+        "value": "did:key:z6MkvDqGT54cXesYGvABpF1UapVNwjCqRcafi4Px6Thv5T3Z"
+      }
+    },
+    {
+      "id": "sha256 of UTF-8 text",
+      "op": "sha256Hex",
+      "input": {
+        "text": "Grüße, 日本語 😀"
+      },
+      "expect": {
+        "value": "0588469a90177eeca0ec84e359d962d17cdfa232a3a122f91c8c36538485efcb"
+      }
+    },
+    {
+      "id": "sha256 across a block boundary",
+      "op": "sha256Hex",
+      "input": {
+        "text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      },
+      "expect": {
+        "value": "000b48d4edf0fa7bee3c6236ecd2785baa5db4eeb8bb54341b029e0d9fa5fb0c"
+      }
+    },
+    {
+      "id": "base64url round trip",
+      "op": "base64url",
+      "input": {
+        "hex": "fbff00ff10"
+      },
+      "expect": {
+        "value": "-_8A_xA"
+      }
+    }
+  ]
+}

@@ -67,3 +67,13 @@ jobs:
       - name: Test
         working-directory: hap-core
         run: pnpm test
+
+      # The browser entry and the device-keys vectors in real WebKit and Chromium. Playwright is
+      # not a dependency of hap-core: an exact version is installed outside the project for this
+      # step only (test/browser/run-browsers.mjs).
+      - name: Vectors in WebKit and Chromium
+        working-directory: hap-core
+        run: |
+          npm install --no-save --no-audit --no-fund --prefix "$RUNNER_TEMP/pw" playwright@1.58.2
+          "$RUNNER_TEMP/pw/node_modules/.bin/playwright" install --with-deps webkit chromium
+          PLAYWRIGHT_DIR="$RUNNER_TEMP/pw/node_modules/playwright" pnpm test:browsers

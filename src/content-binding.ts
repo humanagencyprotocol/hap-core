@@ -29,7 +29,7 @@
  * SubtleCrypto digest over the identical canonical bytes.
  */
 
-import { createHash } from 'crypto';
+import { sha256Hex } from './sha256';
 import { canonicalize } from './canonicalize';
 import type { ContentBinding, ContentFieldKind } from './types';
 
@@ -46,11 +46,6 @@ export function canonicalizeText(input: string): string {
   const lf = nfc.replace(/\r\n?/g, '\n');
   const lines = lf.split('\n').map((line) => line.replace(/[ \t]+$/, ''));
   return lines.join('\n').replace(/\n+$/, '');
-}
-
-/** sha256 of a UTF-8 string → 64 hex chars. */
-function sha256Hex(bytes: string): string {
-  return createHash('sha256').update(bytes, 'utf8').digest('hex');
 }
 
 /**
