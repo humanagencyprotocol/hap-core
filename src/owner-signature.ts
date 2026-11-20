@@ -31,6 +31,7 @@ import type {
 } from './types';
 import { canonicalize } from './canonicalize';
 import { decodeDidKey } from './did-key';
+import { requireSubtle } from './webcrypto';
 import { toBase64Url, fromBase64Url } from './base64url';
 import type { HapErrorCode } from './errors';
 
@@ -250,6 +251,7 @@ export async function verifyOwnerSignature(mandate: Mandate, entry: MandateOwner
   }
 
   const projection = buildMandateProjection(mandate.payload, entry);
+  requireSubtle();
   const ok = await ed
     .verifyAsync(decodeOrThrow(entry.signature, 'OWNER_SIGNATURE_INVALID'), projectionSigningBytes(projection), publicKey)
     .catch(() => false);
@@ -280,6 +282,7 @@ export async function verifyApproval(approval: ApprovalObject, signature: string
   } catch (err) {
     throw new OwnerSignatureError('APPROVAL_SIGNATURE_INVALID', (err as Error).message);
   }
+  requireSubtle();
   const ok = await ed.verifyAsync(decodeOrThrow(signature, 'APPROVAL_SIGNATURE_INVALID'), approvalSigningBytes(approval), publicKey).catch(() => false);
   if (!ok) {
     throw new OwnerSignatureError('APPROVAL_SIGNATURE_INVALID', `approval signature by ${signerDid} does not verify`);

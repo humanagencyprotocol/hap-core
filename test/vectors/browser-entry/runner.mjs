@@ -22,6 +22,17 @@ async function runOne(hap, c) {
       const p = await hap.verifyMandate(i.blob, { trustedIssuers: [i.pinned_did], now: i.now });
       return { ok: p.mandate_id };
     }
+    case 'verifyMandateWithoutSubtle': {
+      // Hide WebCrypto for this one call (an own property shadows the page's getter), then put it back.
+      const own = Object.getOwnPropertyDescriptor(globalThis, 'crypto');
+      Object.defineProperty(globalThis, 'crypto', { value: undefined, configurable: true, writable: true });
+      try {
+        const p = await hap.verifyMandate(i.blob, { trustedIssuers: [i.pinned_did], now: i.now });
+        return { ok: p.mandate_id };
+      } finally {
+        if (own) Object.defineProperty(globalThis, 'crypto', own); else delete globalThis.crypto;
+      }
+    }
     case 'buildMandateProjection': {
       const p = hap.buildMandateProjection(i.payload, i.entry);
       return { projection: p, signing_bytes_sha256: hap.sha256Hex(hap.projectionSigningBytes(p)) };

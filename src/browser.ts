@@ -18,6 +18,7 @@ export * from './types';
 export * from './canonicalize';
 export * from './base64url';
 export * from './sha256';
+export * from './webcrypto';
 export * from './errors';
 export * from './versions';
 export * from './did-key';

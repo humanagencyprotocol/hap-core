@@ -18,7 +18,14 @@
   when generated with 0.16.0) and all device-keys vectors run through the browser entry in
   vitest, and in WebKit and Chromium with `pnpm test:browsers` (`PLAYWRIGHT_DIR` names an
   installed Playwright; it is not a dependency).
-- The main entry's and `./device-keys`'s exports are unchanged apart from the two additions.
+- Without WebCrypto (`globalThis.crypto.subtle` missing, e.g. a page on plain http), the signature
+  verifiers (`verifyMandateSignature` / `verifyMandate`, `verifyOwnerSignature(s)`, `verifyApproval`,
+  the ticket verifiers) throw the new `CryptoUnavailableError` (`code: 'CRYPTO_UNAVAILABLE'`) instead
+  of reporting a genuine signature as invalid. `requireSubtle()` is exported too.
+- New public exports, kept public on purpose: `sha256` and `sha256Hex` (the one SHA-256 every
+  protocol hash uses; for public bytes, not constant-time), `CryptoUnavailableError`, `requireSubtle`.
+  The main entry's and `./device-keys`'s exports are otherwise unchanged; nothing was removed.
+- The publish workflow runs the WebKit and Chromium check first; a red run blocks the release.
 
 ## 0.16.0 — team trust (DEC-73)
 

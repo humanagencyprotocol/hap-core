@@ -76,6 +76,15 @@ await add('two mandate owners', twoOwners, AS_DID, ISSUED + 10);
 await add('unsupported version', oldVersion, AS_DID, ISSUED + 10);
 await add('not base64url', 'abc+/=', AS_DID, ISSUED + 10);
 await add('base64url but not JSON', hap.toBase64Url(new TextEncoder().encode('not json')), AS_DID, ISSUED + 10);
+// The same genuine mandate with WebCrypto hidden: "cannot check here", never a signature verdict.
+{
+  const real = Object.getOwnPropertyDescriptor(globalThis, 'crypto');
+  Object.defineProperty(globalThis, 'crypto', { value: undefined, configurable: true, writable: true });
+  let expect;
+  try { expect = await expectOf(() => hap.verifyMandate(good, { trustedIssuers: [AS_DID], now: ISSUED + 10 })); }
+  finally { Object.defineProperty(globalThis, 'crypto', real); }
+  verifyCases.push({ id: 'valid mandate, WebCrypto missing', op: 'verifyMandateWithoutSubtle', input: { blob: good, pinned_did: AS_DID, now: ISSUED + 10 }, expect });
+}
 for (const c of verifyCases) if (!c.expect.ok && !c.expect.error) throw new Error(`no expectation for ${c.id}`);
 
 const entry = { did: OWNER_DID, nonce: 'bm9uY2Utbm9uY2Utbm9uY2U', binding: 'raw', signing_surface: 'gateway' };

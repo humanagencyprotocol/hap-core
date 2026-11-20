@@ -16,6 +16,7 @@ import { canonicalize } from './canonicalize';
 import { toBase64Url, fromBase64Url } from './base64url';
 import { decodeDidKey, isKeyBearingDid } from './did-key';
 import { HapError } from './errors';
+import { requireSubtle } from './webcrypto';
 import { assertSupportedVersion, SUPPORTED_VERSIONS } from './versions';
 import type { Mandate, MandateHeader, MandatePayload } from './types';
 
@@ -124,6 +125,7 @@ export async function verifyMandateSignature(
     throw new HapError('INVALID_SIGNATURE', `${(err as Error).message}`);
   }
 
+  requireSubtle();
   const isValid = await ed.verifyAsync(sigBytes, payloadBytes, publicKey).catch(() => false);
   if (!isValid) {
     throw new HapError('INVALID_SIGNATURE', 'mandate signature verification failed');
