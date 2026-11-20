@@ -20,11 +20,11 @@ describe('browser entry vectors (Node, from source)', () => {
     const results: Array<{ id: string; ok: boolean; detail: string }> = await runBrowserEntryVectors(hap, file);
     expect(results.filter(r => !r.ok)).toEqual([]);
     expect(results.length).toBe(file.cases.length);
-  });
+  }, 60_000);
   it('device-keys vectors through the browser entry', async () => {
     const files = (VECTOR_FILES as string[]).map(f => JSON.parse(readFileSync(join(dir('device-keys'), f), 'utf8')));
     const results: Array<{ ok: boolean }> = await runVectors(hap.deviceKeys, files);
     expect(results.filter(r => !r.ok)).toEqual([]);
     expect(results.length).toBeGreaterThan(100);
-  });
+  }, 60_000); // 400 cases with ECDSA and Ed25519 in one test: ~3 s here, over vitest's 5 s default on a CI runner
 });
