@@ -13,6 +13,7 @@
  */
 
 import * as ed from '@noble/ed25519';
+import { requireSubtle } from './webcrypto';
 import { canonicalize } from './canonicalize';
 import { toBase64Url, fromBase64Url } from './base64url';
 import { decodeDidKey } from './did-key';
@@ -130,6 +131,7 @@ export async function verifyTicketProjection(
   } catch (err) {
     throw new HapError('INVALID_SIGNATURE', (err as Error).message);
   }
+  requireSubtle();
   const ok = await ed.verifyAsync(sigBytes, new TextEncoder().encode(canonicalize(unsigned)), publicKey).catch(() => false);
   if (!ok) throw new HapError('INVALID_SIGNATURE', 'projection signature verification failed');
   if (opts.asAuthorization) {

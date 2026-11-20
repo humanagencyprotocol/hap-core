@@ -17,7 +17,7 @@
  * profile JSON at load time; call it explicitly from an authoring tool, a
  * hap-profiles CI check, or a test.
  */
-import { createHash } from 'crypto';
+import { sha256Hex } from './sha256';
 import { canonicalize } from './canonicalize';
 import { allowedCommitmentModes, SIGNABLE_COMMITMENT_MODES } from './commitment-modes';
 import type { AgentProfile, BoundType } from './types';
@@ -40,7 +40,7 @@ export interface ProfileValidationError {
  * `profile-hash.json`).
  */
 export function computeProfileHash(parsed: unknown): string {
-  const hash = createHash('sha256').update(canonicalize(parsed), 'utf8').digest('hex');
+  const hash = sha256Hex(canonicalize(parsed));
   return `sha256:${hash}`;
 }
 

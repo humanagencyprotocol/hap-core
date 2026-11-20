@@ -14,10 +14,26 @@
  */
 
 const STRICT_B64URL = /^[A-Za-z0-9_-]*$/;
+const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+const INDEX = new Map<string, number>([...ALPHABET].map((c, i) => [c, i]));
 
-/** Encode bytes as base64url with no padding. */
+/** Encode bytes as base64url with no padding. Plain TypeScript: no Node `Buffer`, so it loads in a browser. */
 export function toBase64Url(bytes: Uint8Array): string {
-  return Buffer.from(bytes).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  let out = '';
+  let i = 0;
+  for (; i + 2 < bytes.length; i += 3) {
+    const n = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2];
+    out += ALPHABET[(n >> 18) & 63] + ALPHABET[(n >> 12) & 63] + ALPHABET[(n >> 6) & 63] + ALPHABET[n & 63];
+  }
+  const rest = bytes.length - i;
+  if (rest === 1) {
+    const n = bytes[i] << 16;
+    out += ALPHABET[(n >> 18) & 63] + ALPHABET[(n >> 12) & 63];
+  } else if (rest === 2) {
+    const n = (bytes[i] << 16) | (bytes[i + 1] << 8);
+    out += ALPHABET[(n >> 18) & 63] + ALPHABET[(n >> 12) & 63] + ALPHABET[(n >> 6) & 63];
+  }
+  return out;
 }
 
 /**
@@ -34,6 +50,21 @@ export function fromBase64Url(s: string): Uint8Array {
         '("+"/"/"/padding) is retired (protocol.md → Mandate Payload, rule 3).',
     );
   }
-  const padding = s.length % 4 === 0 ? '' : '='.repeat(4 - (s.length % 4));
-  return new Uint8Array(Buffer.from(s + padding, 'base64'));
+  // Decoded as Node's Buffer did before 0.17.0 (kept byte for byte, test/base64url.test.ts): a length of
+  // 1 mod 4 drops its last character, and the unused low bits of the last character are ignored.
+  const full = s.length - (s.length % 4 === 1 ? 1 : 0);
+  const out = new Uint8Array(Math.floor((full * 6) / 8));
+  let acc = 0;
+  let bits = 0;
+  let o = 0;
+  for (let i = 0; i < full; i++) {
+    acc = (acc << 6) | (INDEX.get(s[i]) as number);
+    bits += 6;
+    if (bits >= 8) {
+      bits -= 8;
+      out[o++] = (acc >> bits) & 0xff;
+    }
+    acc &= (1 << bits) - 1;
+  }
+  return out;
 }

@@ -6,7 +6,7 @@
  * They live here so the two cannot disagree about what a value means.
  */
 
-import { createHash } from 'crypto';
+import { sha256Hex } from './sha256';
 import { canonicalize } from './canonicalize';
 import { HapError } from './errors';
 import { isKeyBearingDid } from './did-key';
@@ -19,7 +19,7 @@ import type { AgentProfile, AgentBoundsParams, MandatePayload, ProfileBoundsFiel
  */
 export function computeExecutionContextHash(profile: Pick<AgentProfile, 'executionContextSchema'>): string {
   const schema = profile.executionContextSchema ?? {};
-  return `sha256:${createHash('sha256').update(canonicalize(schema), 'utf8').digest('hex')}`;
+  return `sha256:${sha256Hex(canonicalize(schema))}`;
 }
 
 /** The execution-context fields some bound of the profile reads

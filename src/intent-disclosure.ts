@@ -20,13 +20,9 @@
  * Both produce `sha256:<hex>` to match the frame/bounds/context hash format.
  */
 
-import { createHash } from 'crypto';
+import { sha256Hex } from './sha256';
 import { canonicalize } from './canonicalize';
 import { canonicalizeText } from './content-binding';
-
-function sha256Hex(bytes: string): string {
-  return createHash('sha256').update(bytes, 'utf8').digest('hex');
-}
 
 /**
  * `gate_content_hashes.intent` for an intent statement.

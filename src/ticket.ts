@@ -9,6 +9,7 @@
 
 import { HapError } from './errors';
 import * as ed from '@noble/ed25519';
+import { requireSubtle } from './webcrypto';
 import type { ContentBinding, Mandate, Subject } from './types';
 import { canonicalize } from './canonicalize';
 import { toBase64Url, fromBase64Url } from './base64url';
@@ -163,6 +164,7 @@ export async function verifyTicketSignature(
     throw new HapError('INVALID_SIGNATURE', `${(err as Error).message}`);
   }
 
+  requireSubtle();
   const ok = await ed.verifyAsync(sigBytes, bytes, publicKey).catch(() => false);
   if (!ok) {
     throw new HapError('INVALID_SIGNATURE', 'ticket signature verification failed');

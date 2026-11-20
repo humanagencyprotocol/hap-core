@@ -29,6 +29,14 @@ npm install @humanagencyp/hap-core
 - **base64url** — strict (no padding, no standard-base64 characters) encode/decode
 - **Profiles registry** — `registerProfile`, `getProfile`, `getAllProfiles`, `clearProfiles`
 
+### In a browser
+
+`@humanagencyp/hap-core/browser` (since 0.17.0) loads in a web page with no Node built-in: types,
+mandate decoding and verification, the owner-signature projection, profile hashing, the
+execution-context filter, did:key, base64url, `sha256`, and the experimental `deviceKeys`. These are
+the same functions as the main entry's. Encryption of proposal content, tickets and the gatekeeper
+stay in the main entry. WebCrypto comes from `globalThis.crypto`.
+
 ## Usage
 
 ```typescript

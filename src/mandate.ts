@@ -10,12 +10,13 @@
  * is a re-grant release, and a v0.7 artifact stays verifiable as evidence.
  */
 
-import { createHash } from 'crypto';
+import { sha256Hex } from './sha256';
 import * as ed from '@noble/ed25519';
 import { canonicalize } from './canonicalize';
 import { toBase64Url, fromBase64Url } from './base64url';
 import { decodeDidKey, isKeyBearingDid } from './did-key';
 import { HapError } from './errors';
+import { requireSubtle } from './webcrypto';
 import { assertSupportedVersion, SUPPORTED_VERSIONS } from './versions';
 import type { Mandate, MandateHeader, MandatePayload } from './types';
 
@@ -55,7 +56,7 @@ export function encodeMandateBlob(mandate: Mandate): string {
  * `attestationId`.
  */
 export function mandateBlobId(blob: string): string {
-  const hash = createHash('sha256').update(blob, 'utf8').digest('hex');
+  const hash = sha256Hex(blob);
   return `sha256:${hash}`;
 }
 
@@ -124,6 +125,7 @@ export async function verifyMandateSignature(
     throw new HapError('INVALID_SIGNATURE', `${(err as Error).message}`);
   }
 
+  requireSubtle();
   const isValid = await ed.verifyAsync(sigBytes, payloadBytes, publicKey).catch(() => false);
   if (!isValid) {
     throw new HapError('INVALID_SIGNATURE', 'mandate signature verification failed');
