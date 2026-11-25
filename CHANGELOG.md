@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.17.0 — browser-safe entry
+## 0.17.0 — 2026-11-20 (browser-safe entry)
 
 - New subpath `@humanagencyp/hap-core/browser`: the mandate, owner-signature, profile and
   issuance functions (`verifyMandate`, `decodeMandateBlob`, `buildMandateProjection`,
@@ -27,7 +27,7 @@
   The main entry's and `./device-keys`'s exports are otherwise unchanged; nothing was removed.
 - The publish workflow runs the WebKit and Chromium check first; a red run blocks the release.
 
-## 0.16.0 — team trust (DEC-73)
+## 0.16.0 — 2026-11-19 (team trust, DEC-73)
 
 Three signed objects and three verifiers, added to `deviceKeys` (**@experimental**):
 
