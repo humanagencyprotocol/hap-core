@@ -34,7 +34,7 @@ describe.skipIf(!available)('email@0.8 as shipped', () => {
 
   // Exactly the fields the shipped boundsSchema declares.
   const bounds = { profile: '', recipient_max: 5, send_daily_max: 20, read_max_age_days: 30, read_access: 'none', setup_daily_max: 5 };
-  const scope = { allowed_recipients: 'andreas@example.com', allowed_domains: 'example.com' };
+  const scope = { allowed_recipients: 'owner@example.com', allowed_domains: 'example.com' };
 
   beforeAll(async () => {
     profile = JSON.parse(readFileSync(PROFILE_PATH, 'utf8')) as AgentProfile;
@@ -62,7 +62,7 @@ describe.skipIf(!available)('email@0.8 as shipped', () => {
     const r = await check({
       action_type: 'send',
       recipient_count: 1,
-      allowed_recipients: 'andreas@example.com',
+      allowed_recipients: 'owner@example.com',
       allowed_domains: 'example.com',
     });
     expect(r.approved, JSON.stringify(r.errors)).toBe(true);

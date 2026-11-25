@@ -1,5 +1,5 @@
 import json, hmac, hashlib, base64, copy, os
-D = '/Users/andreasschadauer/Development/HAP/hap-core/.claude/worktrees/agent-ad2ebbe37d5f6e112/test/vectors/device-keys/'
+D = os.path.dirname(os.path.abspath(__file__))  # this folder, wherever the repo is checked out
 os.chdir(D)
 
 p = 'runner.mjs'

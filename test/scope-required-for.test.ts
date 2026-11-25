@@ -40,7 +40,7 @@ describe('a constrained dimension the call does not expose', () => {
     recipient_max: 5,
     send_daily_max: 20,
   };
-  const scope = { allowed_recipients: 'andreas@example.com', allowed_domains: 'example.com' };
+  const scope = { allowed_recipients: 'owner@example.com', allowed_domains: 'example.com' };
 
   beforeAll(async () => {
     registerProfile(GUARDED, withRequiredFor(GUARDED, ['send']));
@@ -59,7 +59,7 @@ describe('a constrained dimension the call does not expose', () => {
     const r = await check(GUARDED, {
       action_type: 'send',
       recipient_count: 1,
-      allowed_recipients: 'andreas@example.com',
+      allowed_recipients: 'owner@example.com',
       allowed_domains: 'example.com',
     });
     expect(r.approved).toBe(true);
