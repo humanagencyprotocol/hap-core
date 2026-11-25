@@ -189,12 +189,12 @@ describe('gatekeeper', () => {
       const blob = await createTestMandate({ keyPair, bounds: emailBounds, scope: emailScope, profile: EMAIL_PROFILE_V4 });
       const result = await verify({
         bounds: emailBounds, scope: emailScope, mandates: [blob],
-        execution: { action_type: 'send', recipient_count: 1, allowed_domains: 'sublin.app', allowed_recipients: 'andreas@sublin.app' },
+        execution: { action_type: 'send', recipient_count: 1, allowed_domains: 'example.com', allowed_recipients: 'owner@example.com' },
       });
       expect(result.approved).toBe(false);
       if (!result.approved) {
         expect(result.errors.some((e) =>
-          e.code === 'BOUND_EXCEEDED' && e.field === 'allowed_domains' && e.message.includes('sublin.app'),
+          e.code === 'BOUND_EXCEEDED' && e.field === 'allowed_domains' && e.message.includes('example.com'),
         )).toBe(true);
       }
     });

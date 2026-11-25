@@ -13,11 +13,11 @@ const selfDeclared: Subject = {
 };
 const asVouched: Subject = {
   did: 'did:key:alice', assurance: 'high', method: 'as_vouched', trust_root: 'as',
-  verifier: 'did:web:suveren.ai', disclose: { name: 'Andreas Schadauer' }, verified_at: 1,
+  verifier: 'did:web:suveren.ai', disclose: { name: 'Maria Berger' }, verified_at: 1,
 };
 const eudi: Subject = {
   did: 'did:key:alice', assurance: 'high', method: 'eudi', trust_root: 'external',
-  verifier: 'eudi:de', disclose: { name: 'Andreas Schadauer' }, verified_at: 1,
+  verifier: 'eudi:de', disclose: { name: 'Maria Berger' }, verified_at: 1,
 };
 
 describe('validateSubject', () => {
@@ -28,7 +28,7 @@ describe('validateSubject', () => {
   });
 
   it('rejects a name disclosed at low assurance', () => {
-    const bad = { ...selfDeclared, disclose: { name: 'Andreas' } } as Subject;
+    const bad = { ...selfDeclared, disclose: { name: 'Maria' } } as Subject;
     expect(validateSubject(bad).valid).toBe(false);
   });
 
@@ -75,19 +75,19 @@ describe('deriveIdentityLine — footer wording (name only at high)', () => {
 
   it('high / as_vouched shows "«name»\'s AI agent, verified by «operator»" (v1.1)', () => {
     expect(deriveIdentityLine(asVouched, op)).toBe(
-      "Sent by Andreas Schadauer's AI agent, verified by Suveren",
+      "Sent by Maria Berger's AI agent, verified by Suveren",
     );
   });
 
   it('renders the actual operator, not a hardcoded brand', () => {
     expect(deriveIdentityLine(asVouched, { operatorName: 'Acme' })).toBe(
-      "Sent by Andreas Schadauer's AI agent, verified by Acme",
+      "Sent by Maria Berger's AI agent, verified by Acme",
     );
   });
 
   it('high / eudi shows "identity verified (EUDI)" without naming the operator', () => {
     expect(deriveIdentityLine(eudi, op)).toBe(
-      "Sent by Andreas Schadauer's AI agent, identity verified (EUDI)",
+      "Sent by Maria Berger's AI agent, identity verified (EUDI)",
     );
   });
 
